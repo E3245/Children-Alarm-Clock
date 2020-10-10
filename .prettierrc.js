@@ -3,4 +3,10 @@ module.exports = {
   jsxBracketSameLine: true,
   singleQuote: true,
   trailingComma: 'all',
+  'prettier/prettier': [
+    'error',
+    {
+      endOfLine: 'auto',
+    },
+  ],
 };
