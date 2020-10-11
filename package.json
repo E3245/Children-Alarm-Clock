@@ -11,7 +11,8 @@
     "flow": "flow"
   },
   "dependencies": {
-    "react": "16.13.1",
+    "@types/styled-components": "^5.1.4",
+    "react": "^16.13.1",
     "react-native": "0.63.3"
   },
   "devDependencies": {
@@ -30,7 +31,11 @@
     "flow-bin": "^0.135.0",
     "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.59.0",
+    "react-dom": "^16.13.1",
+    "react-is": "^16.13.1",
+    "react-native-svg": "^12.1.0",
     "react-test-renderer": "16.13.1",
+    "styled-components": "^5.2.0",
     "typescript": "^3.8.3"
   },
   "jest": {
