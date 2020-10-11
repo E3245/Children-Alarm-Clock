@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+import { InteractionManagerStatic } from "react-native";
 
 // From Dan Abramov https://overreacted.io/making-setinterval-declarative-with-react-hooks/
-export const useInterval = (callback, delay) => {
-  const savedCallback = useRef();
+export const useInterval = (callback: any, delay: any) => {
+  const savedCallback = useRef<any>();
 
   // Remember the latest callback.
   useEffect(() => {
@@ -21,7 +22,7 @@ export const useInterval = (callback, delay) => {
   }, [delay]);
 };
 
-export const usePrevious = (value) => {
+export const usePrevious = (value: any) => {
   const ref = useRef();
   useEffect(() => {
     ref.current = value;
