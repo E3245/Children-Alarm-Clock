@@ -13,7 +13,7 @@ export const getTime = (): TimeObject => {
   const hours = to12hClock(date.getHours());
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
-  return { hours, minutes, seconds };
+  return {hours, minutes, seconds};
 };
 
 export const getTimeInAngles = (): TimeObject => {
@@ -21,12 +21,12 @@ export const getTimeInAngles = (): TimeObject => {
   const hours = (to12hClock(date.getHours()) / 12) * 360;
   const minutes = (date.getMinutes() / 60) * 360;
   const seconds = (date.getSeconds() / 60) * 360;
-  return { hours, minutes, seconds };
+  return {hours, minutes, seconds};
 };
 
 export const getDateTimeInAngles = (dateTime: Date): TimeObject => {
   const hours = (to12hClock(dateTime.getHours()) / 12) * 360;
   const minutes = (dateTime.getMinutes() / 60) * 360;
   const seconds = (dateTime.getSeconds() / 60) * 360;
-  return { hours, minutes, seconds };
+  return {hours, minutes, seconds};
 };

@@ -8,10 +8,9 @@ import App from '../App';
 import 'jest';
 
 // Note: test renderer must be required after react-native.
-import renderer, { act } from 'react-test-renderer';
+import renderer, {act} from 'react-test-renderer';
 
 it('renders correctly', () => {
-
   // For any component that updates on an interval.
   jest.useFakeTimers();
 
