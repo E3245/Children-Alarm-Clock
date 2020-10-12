@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Dimensions } from "react-native";
 import Svg from "react-native-svg";
-import { getTime } from "../helpers/time";
+import { getTimeInAngles } from "../helpers/time";
 import ClockTicks from "./ClockTicks";
 import Hand from "./Hand";
 import { useInterval } from "../helpers/hooks";
@@ -15,10 +15,10 @@ const hourTickCount = 12;
 const minuteTickCount = 12 * 6;
 
 const ClockFace = () => {
-  let [time, setTime] = useState(getTime);
+  let [time, setTime] = useState(getTimeInAngles);
 
   useInterval(() => {
-    setTime(getTime);
+    setTime(getTimeInAngles);
   }, 100);
 
   return (
