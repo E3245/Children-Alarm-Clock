@@ -1,4 +1,3 @@
-  
 import React from "react";
 import { useColorScheme, Text, View } from "react-native";
 import Clock from "./components/Clock";
