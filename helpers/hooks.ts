@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
-import { InteractionManagerStatic } from "react-native";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React, {useState, useEffect, useRef} from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import {InteractionManagerStatic} from 'react-native';
 
 // From Dan Abramov https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 export const useInterval = (callback: any, delay: any) => {

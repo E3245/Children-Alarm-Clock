@@ -1,9 +1,8 @@
-  
-import React from "react";
-import { useColorScheme, Text, View } from "react-native";
-import Clock from "./components/Clock";
-import styled, { ThemeProvider } from "styled-components/native";
-import { darkTheme, lightTheme } from "./themes";
+import React from 'react';
+import {useColorScheme} from 'react-native';
+import Clock from './components/Clock';
+import styled, {ThemeProvider} from 'styled-components/native';
+import {darkTheme, lightTheme} from './themes';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -37,7 +36,7 @@ function AppTabs()
 }
 
 const App = () => {
-  const theme = useColorScheme() === "dark" ? darkTheme : lightTheme;
+  const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
 
   return (
     <NavigationContainer>
@@ -58,16 +57,16 @@ const App = () => {
 
 const ScrollView = styled.ScrollView`
   flex: 1;
-  background-color: ${({ theme }) => theme.bgColor};
+  background-color: ${({theme}) => theme.bgColor};
 `;
 
 const SafeAreaView = styled.SafeAreaView`
-  background-color: ${({ theme }) => theme.bgColor};
+  background-color: ${({theme}) => theme.bgColor};
   flex: 1;
 `;
 
-const StatusBar = styled.StatusBar.attrs(({ theme }) => ({
-  barStyle: theme.style === "dark" ? "light-content" : "dark-content",
+const StatusBar = styled.StatusBar.attrs(({theme}) => ({
+  barStyle: theme.style === 'dark' ? 'light-content' : 'dark-content',
 }))``;
 
 export default App;
