@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { Dimensions } from "react-native";
-import Svg from "react-native-svg";
-import { getTimeInAngles } from "../helpers/time";
-import ClockTicks from "./ClockTicks";
-import Hand from "./Hand";
-import { useInterval } from "../helpers/hooks";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import {Dimensions} from 'react-native';
+import Svg from 'react-native-svg';
+import {getTimeInAngles} from '../helpers/time';
+import ClockTicks from './ClockTicks';
+import Hand from './Hand';
+import {useInterval} from '../helpers/hooks';
+import styled from 'styled-components';
 
-const { width } = Dimensions.get("window");
+const {width} = Dimensions.get('window');
 const diameter = width - 40;
 const center = width / 2;
 const radius = diameter / 2;
@@ -55,17 +55,17 @@ const ClockFace = () => {
 
 export default ClockFace;
 
-const Seconds = styled(Hand).attrs(({ theme }) => ({
+const Seconds = styled(Hand).attrs(({theme}) => ({
   stroke: theme.accentColor,
-  strokeOpacity: "1",
+  strokeOpacity: '1',
 }))``;
 
-const Minutes = styled(Hand).attrs(({ theme }) => ({
+const Minutes = styled(Hand).attrs(({theme}) => ({
   stroke: theme.primaryColor,
-  strokeOpacity: "0.5",
+  strokeOpacity: '0.5',
 }))``;
 
-const Hours = styled(Hand).attrs(({ theme }) => ({
+const Hours = styled(Hand).attrs(({theme}) => ({
   stroke: theme.primaryColor,
-  strokeOpacity: "0.8",
+  strokeOpacity: '0.8',
 }))``;
