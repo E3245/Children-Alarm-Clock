@@ -1,7 +1,7 @@
-import React from "react";
-import { G, Line, Text } from "react-native-svg";
-import { polarToCartesian } from "../helpers/geometry";
-import styled from "styled-components/native";
+import React from 'react';
+import {G, Line, Text} from 'react-native-svg';
+import {polarToCartesian} from '../helpers/geometry';
+import styled from 'styled-components/native';
 
 type Props = {
   radius: number;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const ClockTicks = (props: Props) => {
-  const { radius, center, minutes, hours } = props;
+  const {radius, center, minutes, hours} = props;
   const minutesArray = new Array(minutes).fill(1);
   const hoursArray = new Array(hours).fill(1);
 
@@ -70,14 +70,14 @@ const ClockTicks = (props: Props) => {
 
 export default ClockTicks;
 
-const Minute = styled(Line).attrs(({ theme }) => ({
+const Minute = styled(Line).attrs(({theme}) => ({
   stroke: theme.secondaryColor,
 }))``;
 
-const HourLine = styled(Line).attrs(({ theme }) => ({
+const HourLine = styled(Line).attrs(({theme}) => ({
   stroke: theme.secondaryColor,
 }))``;
 
-const HourNumber = styled(Text).attrs(({ theme }) => ({
+const HourNumber = styled(Text).attrs(({theme}) => ({
   fill: theme.primaryColor,
 }))``;

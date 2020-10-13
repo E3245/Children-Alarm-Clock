@@ -1,6 +1,6 @@
-import { DefaultTheme } from "styled-components/native";
+import {DefaultTheme} from 'styled-components/native';
 
-declare module "styled-components" {
+declare module 'styled-components' {
   export interface DefaultTheme {
     style: string;
     bgColor: string;
@@ -11,17 +11,17 @@ declare module "styled-components" {
 }
 
 export const lightTheme: DefaultTheme = {
-  style: "light",
-  bgColor: "white",
-  primaryColor: "#333",
-  secondaryColor: "#555",
-  accentColor: "#4a5aef",
+  style: 'light',
+  bgColor: 'white',
+  primaryColor: '#333',
+  secondaryColor: '#555',
+  accentColor: '#4a5aef',
 };
 
 export const darkTheme: DefaultTheme = {
-  style: "dark",
-  bgColor: "#111",
-  primaryColor: "#fff",
-  secondaryColor: "#CACACA",
-  accentColor: "#4aefd5",
+  style: 'dark',
+  bgColor: '#111',
+  primaryColor: '#fff',
+  secondaryColor: '#CACACA',
+  accentColor: '#4aefd5',
 };

@@ -1,6 +1,6 @@
-import React from "react";
-import { Line } from "react-native-svg";
-import { polarToCartesian } from "../helpers/geometry";
+import React from 'react';
+import {Line} from 'react-native-svg';
+import {polarToCartesian} from '../helpers/geometry';
 
 type Props = {
   center: number;
@@ -18,9 +18,9 @@ const Hand = (props: Props) => {
     angle,
     stroke,
     strokeWidth,
-    strokeOpacity = "1",
+    strokeOpacity = '1',
   } = props;
-  const { x, y } = polarToCartesian(center, center, radius, angle);
+  const {x, y} = polarToCartesian(center, center, radius, angle);
 
   return (
     <Line

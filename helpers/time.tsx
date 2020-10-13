@@ -16,6 +16,15 @@ export const getTime = (): TimeObject => {
   return {hours, minutes, seconds};
 };
 
+export const getTimeRemaining = (endDate: Date): TimeObject => {
+  const date = new Date();
+  const diff = new Date(endDate.getTime() - date.getTime());
+  const hours = to12hClock(diff.getHours());
+  const minutes = diff.getMinutes();
+  const seconds = diff.getSeconds();
+  return {hours, minutes, seconds};
+};
+
 export const getTimeInAngles = (): TimeObject => {
   const date = new Date();
   const hours = (to12hClock(date.getHours()) / 12) * 360;
