@@ -1,25 +1,77 @@
 import React from 'react';
-import {useColorScheme} from 'react-native';
+import {useColorScheme, Text, View, StyleSheet} from 'react-native';
 import Clock from './components/Clock';
 import styled, {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from './themes';
+
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
+const HomeScreen = () => {
+  const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
+
+  return (
+    <View style={styles.centered}>
+      <ThemeProvider theme={theme}>
+        <StatusBar barStyle="light-content" />
+        <SafeAreaView>
+          <ScrollView
+            centerContent={true}
+            contentInsetAdjustmentBehavior="automatic">
+            <Clock />
+          </ScrollView>
+        </SafeAreaView>
+      </ThemeProvider>
+    </View>
+  );
+};
+
+const SettingsScreen = () => {
+  const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
+
+  return (
+    <View style={styles.centered}>
+      <ThemeProvider theme={theme}>
+        <Text>Settings!</Text>
+      </ThemeProvider>
+    </View>
+  );
+};
+
+const Tab = createBottomTabNavigator();
+
+const AppTabs = () => {
+  const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+      </Tab.Navigator>
+    </ThemeProvider>
+  );
+};
 
 const App = () => {
   const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
 
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar barStyle="light-content" />
-      <SafeAreaView>
-        <ScrollView
-          centerContent={true}
-          contentInsetAdjustmentBehavior="automatic">
-          <Clock />
-        </ScrollView>
-      </SafeAreaView>
+      <NavigationContainer>
+        <AppTabs />
+      </NavigationContainer>
     </ThemeProvider>
   );
 };
+
+const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 const ScrollView = styled.ScrollView`
   flex: 1;
