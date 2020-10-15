@@ -38,6 +38,42 @@ const SettingsScreen = () => {
   );
 };
 
+const AlarmScreen = () => {
+  const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
+
+  return (
+    <View style={styles.centered}>
+      <ThemeProvider theme={theme}>
+        <Text>Alarm!</Text>
+      </ThemeProvider>
+    </View>
+  );
+};
+
+const CalendarScreen = () => {
+  const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
+
+  return (
+    <View style={styles.centered}>
+      <ThemeProvider theme={theme}>
+        <Text>Calendar!</Text>
+      </ThemeProvider>
+    </View>
+  );
+};
+
+const TimerScreen = () => {
+  const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
+
+  return (
+    <View style={styles.centered}>
+      <ThemeProvider theme={theme}>
+        <Text>Timer!</Text>
+      </ThemeProvider>
+    </View>
+  );
+};
+
 const Tab = createBottomTabNavigator();
 
 const AppTabs = () => {
@@ -47,6 +83,9 @@ const AppTabs = () => {
     <ThemeProvider theme={theme}>
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Alarm" component={AlarmScreen} />
+        <Tab.Screen name="Calendar" component={CalendarScreen} />
+        <Tab.Screen name="Timer" component={TimerScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
     </ThemeProvider>
