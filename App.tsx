@@ -8,6 +8,8 @@ import {Calendar} from 'react-native-calendars';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
+import IonIcons from 'react-native-vector-icons/Ionicons';
+
 const HomeScreen = () => {
   const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
 
@@ -82,7 +84,35 @@ const AppTabs = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={({route}) => ({                  // Function that controls the icons and their color when selected/deselected
+          tabBarIcon: ({ focused, color, size}) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = focused
+              ? 'information-circle'
+              : 'information-circle-outline';
+            } else if (route.name === 'Alarm') {
+              iconName = focused ? 'alarm' : 'alarm-outline';
+            } else if (route.name === 'Calendar') {
+              iconName = focused ? 'calendar' : 'calendar-outline';
+            } else if (route.name === 'Timer') {
+              iconName = focused ? 'timer' : 'timer-outline';
+            } else if (route.name === 'Settings') {
+                iconName = focused ? 'settings' : 'settings-outline';
+            } else {
+                iconName = focused ? 'help-circle' : 'help-circle-outline';
+            }
+
+            return <IonIcons name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{                            // Colors that the tabs will take. Will need to be adjusted for dark mode, if possible
+          activeTintColor: 'tomato',
+          inactiveTintColor: 'gray',
+        }}
+      >
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Alarm" component={AlarmScreen} />
         <Tab.Screen name="Calendar" component={CalendarScreen} />
