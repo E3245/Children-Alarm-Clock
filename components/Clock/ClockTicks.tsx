@@ -1,6 +1,6 @@
 import React from 'react';
 import {G, Line, Text} from 'react-native-svg';
-import {polarToCartesian} from '../helpers/geometry';
+import {polarToCartesian} from '../../helpers/geometry';
 import styled from 'styled-components/native';
 
 type Props = {

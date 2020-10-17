@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Text} from 'react-native';
-import {useInterval} from '../helpers/hooks';
-import {getTimeRemaining} from '../helpers/time';
+import {useInterval} from '../../helpers/hooks';
+import {getTimeRemaining} from '../../helpers/time';
 
 type TimerProps = {
   endTime: Date;

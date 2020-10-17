@@ -1,8 +1,9 @@
 import React from 'react';
 import {useColorScheme, Text, View, StyleSheet} from 'react-native';
-import Clock from './components/Clock';
+import Clock from './components/Clock/Clock';
 import styled, {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from './themes';
+import {Calendar} from 'react-native-calendars';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -56,7 +57,7 @@ const CalendarScreen = () => {
   return (
     <View style={styles.centered}>
       <ThemeProvider theme={theme}>
-        <Text>Calendar!</Text>
+        <Calendar />
       </ThemeProvider>
     </View>
   );

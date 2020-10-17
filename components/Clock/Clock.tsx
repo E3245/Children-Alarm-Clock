@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Dimensions} from 'react-native';
 import Svg from 'react-native-svg';
-import {getTimeInAngles} from '../helpers/time';
+import {getTimeInAngles} from '../../helpers/time';
 import ClockTicks from './ClockTicks';
 import Hand from './Hand';
-import {useInterval} from '../helpers/hooks';
+import {useInterval} from '../../helpers/hooks';
 import styled from 'styled-components';
 
 const {width} = Dimensions.get('window');
