@@ -5,10 +5,15 @@ import styled, {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from './themes';
 import {Calendar} from 'react-native-calendars';
 
+// Navigation
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
+// Icons
 import IonIcons from 'react-native-vector-icons/Ionicons';
+
+// Pages
+import TimerPage from './Timer';
 
 const HomeScreen = () => {
   const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
@@ -65,18 +70,6 @@ const CalendarScreen = () => {
   );
 };
 
-const TimerScreen = () => {
-  const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
-
-  return (
-    <View style={styles.centered}>
-      <ThemeProvider theme={theme}>
-        <Text>Timer!</Text>
-      </ThemeProvider>
-    </View>
-  );
-};
-
 const Tab = createBottomTabNavigator();
 
 const AppTabs = () => {
@@ -116,7 +109,7 @@ const AppTabs = () => {
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Alarm" component={AlarmScreen} />
         <Tab.Screen name="Calendar" component={CalendarScreen} />
-        <Tab.Screen name="Timer" component={TimerScreen} />
+        <Tab.Screen name="Timer" component={TimerPage} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
     </ThemeProvider>
