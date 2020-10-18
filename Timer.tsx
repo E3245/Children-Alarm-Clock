@@ -12,14 +12,14 @@ const TimerPage = () => {
     const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
 
     return (
-      <View style={styles.container}>
         <ThemeProvider theme={theme}>
-        <View>
-            <Text style={styles.titleText}>Timer Page</Text>
-        </View>
-        <AddTimerButton/>
+            <View style={styles.container}>
+                <Text style={styles.titleText}>Timer Page</Text>
+            </View>
+            <View style={styles.AddButtonBottom}>
+                <AddTimerButton/>
+            </View>
         </ThemeProvider>
-      </View>
     );
 };
 
@@ -62,8 +62,13 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     buttonContainer: {
-        margin: 20,
-        width: "200%",
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    AddButtonBottom: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        marginBottom: 36,
     },
 });
   
