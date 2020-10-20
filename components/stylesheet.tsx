@@ -1,5 +1,8 @@
 import {StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
+import {Dimensions} from 'react-native';
+
+const {width} = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   centered: {
@@ -8,9 +11,17 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   TimerContainer: {
+    paddingLeft: 10,
+    paddingRight: 10,
     margin: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  TimerScroll: {
+    paddingTop: 10,
+    flexGrow: 1,
+    flex: 1,
   },
   container: {
     justifyContent: 'center',
@@ -25,9 +36,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   AddButtonBottom: {
-    flex: 1,
     justifyContent: 'flex-end',
     marginBottom: 36,
+    marginTop: 20,
   },
 });
 
