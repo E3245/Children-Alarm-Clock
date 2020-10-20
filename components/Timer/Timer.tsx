@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
-import {View, Dimensions} from 'react-native';
+import {View} from 'react-native';
 import {useInterval} from '../../helpers/hooks';
 import {getTimeRemaining} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
-
-const {width} = Dimensions.get('window');
 
 type TimerProps = {
   endTime: Date;
