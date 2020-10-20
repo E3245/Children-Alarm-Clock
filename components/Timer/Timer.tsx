@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
-import {View} from 'react-native';
-import {useInterval} from '../../helpers/hooks';
-import {getTimeRemaining} from '../../helpers/time';
+import React, {useState, useEffect} from 'react';
+import {View, Button} from 'react-native';
+import {getTimeRemaining, addMilliseconds} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
 
@@ -19,11 +18,32 @@ type OtherProps = {
 // <Timer endTime={new Date(1602612000)} />
 
 const TimerComponentSimple = ({endTime}: TimerProps) => {
-  let [time, setTimeLeft] = useState(getTimeRemaining(endTime));
+  let [lendTime, setlEndtime] = useState(endTime);
+  let [time, setTimeLeft] = useState(getTimeRemaining(lendTime));
+  let [isRunning, setIsRunning] = useState(false);
 
-  useInterval(() => {
-    setTimeLeft(getTimeRemaining(endTime));
-  }, 1000);
+  useEffect(() => {
+    let interval: any = null;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setTimeLeft(getTimeRemaining(lendTime));
+      }, 100);
+    } else {
+      interval = setInterval(() => {
+        setlEndtime(addMilliseconds(lendTime, 100));
+      }, 100);
+    }
+
+    return () => clearInterval(interval);
+  });
+
+  const toggleTimer = () => {
+    if (isRunning) {
+      setIsRunning(false);
+    } else {
+      setIsRunning(true);
+    }
+  }
 
   return (
     <View style={styles.TimerContainer}>
@@ -63,6 +83,7 @@ const TimerComponentSimple = ({endTime}: TimerProps) => {
           Title
         </Text>
       </Svg>
+      <Button title="Toggle" onPress={() => toggleTimer()} />
     </View>
   );
 };
