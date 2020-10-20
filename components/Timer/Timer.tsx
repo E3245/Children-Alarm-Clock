@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
-import {Text, View} from 'react-native';
+import {View, Dimensions} from 'react-native';
 import {useInterval} from '../../helpers/hooks';
 import {getTimeRemaining} from '../../helpers/time';
 import {styles} from '../stylesheet';
+import Svg, {Text, Rect} from 'react-native-svg';
+
+const {width} = Dimensions.get('window');
 
 type TimerProps = {
   endTime: Date;
@@ -25,9 +28,40 @@ const TimerComponentSimple = ({endTime}: TimerProps) => {
   }, 100);
 
   return (
-    <Text>
-      {time.hours}:{time.minutes}:{time.seconds}
-    </Text>
+    <View style={styles.TimerContainer}>
+      <Svg width="90%" height="70">
+        <Rect
+          x="0"
+          y="0"
+          rx="10"
+          ry="10"
+          width="100%"
+          height="100%"
+          stroke="blue"
+          fill="green"
+          transform="translate(0,0)"
+        />
+        <Text
+          fill="black"
+          stroke="black"
+          fontSize="300%"
+          fontWeight="bold"
+          x="50%"
+          y="50%"
+          textAnchor="middle">
+          {time.hours + ':' + time.minutes + ':' + time.seconds}
+        </Text>
+        <Text
+          fill="black"
+          stroke="black"
+          fontSize="200%"
+          x="50%"
+          y="90%"
+          textAnchor="middle">
+          Title
+        </Text>
+      </Svg>
+    </View>
   );
 };
 
