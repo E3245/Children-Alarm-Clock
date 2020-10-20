@@ -16,6 +16,10 @@ export const getTime = (): TimeObject => {
   return {hours, minutes, seconds};
 };
 
+export const addMilliseconds = (date: Date, millis: number): Date => {
+  return new Date(date.getTime() + millis);
+}
+
 export const getTimeRemaining = (endDate: Date): TimeObject => {
   const date = new Date();
   const diff = new Date(endDate.getTime() - date.getTime());
