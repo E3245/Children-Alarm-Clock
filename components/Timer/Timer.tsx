@@ -23,7 +23,7 @@ const TimerComponentSimple = ({endTime}: TimerProps) => {
 
   useInterval(() => {
     setTimeLeft(getTimeRemaining(endTime));
-  }, 100);
+  }, 1000);
 
   return (
     <View style={styles.TimerContainer}>
