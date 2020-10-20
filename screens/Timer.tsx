@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {useColorScheme, Text, View, Button, Alert} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from '../themes';
-import TimerComponentSimple from './Timer';
+import TimerComponentSimple from '../components/Timer/Timer';
 import {render} from 'react-dom';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import {styles} from '../components/stylesheet';
