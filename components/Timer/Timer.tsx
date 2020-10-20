@@ -47,7 +47,11 @@ const TimerComponentSimple = ({endTime}: TimerProps) => {
           x="50%"
           y="50%"
           textAnchor="middle">
-          {time.hours + ':' + time.minutes + ':' + time.seconds}
+          {time.hours.toString().padStart(2, '0') +
+            ':' +
+            time.minutes.toString().padStart(2, '0') +
+            ':' +
+            time.seconds.toString().padStart(2, '0')}
         </Text>
         <Text
           fill="black"
