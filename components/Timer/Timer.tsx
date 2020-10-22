@@ -43,7 +43,7 @@ const TimerComponentSimple = ({endTime}: TimerProps) => {
     } else {
       setIsRunning(true);
     }
-  }
+  };
 
   return (
     <View style={styles.TimerContainer}>
