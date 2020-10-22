@@ -18,14 +18,14 @@ export const getTime = (): TimeObject => {
 
 export const addMilliseconds = (date: Date, millis: number): Date => {
   return new Date(date.getTime() + millis);
-}
+};
 
 export const getTimeRemaining = (endDate: Date): TimeObject => {
   const date = new Date();
   const diff = new Date(endDate.getTime() - date.getTime());
-  const hours = to12hClock(diff.getHours());
-  const minutes = diff.getMinutes();
-  const seconds = diff.getSeconds();
+  const hours = diff.getUTCHours();
+  const minutes = diff.getUTCMinutes();
+  const seconds = diff.getUTCSeconds();
   return {hours, minutes, seconds};
 };
 
