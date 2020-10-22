@@ -1,11 +1,18 @@
 import React, {Component} from 'react';
-import {useColorScheme, Text, View, Button, Alert} from 'react-native';
+import {
+  useColorScheme,
+  Text,
+  View,
+  Button,
+  Alert,
+  StyleSheet,
+} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from '../themes';
-import TimerComponentSimple from './Timer';
+import TimerComponentSimple from '../components/Timer/Timer';
 import {render} from 'react-dom';
 import {TouchableHighlight} from 'react-native-gesture-handler';
-import {styles} from '../components/stylesheet';
+import {ScrollView, styles} from '../components/stylesheet';
 
 const TimerScreen = () => {
   const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
@@ -15,6 +22,17 @@ const TimerScreen = () => {
       <View style={styles.container}>
         <Text style={styles.titleText}>Timer Page</Text>
       </View>
+      <ScrollView style={styles.TimerScroll}>
+        <View style={styles.centered}>
+          <TimerComponentSimple endTime={new Date(100000000)} />
+          <TimerComponentSimple endTime={new Date(200000000)} />
+          <TimerComponentSimple endTime={new Date(205000000)} />
+          <TimerComponentSimple endTime={new Date(205000300)} />
+          <TimerComponentSimple endTime={new Date(205600000)} />
+          <TimerComponentSimple endTime={new Date(205006000)} />
+          <TimerComponentSimple endTime={new Date(205800000)} />
+        </View>
+      </ScrollView>
       <View style={styles.AddButtonBottom}>
         <AddTimerButton />
       </View>
