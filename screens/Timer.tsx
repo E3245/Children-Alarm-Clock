@@ -15,13 +15,7 @@ const TimerScreen = () => {
       </View>
       <ScrollView style={styles.TimerScroll}>
         <View style={styles.centered}>
-          <TimerComponentSimple endTime={new Date(100000000)} />
-          <TimerComponentSimple endTime={new Date(200000000)} />
-          <TimerComponentSimple endTime={new Date(205000000)} />
-          <TimerComponentSimple endTime={new Date(205000300)} />
-          <TimerComponentSimple endTime={new Date(205600000)} />
-          <TimerComponentSimple endTime={new Date(205006000)} />
-          <TimerComponentSimple endTime={new Date(205800000)} />
+          <TimerComponentSimple amountTime={10} name="Brush Teeth" color="blue"/>
         </View>
       </ScrollView>
       <View style={styles.AddButtonBottom}>
