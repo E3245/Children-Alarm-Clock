@@ -10,6 +10,15 @@ target 'childAlarmClock' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  permissions_path = '../node_modules/react-native-permissions/ios'  
+  
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+  
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec" 
+  
+  pod 'Permission-Notifications', :path => 
+  "#{permissions_path}/Notifications.podspec"
+
   target 'childAlarmClockTests' do
     inherit! :complete
     # Pods for testing
