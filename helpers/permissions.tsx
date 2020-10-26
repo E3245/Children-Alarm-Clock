@@ -1,13 +1,6 @@
 /* Permissions */
-import {PERMISSIONS, check, RESULTS, request} from 'react-native-permissions';
 import {Platform} from 'react-native';
-
-/*
-<uses-permission android:name="android.permission.CAMERA" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.RECORD_AUDIO" />
- */
+import {PERMISSIONS, check, RESULTS, request} from 'react-native-permissions';
 
 // Permissions that are equivalent for both platforms
 const PLATFORM_CAMERA_PERMISSIONS = {
