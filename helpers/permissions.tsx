@@ -16,22 +16,32 @@ const PLATFORM_CAMERA_PERMISSIONS = {
 }
 
 const PLATFORM_RECORDAUDIO_PERMISSIONS = {
-    ios: PERMISSIONS.IOS.MICROPHONE, // Not sure if this is the equivalent
+    ios: PERMISSIONS.IOS.MICROPHONE,
     android: PERMISSIONS.ANDROID.RECORD_AUDIO
 }
 
 const PLATFORM_PHOTO_PERMISSIONS = {
     ios: PERMISSIONS.IOS.PHOTO_LIBRARY,
+    android: PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+}
+
+// Not sure if this is needed if we're gonna save stuff internally, but here just in case
+const PLATFORM_FILESYSTEM_PERMISSIONS = {
+    ios: "", // No permission exists for reading external storage
     android: PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
 }
 
 const REQUEST_PERMISSION_TYPE = {
+    camera: PLATFORM_CAMERA_PERMISSIONS,
     microphone: PLATFORM_RECORDAUDIO_PERMISSIONS,
+    filesystem: PLATFORM_FILESYSTEM_PERMISSIONS,
     photo: PLATFORM_PHOTO_PERMISSIONS
 }
 
 const PERMISSION_TYPE = {
+    camera: 'camera',
     microphone: 'microphone',
+    filesystem: 'filesystem',
     photo: 'photo'
 }
 
@@ -71,7 +81,6 @@ class AppPermissions {
             return false;
         }
     }
-
 }
 
 const Permission = new AppPermissions()
