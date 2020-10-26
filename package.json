@@ -15,7 +15,7 @@
     "@react-navigation/bottom-tabs": "^5.9.2",
     "@react-navigation/native": "^5.7.6",
     "@types/react-native-calendars": "^1.20.10",
-    "@types/react-native-vector-icons": "^6.4.6",
+    "@types/react-native-uuid": "^1.4.0",
     "@types/styled-components": "^5.1.4",
     "react": "^16.13.1",
     "react-native": "0.63.3",
@@ -24,6 +24,7 @@
     "react-native-reanimated": "^1.13.1",
     "react-native-safe-area-context": "^3.1.8",
     "react-native-screens": "^2.11.0",
+    "react-native-uuid": "^1.4.9",
     "react-native-vector-icons": "^7.1.0"
   },
   "devDependencies": {
@@ -35,6 +36,7 @@
     "@types/jest": "^25.2.3",
     "@types/react-dom": "^16.9.8",
     "@types/react-native": "^0.63.2",
+    "@types/react-native-vector-icons": "^6.4.6",
     "@types/react-test-renderer": "^16.9.2",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
