@@ -1,5 +1,5 @@
 import React from 'react';
-import {useColorScheme} from 'react-native';
+import {PermissionsAndroid, useColorScheme} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from './themes';
 
@@ -16,6 +16,9 @@ import SettingsScreen from './screens/Settings';
 import AlarmScreen from './screens/Alarm';
 import CalendarScreen from './screens/Calendar';
 import TimerScreen from './screens/Timer';
+
+/* Additional Components */
+import {Permission, PERMISSION_TYPE} from './helpers/permissions';
 
 const Tab = createBottomTabNavigator();
 
@@ -66,6 +69,11 @@ const AppTabs = () => {
 
 const App = () => {
   const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
+
+  // Check and get permissions when the app is loaded here
+  // For some reason, the app will only check one permission at a time
+//Permission.checkPermission(PERMISSION_TYPE.microphone); //TODO: Move this to a more appropriate place when the user can use audio
+  Permission.checkPermission(PERMISSION_TYPE.photo);
 
   return (
     <ThemeProvider theme={theme}>
