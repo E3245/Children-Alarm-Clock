@@ -4,8 +4,7 @@ import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from '../,,/themes';
 import {AlarmComponentSimple, AlarmProps} from './Alarm';
 import {ScrollView, styles} from '../stylesheet';
-import 'react-native-get-random-values';
-import {v4 as uuidv4} from 'uuid';
+import {uuid} from '../../helpers/uuid';
 
 type Props = {
   name: string;
@@ -37,7 +36,7 @@ export class AlarmList extends React.Component<Props, State> {
       amountTime: Math.floor(Math.random() * 100),
       name: rand(verbs) + ' ' + rand(nouns),
       color: rand(colors),
-      key: uuidv4(),
+      key: uuid(),
     };
 
     return retVal;
