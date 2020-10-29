@@ -14,8 +14,8 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './screens/Clock';
 import SettingsScreen from './screens/Settings';
 import AlarmScreen from './screens/Alarm';
-import CalendarScreen from './screens/Calendar';
 import TimerScreen from './screens/Timer';
+import AgendaList from './screens/Agenda';
 
 const Tab = createBottomTabNavigator();
 
@@ -56,7 +56,7 @@ const AppTabs = () => {
         }}>
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Alarm" component={AlarmScreen} />
-        <Tab.Screen name="Calendar" component={CalendarScreen} />
+        <Tab.Screen name="Calendar" component={AgendaList} />
         <Tab.Screen name="Timer" component={TimerScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
