@@ -4,7 +4,7 @@ import {getTime, getTimeRemaining, addMilliseconds} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
 
-export type TimerProps = {
+export type AlarmProps = {
   // Length of the timer in seconds
   amountTime: number;
   name: string;
@@ -12,16 +12,10 @@ export type TimerProps = {
   key: string;
 };
 
-// Misc Properties
-type OtherProps = {
-  name: string;
-  imagePath: string;
-};
-
 // How to use this component
 // <Timer endTime={new Date(1602612000)} />
 
-export const TimerComponentSimple = ({amountTime, name, color}: TimerProps) => {
+export const AlarmComponentSimple = ({amountTime, name, color}: AlarmProps) => {
   let [endTime, setendTime] = useState(
     addMilliseconds(new Date(), amountTime * 1000),
   );
@@ -43,7 +37,7 @@ export const TimerComponentSimple = ({amountTime, name, color}: TimerProps) => {
     return () => clearInterval(interval);
   });
 
-  const toggleTimer = () => {
+  const toggleAlarm = () => {
     if (isRunning) {
       setIsRunning(false);
     } else {
@@ -89,7 +83,7 @@ export const TimerComponentSimple = ({amountTime, name, color}: TimerProps) => {
           {name}
         </Text>
       </Svg>
-      <Button title="Toggle" onPress={() => toggleTimer()} />
+      <Button title="Toggle" onPress={() => toggleAlarm()} />
     </View>
   );
 };

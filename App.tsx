@@ -72,7 +72,7 @@ const App = () => {
 
   // Check and get permissions when the app is loaded here
   // For some reason, the app will only check one permission at a time
-//Permission.checkPermission(PERMISSION_TYPE.microphone); //TODO: Move this to a more appropriate place when the user can use audio
+  //Permission.checkPermission(PERMISSION_TYPE.microphone); //TODO: Move this to a more appropriate place when the user can use audio
   Permission.checkPermission(PERMISSION_TYPE.photo);
 
   return (
