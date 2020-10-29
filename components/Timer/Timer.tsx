@@ -4,11 +4,12 @@ import {getTime, getTimeRemaining, addMilliseconds} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
 
-type TimerProps = {
+export type TimerProps = {
   // Length of the timer in seconds
   amountTime: number;
   name: string;
   color: string;
+  key: string;
 };
 
 // Misc Properties
@@ -20,7 +21,7 @@ type OtherProps = {
 // How to use this component
 // <Timer endTime={new Date(1602612000)} />
 
-const TimerComponentSimple = ({amountTime, name, color}: TimerProps) => {
+export const TimerComponentSimple = ({amountTime, name, color}: TimerProps) => {
   let [endTime, setendTime] = useState(
     addMilliseconds(new Date(), amountTime * 1000),
   );
@@ -92,25 +93,3 @@ const TimerComponentSimple = ({amountTime, name, color}: TimerProps) => {
     </View>
   );
 };
-
-// By default TimerComponentSimple gets exported, you must explicity call this function to get the real component
-export const TimerComponentFull = ({endTime}: TimerProps, {name}: OtherProps) =>
-  //   {imagePath}: OtherProps,
-  {
-    let [time, setTimeLeft] = useState(getTimeRemaining(endTime));
-
-    useInterval(() => {
-      setTimeLeft(getTimeRemaining(endTime));
-    }, 100);
-
-    return (
-      <View style={styles.TimerContainer}>
-        <Text>{name}</Text>
-        <Text>
-          {time.hours}:{time.minutes}:{time.seconds}
-        </Text>
-      </View>
-    );
-  };
-
-export default TimerComponentSimple;
