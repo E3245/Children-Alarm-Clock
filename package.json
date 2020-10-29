@@ -65,6 +65,7 @@
       "node"
     ]
   },
-  "transformIgnorePatterns": [ "/node_modules/(?!native-base|@react-native-community/netinfo|@react-native-community/async-storage|@react-native-community/geolocation|react-native-permissions|uuid|react-native-get-random-values)/" ]
-
+  "transformIgnorePatterns": [
+    "/node_modules/(?!native-base|@react-native-community/netinfo|@react-native-community/async-storage|@react-native-community/geolocation|react-native-permissions|uuid|react-native-get-random-values)/"
+  ]
 }
