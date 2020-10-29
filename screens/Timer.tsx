@@ -3,6 +3,7 @@ import {useColorScheme, Text, View, Button, Alert} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from '../themes';
 import TimerComponentSimple from '../components/Timer/Timer';
+import {TimerList} from '../components/Timer/TimerList';
 import {ScrollView, styles} from '../components/stylesheet';
 
 const TimerScreen = () => {
@@ -15,7 +16,8 @@ const TimerScreen = () => {
       </View>
       <ScrollView style={styles.TimerScroll}>
         <View style={styles.centered}>
-          <TimerComponentSimple amountTime={10} name="Brush Teeth" color="blue"/>
+          {/* <TimerComponentSimple amountTime={10} name="Brush Teeth" color="blue"/> */}
+          <TimerList name="garbage" />
         </View>
       </ScrollView>
       <View style={styles.AddButtonBottom}>
