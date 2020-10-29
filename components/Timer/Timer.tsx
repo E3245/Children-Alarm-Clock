@@ -61,7 +61,7 @@ export const TimerComponentSimple = ({amountTime, name, color}: TimerProps) => {
           ry="10"
           width="100%"
           height="100%"
-          stroke="blue"
+          stroke="black"
           fill={color}
           transform="translate(0,0)"
         />
