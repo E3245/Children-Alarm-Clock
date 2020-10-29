@@ -1,5 +1,6 @@
 import React from 'react';
-import {PermissionsAndroid, useColorScheme} from 'react-native';
+// import {PermissionsAndroid, useColorScheme} from 'react-native';
+import {useColorScheme} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from './themes';
 
@@ -14,7 +15,8 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './screens/Clock';
 import SettingsScreen from './screens/Settings';
 import AlarmScreen from './screens/Alarm';
-import CalendarScreen from './screens/Calendar';
+// import CalendarScreen from './screens/Calendar';
+import AgendaList from './screens/Agenda';
 import TimerScreen from './screens/Timer';
 
 /* Additional Components */
@@ -59,7 +61,7 @@ const AppTabs = () => {
         }}>
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Alarm" component={AlarmScreen} />
-        <Tab.Screen name="Calendar" component={CalendarScreen} />
+        <Tab.Screen name="Calendar" component={AgendaList} />
         <Tab.Screen name="Timer" component={TimerScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
@@ -72,7 +74,7 @@ const App = () => {
 
   // Check and get permissions when the app is loaded here
   // For some reason, the app will only check one permission at a time
-//Permission.checkPermission(PERMISSION_TYPE.microphone); //TODO: Move this to a more appropriate place when the user can use audio
+  //Permission.checkPermission(PERMISSION_TYPE.microphone); //TODO: Move this to a more appropriate place when the user can use audio
   Permission.checkPermission(PERMISSION_TYPE.photo);
 
   return (
