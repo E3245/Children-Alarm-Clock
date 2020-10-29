@@ -15,7 +15,7 @@ const AlarmScreen = () => {
       </View>
       <ScrollView style={styles.TimerScroll}>
         <View style={styles.centered}>
-          <AlarmList />
+          <AlarmList name="alarmlist" />
         </View>
       </ScrollView>
     </ThemeProvider>
