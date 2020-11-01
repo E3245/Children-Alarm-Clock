@@ -5,6 +5,7 @@ import {darkTheme, lightTheme} from '../,,/themes';
 import {TimerComponentSimple, TimerProps} from './Timer';
 import {ScrollView, styles} from '../stylesheet';
 import {uuid} from '../../helpers/uuid';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = {
   name: string;
@@ -15,6 +16,7 @@ type State = {
 };
 
 function rand(items: Array<any>) {
+  // eslint-disable-next-line no-bitwise
   return items[~~(items.length * Math.random())];
 }
 
