@@ -11,6 +11,7 @@
     "flow": "flow"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.13.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.9.2",
     "@react-navigation/native": "^5.7.6",
