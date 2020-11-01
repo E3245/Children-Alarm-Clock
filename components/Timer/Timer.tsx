@@ -44,11 +44,7 @@ export const TimerComponentSimple = ({amountTime, name, color}: TimerProps) => {
   });
 
   const toggleTimer = () => {
-    if (isRunning) {
-      setIsRunning(false);
-    } else {
-      setIsRunning(true);
-    }
+    setIsRunning(!isRunning);
   };
 
   return (
