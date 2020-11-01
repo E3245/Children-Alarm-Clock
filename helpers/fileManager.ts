@@ -15,8 +15,21 @@ const SETTINGS_STORAGE_KEY = '@SETTINGS_STORAGE_KEY';
 export const WriteJSONToDisk = async (key: string, payload: any) => {
     try {
         const toStr = JSON.stringify(payload);  // One-Step conversion to string
-        await AsyncStorage.setItem(key,toStr);  // Todo: Insert Error Callback function
-        Alert.alert('Data successfully saved!');
+
+        // Query the key and see if it already exists
+        const value = await ReadJSONData(key);
+        if (value !== null) // Object exists
+        {
+            // Merge the data together
+            await AsyncStorage.mergeItem(key,toStr);  // Todo: Insert Error Callback function
+            Alert.alert('Data successfully saved!');
+        }
+        else // Object does not exist
+        {
+            // Store the data in storage
+            await AsyncStorage.setItem(key,toStr);  // Todo: Insert Error Callback function  
+            Alert.alert('Data successfully saved!');         
+        }
     } catch (eror) {
         Alert.alert('Failed with error: ', eror);
     }
