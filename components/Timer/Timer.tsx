@@ -1,12 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import {View, Button} from 'react-native';
-import {getTime, getTimeRemaining, addMilliseconds} from '../../helpers/time';
+import {
+  getTimeTo,
+  addMilliseconds,
+  isTimePast,
+  formatTime,
+} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
 
 export type TimerProps = {
   // Length of the timer in seconds
   amountTime: number;
+  remainingTime: number;
+  running: boolean;
   name: string;
   color: string;
   key: string;
@@ -21,32 +28,53 @@ type OtherProps = {
 // How to use this component
 // <Timer endTime={new Date(1602612000)} />
 
-export const TimerComponentSimple = ({amountTime, name, color}: TimerProps) => {
-  let [endTime, setendTime] = useState(
-    addMilliseconds(new Date(), amountTime * 1000),
+export const TimerComponentSimple = ({
+  // The amount of time the timer will run for when reset
+  amountTime = -1,
+  // The time remaining on the timer
+  remainingTime = -1,
+  // If the timer is currently counting down
+  running = false,
+  name,
+  color,
+}: TimerProps) => {
+  if (amountTime === -1) {
+    throw new Error('amountTime must be set');
+  }
+
+  // Set the end time based on either the remaining time, or the total time if that is not set.
+  let [endTime, setEndTime] = useState(
+    addMilliseconds(
+      new Date(),
+      (remainingTime !== -1 ? remainingTime : amountTime) * 1000,
+    ),
   );
-  let [time, setTimeLeft] = useState(getTimeRemaining(endTime));
-  let [isRunning, setIsRunning] = useState(false);
+  let [timeLeft, setTimeLeft] = useState(getTimeTo(endTime));
+  let [isRunning, setIsRunning] = useState(running);
 
   useEffect(() => {
     let interval: any = null;
-    if (isRunning) {
+    if (isRunning && isTimePast(endTime)) {
+      setTimeLeft(0);
+      setIsRunning(false);
+      clearInterval(interval);
+    } else if (isRunning) {
       interval = setInterval(() => {
-        setTimeLeft(getTimeRemaining(endTime));
-      }, 100);
-    } else {
-      interval = setInterval(() => {
-        setendTime(addMilliseconds(endTime, 100));
+        setTimeLeft(getTimeTo(endTime));
       }, 100);
     }
 
     return () => clearInterval(interval);
-  });
+  }, [isRunning, timeLeft, endTime, name]);
 
   const toggleTimer = () => {
     if (isRunning) {
+      // Stop timer
       setIsRunning(false);
     } else {
+      // Start timer
+      // Set the end time based on the time remaining
+      setEndTime(new Date(Date.now() + timeLeft));
       setIsRunning(true);
     }
   };
@@ -73,11 +101,7 @@ export const TimerComponentSimple = ({amountTime, name, color}: TimerProps) => {
           x="50%"
           y="50%"
           textAnchor="middle">
-          {time.hours.toString().padStart(2, '0') +
-            ':' +
-            time.minutes.toString().padStart(2, '0') +
-            ':' +
-            time.seconds.toString().padStart(2, '0')}
+          {formatTime(new Date(timeLeft))}
         </Text>
         <Text
           fill="black"
@@ -89,7 +113,10 @@ export const TimerComponentSimple = ({amountTime, name, color}: TimerProps) => {
           {name}
         </Text>
       </Svg>
-      <Button title="Toggle" onPress={() => toggleTimer()} />
+      <Button
+        title={timeLeft === 0 ? 'Reset' : 'Toggle'}
+        onPress={() => toggleTimer()}
+      />
     </View>
   );
 };

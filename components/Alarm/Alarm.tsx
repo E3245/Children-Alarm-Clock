@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Button} from 'react-native';
-import {getTime, getTimeRemaining, addMilliseconds} from '../../helpers/time';
+import {getTime, getTimeTo, addMilliseconds} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
 
@@ -19,14 +19,14 @@ export const AlarmComponentSimple = ({amountTime, name, color}: AlarmProps) => {
   let [endTime, setendTime] = useState(
     addMilliseconds(new Date(), amountTime * 1000),
   );
-  let [time, setTimeLeft] = useState(getTimeRemaining(endTime));
+  let [time, setTimeLeft] = useState(getTimeTo(endTime));
   let [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
     let interval: any = null;
     if (isRunning) {
       interval = setInterval(() => {
-        setTimeLeft(getTimeRemaining(endTime));
+        setTimeLeft(getTimeTo(endTime));
       }, 100);
     } else {
       interval = setInterval(() => {

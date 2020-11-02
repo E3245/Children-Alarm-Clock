@@ -1,4 +1,6 @@
+/* eslint-disable no-bitwise */
 // uuid.js
+// https://www.ietf.org/rfc/rfc4122.txt
 export function uuid() {
   let d = new Date().getTime();
 

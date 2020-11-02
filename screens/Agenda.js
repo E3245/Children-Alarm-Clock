@@ -88,7 +88,7 @@ export default function AgendaList({props, navigation, route}) {
   const [monthData, loadingData] = getEventData();
 
   const renderItem = (item, firstItemInDay) => {
-    console.log('rendering', item);
+    // console.log('rendering', item);
     return (
       <TouchableOpacity>
         <>
