@@ -5,7 +5,7 @@ import {darkTheme, lightTheme} from '../,,/themes';
 import {TimerComponentSimple, TimerProps} from './Timer';
 import {ScrollView, styles} from '../stylesheet';
 import {uuid} from '../../helpers/uuid';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import {withSafeAreaInsets} from 'react-native-safe-area-context';
 
 type Props = {
   name: string;
@@ -34,7 +34,7 @@ export class TimerList extends React.Component<Props, State> {
     const verbs = ['eat', 'drink', 'wash', 'detonate'];
     const nouns = ['dinner', 'water', 'dishes', 'mount Hellens'];
 
-    let time = Math.floor(Math.random() * 100)
+    let time = Math.floor(Math.random() * 100);
 
     let retVal: TimerProps = {
       amountTime: time,
@@ -63,16 +63,7 @@ export class TimerList extends React.Component<Props, State> {
 
   renderTimers = () => {
     return this.state.timerList.map((timerInfo) => {
-      return (
-        <TimerComponentSimple
-          key={timerInfo.key}
-          amountTime={timerInfo.amountTime}
-          remainingTime={timerInfo.remainingTime}
-          running={timerInfo.running}
-          name={timerInfo.name}
-          color={timerInfo.color}
-        />
-      );
+      return <TimerComponentSimple {...timerInfo} />;
     });
   };
 
