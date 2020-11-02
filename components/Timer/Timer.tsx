@@ -61,7 +61,7 @@ export const TimerComponentSimple = ({
     } else if (isRunning) {
       interval = setInterval(() => {
         setTimeLeft(getTimeTo(endTime));
-      }, 1000);
+      }, 100);
     }
 
     return () => clearInterval(interval);
