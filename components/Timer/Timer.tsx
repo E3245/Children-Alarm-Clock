@@ -75,7 +75,6 @@ export const TimerComponentSimple = ({
       // Start timer
       // Set the end time based on the time remaining
       setEndTime(new Date(Date.now() + timeLeft));
-      console.log(isTimePast(endTime));
       setIsRunning(true);
     }
   };
