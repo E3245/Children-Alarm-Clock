@@ -34,8 +34,12 @@ export class TimerList extends React.Component<Props, State> {
     const verbs = ['eat', 'drink', 'wash', 'detonate'];
     const nouns = ['dinner', 'water', 'dishes', 'mount Hellens'];
 
+    let time = Math.floor(Math.random() * 100)
+
     let retVal: TimerProps = {
-      amountTime: Math.floor(Math.random() * 100),
+      amountTime: time,
+      remainingTime: time,
+      running: false,
       name: rand(verbs) + ' ' + rand(nouns),
       color: rand(colors),
       key: uuid(),
@@ -63,6 +67,8 @@ export class TimerList extends React.Component<Props, State> {
         <TimerComponentSimple
           key={timerInfo.key}
           amountTime={timerInfo.amountTime}
+          remainingTime={timerInfo.remainingTime}
+          running={timerInfo.running}
           name={timerInfo.name}
           color={timerInfo.color}
         />
