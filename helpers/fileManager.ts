@@ -12,24 +12,31 @@ const SETTINGS_STORAGE_KEY = '@SETTINGS_STORAGE_KEY';
 //  * key: must be one of the unique IDs that are set in this document or saved somewhere in another file
 //  * payload: any, but preferably a JSON object
 //
-export const WriteJSONToDisk = async (key: string, payload: any) => {
+export const WriteJSONToDisk = async (key: string, payload: any, bMerge: boolean) => {
     try {
         const toStr = JSON.stringify(payload);  // One-Step conversion to string
 
-        // Query the key and see if it already exists
-        const value = await ReadJSONData(key);
-        if (value !== null) // Object exists
+        let value;
+
+        if (bMerge)
+        {
+            // Query the key and see if it already exists
+            value = await ReadJSONData(key);
+        }
+
+        if (bMerge && value !== null) // Object exists and Merge is set, attempt to merge existing items
         {
             // Merge the data together
             await AsyncStorage.mergeItem(key,toStr);  // Todo: Insert Error Callback function
             Alert.alert('Data successfully saved!');
         }
-        else // Object does not exist
+        else // Object does not exist or Merge is not set
         {
             // Store the data in storage
             await AsyncStorage.setItem(key,toStr);  // Todo: Insert Error Callback function  
             Alert.alert('Data successfully saved!');         
-        }
+        }       
+
     } catch (eror) {
         Alert.alert('Failed with error: ', eror);
     }
