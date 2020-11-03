@@ -48,14 +48,25 @@ export class FileManager {
     // inputs:
     //  * key: must be one of the unique IDs that are set in this document or saved somewhere in another file
     //
+    // To retrieve data, you must do this:
+    /*
+        const MyAsyncFunction = async () => {
+            await FileManager.ReadJSONData(ALARM_STORAGE_KEY).then(token => {console.log(token)});
+        }
+    */
     static ReadJSONData = async (key: string) => {
-        try {
-            const jsonValue = await AsyncStorage.getItem(key);  // Todo: Insert Error Callback function
-            //console.log(jsonValue);
-            return jsonValue != null ? JSON.parse(jsonValue) : null;    // One-Step conversion to JSON
-        } catch (eror) {
-            Alert.alert('Failed with error: ', eror);
-        }  
+        let thenProm:string = await Promise.resolve(AsyncStorage.getItem(key))   // Attempt to resolve the promise
+        .then(token => {
+            return token;
+        })
+        .catch(error => {   
+            return error;
+        });
+
+        console.log("ReadJSONData" + thenProm);
+
+        return JSON.parse(thenProm);
+        //console.log(jsonValue);
     };
     
     //
