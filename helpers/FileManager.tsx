@@ -49,16 +49,13 @@ export class FileManager {
     //  * key: must be one of the unique IDs that are set in this document or saved somewhere in another file
     //
     static ReadJSONData = async (key: string) => {
-        return new string(output => {
-            try {
-                const jsonValue = await AsyncStorage.getItem(key);  // Todo: Insert Error Callback function
-                //console.log(jsonValue);
-                return jsonValue != null ? JSON.parse(jsonValue) : null;    // One-Step conversion to JSON
-            } catch (eror) {
-                Alert.alert('Failed with error: ', eror);
-            } 
-        });
-        }
+        try {
+            const jsonValue = await AsyncStorage.getItem(key);  // Todo: Insert Error Callback function
+            //console.log(jsonValue);
+            return jsonValue != null ? JSON.parse(jsonValue) : null;    // One-Step conversion to JSON
+        } catch (eror) {
+            Alert.alert('Failed with error: ', eror);
+        }  
     };
     
     //
