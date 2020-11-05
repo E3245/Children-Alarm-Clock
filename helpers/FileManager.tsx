@@ -58,10 +58,8 @@ export class FileManager {
             return token;
         })
         .catch(error => {   
-            return error;
+            console.warn(error);
         });
-
-        console.log("ReadJSONData" + thenProm);
 
         return JSON.parse(thenProm);
         //console.log(jsonValue);
