@@ -1,13 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {View, Button} from 'react-native';
-import {
-  getTimeTo,
-  addMilliseconds,
-  isTimePast,
-  formatTime,
-} from '../../helpers/time';
+import {getTimeTo, isTimePast, formatTime, getTime} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
+import { render } from 'react-dom';
 
 export type TimerProps = {
   // Length of the timer in seconds
@@ -16,10 +12,8 @@ export type TimerProps = {
   color: string;
   key: string;
   handleChange: CallableFunction;
-};
-
-export type TimerState = {
-  remainingTime: number;
+  // State initial
+  time: number;
   running: boolean;
 };
 
@@ -32,58 +26,61 @@ type OtherProps = {
 // How to use this component
 // <Timer endTime={new Date(1602612000)} />
 
-export const TimerComponentSimple = (
-  {
-    // The amount of time the timer will run for when reset
-    amountTime = -1,
-    name,
-    color,
-    handleChange,
-  }: TimerProps,
-  {
-    // The time remaining on the timer
-    remainingTime = -1,
-    // If the timer is currently counting down
-    running = false,
-  }: TimerState,
-) => {
-  if (amountTime === -1) {
-    throw new Error('amountTime must be set');
+export const TimerComponentSimple = ({
+  // The amount of time the timer will run for when reset
+  amountTime = -1,
+  name,
+  color,
+  handleChange,
+  // The time remaining on the timer in milliseconds (if it is currently stopped)
+  // The time the timer will end at in ms since epoch (if it is currently running)
+  // This var stores different values depending on the running boolean
+  time = -1,
+  // If the timer is currently counting down
+  running = false,
+}: TimerProps) => {
+  if (time === -1) {
+    throw new Error('time must be set');
   }
 
-  // Set the end time based on either the remaining time, or the total time if that is not set.
-  let [endTime, setEndTime] = useState(
-    addMilliseconds(
-      new Date(),
-      (remainingTime !== -1 ? remainingTime : amountTime) * 1000,
-    ),
-  );
-  let [timeLeft, setTimeLeft] = useState(getTimeTo(endTime));
+  // Set the end time based on either the remaining time
+  let [timeState, setTime] = useState(time);
   let [isRunning, setIsRunning] = useState(running);
+  let [renderTime, setRenderTime] = useState(time);
 
   useEffect(() => {
     let interval: any = null;
-    if (isRunning && isTimePast(endTime)) {
-      setTimeLeft(0);
+    if (isRunning && isTimePast(timeState)) {
+      console.log('Timer Ended!');
+      setRenderTime(0);
       setIsRunning(false);
       clearInterval(interval);
     } else if (isRunning) {
       interval = setInterval(() => {
-        setTimeLeft(getTimeTo(endTime));
+        setRenderTime(getTimeTo(timeState));
       }, 100);
     }
 
     return () => clearInterval(interval);
-  }, [isRunning, timeLeft, endTime, name]);
+  }, [isRunning, timeState, renderTime]);
 
   const toggleTimer = () => {
+    // Check if needs to reset
+    if (!isRunning && renderTime === 0) {
+      setTime(amountTime);
+      setRenderTime(amountTime);
+      return;
+    }
+
     if (isRunning) {
       // Stop timer
       setIsRunning(false);
+      // Set the time remaining based on how far the timer has progressed
+      setTime(getTimeTo(timeState));
     } else {
       // Start timer
       // Set the end time based on the time remaining
-      setEndTime(new Date(Date.now() + timeLeft));
+      setTime(Date.now() + timeState);
       setIsRunning(true);
     }
     // save();
@@ -119,7 +116,7 @@ export const TimerComponentSimple = (
           x="50%"
           y="50%"
           textAnchor="middle">
-          {formatTime(new Date(timeLeft))}
+          {formatTime(new Date(renderTime))}
         </Text>
         <Text
           fill="black"
@@ -132,7 +129,7 @@ export const TimerComponentSimple = (
         </Text>
       </Svg>
       <Button
-        title={timeLeft === 0 ? 'Reset' : 'Toggle'}
+        title={renderTime === 0 ? 'Reset' : 'Toggle'}
         onPress={() => toggleTimer()}
       />
     </View>

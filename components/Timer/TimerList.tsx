@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {useColorScheme, Text, View, Button, Alert} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from '../,,/themes';
-import {TimerComponentSimple, TimerProps, TimerState} from './Timer';
+import {TimerComponentSimple, TimerProps} from './Timer';
 import {ScrollView, styles} from '../stylesheet';
 import {uuid} from '../../helpers/uuid';
 import {withSafeAreaInsets} from 'react-native-safe-area-context';
@@ -12,7 +12,7 @@ type Props = {
 };
 
 type State = {
-  timerList: [{props: TimerProps; state: TimerState}];
+  timerList: TimerProps[];
 };
 
 function rand(items: Array<any>) {
@@ -24,20 +24,19 @@ export class TimerList extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-
-    this.load();
+    this.state = {timerList: this.loadTimers()};
   }
 
   // Pass to the timers to call whenever their state is updated.
   handleChange = (key: string) => {
-    return (newState: TimerState) => {
+    return (newTimer: TimerProps) => {
       let timerList = this.state.timerList;
 
       // Find the correct timer in the list
       timerList.forEach((element, index) => {
-        if (element.props.key === key) {
+        if (element.key === key) {
           // Update the state to include to modified timer
-          timerList[index].state = newState;
+          timerList[index] = newTimer;
           this.setState({timerList});
         }
       });
@@ -50,7 +49,7 @@ export class TimerList extends React.Component<Props, State> {
     const verbs = ['eat', 'drink', 'wash', 'detonate'];
     const nouns = ['dinner', 'water', 'dishes', 'mount Hellens'];
 
-    let time = Math.floor(Math.random() * 100);
+    let time = Math.floor(Math.random() * 10000);
     let ukey = uuid();
     let func = this.handleChange(ukey).bind(this);
 
@@ -60,23 +59,24 @@ export class TimerList extends React.Component<Props, State> {
       color: rand(colors),
       key: ukey,
       handleChange: func,
-    };
-
-    let retstate: TimerState = {
-      remainingTime: time,
+      time: time,
       running: false,
     };
 
-    return {props: retprop, state: retstate};
+    return retprop;
   };
 
-  load = () => {
+  loadTimers = () => {
     console.log('LOADING TIMERLIST');
+
+    const newTimerList = [];
 
     // Generate some random timers
     for (let i = 0; i < 5; i += 1) {
-      this.state.timerList.push(this.makeRandomTimer());
+      newTimerList.push(this.makeRandomTimer());
     }
+
+    return newTimerList;
   };
 
   save = () => {
@@ -85,7 +85,7 @@ export class TimerList extends React.Component<Props, State> {
 
   renderTimers = () => {
     return this.state.timerList.map((timerInfo) => {
-      return <TimerComponentSimple {...timerInfo.props} {...timerInfo.state} />;
+      return <TimerComponentSimple {...timerInfo} />;
     });
   };
 
