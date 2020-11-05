@@ -12,11 +12,15 @@ import Svg, {Text, Rect} from 'react-native-svg';
 export type TimerProps = {
   // Length of the timer in seconds
   amountTime: number;
-  remainingTime: number;
-  running: boolean;
   name: string;
   color: string;
   key: string;
+  handleChange: CallableFunction;
+};
+
+export type TimerState = {
+  remainingTime: number;
+  running: boolean;
 };
 
 // Misc Properties
@@ -28,16 +32,21 @@ type OtherProps = {
 // How to use this component
 // <Timer endTime={new Date(1602612000)} />
 
-export const TimerComponentSimple = ({
-  // The amount of time the timer will run for when reset
-  amountTime = -1,
-  // The time remaining on the timer
-  remainingTime = -1,
-  // If the timer is currently counting down
-  running = false,
-  name,
-  color,
-}: TimerProps) => {
+export const TimerComponentSimple = (
+  {
+    // The amount of time the timer will run for when reset
+    amountTime = -1,
+    name,
+    color,
+    handleChange,
+  }: TimerProps,
+  {
+    // The time remaining on the timer
+    remainingTime = -1,
+    // If the timer is currently counting down
+    running = false,
+  }: TimerState,
+) => {
   if (amountTime === -1) {
     throw new Error('amountTime must be set');
   }
@@ -77,6 +86,15 @@ export const TimerComponentSimple = ({
       setEndTime(new Date(Date.now() + timeLeft));
       setIsRunning(true);
     }
+    // save();
+  };
+
+  // Call the parent to save the data
+  const save = () => {
+    // Values that may have changed
+    // running
+    // remainingtime
+    // let timer: TimerProps get
   };
 
   return (
