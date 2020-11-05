@@ -3,7 +3,6 @@ import {View, Button} from 'react-native';
 import {getTimeTo, isTimePast, formatTime} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
-import { render } from 'react-dom';
 
 export type TimerProps = {
   // Length of the timer in seconds
@@ -99,6 +98,8 @@ export const TimerComponentSimple = ({
       time: timeState,
       running: isRunning,
     };
+
+    console.log(timer);
 
     handleChange(timer);
   };
