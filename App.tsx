@@ -1,5 +1,5 @@
-import React from 'react';
-import {PermissionsAndroid, useColorScheme} from 'react-native';
+import React, {Component} from 'react';
+import {useColorScheme, AppState, Appearance} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from './themes';
 
@@ -22,53 +22,96 @@ import {Permission, PERMISSION_TYPE} from './helpers/permissions';
 
 const Tab = createBottomTabNavigator();
 
-const AppTabs = () => {
-  const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
-
+// Implicit since DefaultTheme is not found for some reason
+const AppTabs = (newTheme: any) => {
   return (
-    <ThemeProvider theme={theme}>
-      <Tab.Navigator
-        screenOptions={({route}) => ({
-          // Function that controls the icons and their color when selected/deselected
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName;
+    <Tab.Navigator
+      screenOptions={
+        ({route}) => ({
+        // Function that controls the icons and their color when selected/deselected
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName;
 
-            if (route.name === 'Home') {
-              iconName = focused
-                ? 'information-circle'
-                : 'information-circle-outline';
-            } else if (route.name === 'Alarm') {
-              iconName = focused ? 'alarm' : 'alarm-outline';
-            } else if (route.name === 'Calendar') {
-              iconName = focused ? 'calendar' : 'calendar-outline';
-            } else if (route.name === 'Timer') {
-              iconName = focused ? 'timer' : 'timer-outline';
-            } else if (route.name === 'Settings') {
-              iconName = focused ? 'settings' : 'settings-outline';
-            } else {
-              iconName = focused ? 'help-circle' : 'help-circle-outline';
-            }
+          if (route.name === 'Home') {
+            iconName = focused
+              ? 'information-circle'
+              : 'information-circle-outline';
+          } else if (route.name === 'Alarm') {
+            iconName = focused ? 'alarm' : 'alarm-outline';
+          } else if (route.name === 'Calendar') {
+            iconName = focused ? 'calendar' : 'calendar-outline';
+          } else if (route.name === 'Timer') {
+            iconName = focused ? 'timer' : 'timer-outline';
+          } else if (route.name === 'Settings') {
+            iconName = focused ? 'settings' : 'settings-outline';
+          } else {
+            iconName = focused ? 'help-circle' : 'help-circle-outline';
+          }
 
-            return <IonIcons name={iconName} size={size} color={color} />;
-          },
-        })}
-        tabBarOptions={{
-          // Colors that the tabs will take. Will need to be adjusted for dark mode, if possible
-          activeTintColor: 'tomato',
-          inactiveTintColor: 'gray',
-        }}>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Alarm" component={AlarmScreen} />
-        <Tab.Screen name="Calendar" component={AgendaList} />
-        <Tab.Screen name="Timer" component={TimerScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-      </Tab.Navigator>
-    </ThemeProvider>
+          return <IonIcons name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        // Colors that the tabs will take. Will need to be adjusted for dark mode, if possible
+        activeTintColor: newTheme.primaryColor,
+        inactiveTintColor: 'gray',
+        activeBackgroundColor: newTheme.secondaryColor,
+        inactiveBackgroundColor: newTheme.bgColor,
+      }}>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Alarm" component={AlarmScreen} />
+      <Tab.Screen name="Calendar" component={AgendaList} />
+      <Tab.Screen name="Timer" component={TimerScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
+    </Tab.Navigator>
   );
 };
 
+class AppLandingPage extends Component {
+  state = {
+    appState: AppState.currentState,
+    theme: Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme
+  };
+
+  _updateTheme = newAppState =>
+  {
+    if (newAppState === "active") // Update the theme state when the app is loaded back in
+      this.state.theme = Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme;
+    this.setState({appState: newAppState})
+  }
+
+  componentDidMount()
+  {
+    AppState.addEventListener("change", this._updateTheme);
+  }
+
+  componentWillUnmount()
+  {
+    AppState.removeEventListener("change", this._updateTheme);
+  }
+
+  render() { // This works because ????
+    return (
+      <ThemeProvider theme={this.state.theme}>
+        <NavigationContainer>
+          {AppTabs(this.state.theme)} 
+        </NavigationContainer>
+      </ThemeProvider>
+    );
+  }
+}
+
+const App = () =>
+{
+  return (
+    <AppLandingPage/>
+  );
+};
+
+export default App;
+/*
 const App = () => {
-  const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
+  const theme = Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme;
 
   // Check and get permissions when the app is loaded here
   // For some reason, the app will only check one permission at a time
@@ -85,3 +128,4 @@ const App = () => {
 };
 
 export default App;
+*/
