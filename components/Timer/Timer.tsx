@@ -38,7 +38,7 @@ export const TimerComponentSimple = ({
   // This var stores different values depending on the running boolean
   time = -1,
   // If the timer is currently counting down
-  running = false,
+  running,
 }: TimerProps) => {
   if (time === -1) {
     throw new Error('time must be set');
@@ -70,11 +70,7 @@ export const TimerComponentSimple = ({
     if (!isRunning && renderTime === 0) {
       setTime(amountTime);
       setRenderTime(amountTime);
-      save();
-      return;
-    }
-
-    if (isRunning) {
+    } else if (isRunning) {
       // Stop timer
       setIsRunning(false);
       // Set the time remaining based on how far the timer has progressed
