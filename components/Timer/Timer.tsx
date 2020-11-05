@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Button} from 'react-native';
-import {getTimeTo, isTimePast, formatTime, getTime} from '../../helpers/time';
+import {getTimeTo, isTimePast, formatTime} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
 import { render } from 'react-dom';
