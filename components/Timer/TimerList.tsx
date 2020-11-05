@@ -5,7 +5,8 @@ import {darkTheme, lightTheme} from '../,,/themes';
 import {TimerComponentSimple, TimerProps} from './Timer';
 import {ScrollView, styles} from '../stylesheet';
 import {uuid} from '../../helpers/uuid';
-import {withSafeAreaInsets} from 'react-native-safe-area-context';
+import {FileManager, TIMER_STORAGE_KEY} from '../../helpers/FileManager';
+import {LearnMoreLinks} from 'react-native/Libraries/NewAppScreen';
 
 type Props = {
   name: string;
@@ -24,8 +25,14 @@ export class TimerList extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.state = {timerList: this.loadTimers()};
+    this.state = {timerList: []};
   }
+
+  componentDidMount = () => {
+    this.loadTimers().then((val) => {
+      this.setState({timerList: val});
+    });
+  };
 
   // Pass to the timers to call whenever their state is updated.
   handleChange = (key: string) => {
@@ -35,11 +42,13 @@ export class TimerList extends React.Component<Props, State> {
       // Find the correct timer in the list
       timerList.forEach((element, index) => {
         if (element.uuid === key) {
+          console.log('UPDATED');
           // Update the state to include to modified timer
           timerList[index] = newTimer;
           this.setState({timerList});
         }
       });
+      this.save();
     };
   };
 
@@ -60,27 +69,47 @@ export class TimerList extends React.Component<Props, State> {
       uuid: ukey,
       handleChange: func,
       time: time,
-      running: Boolean(Math.round(Math.random())),
+      running: false,
     };
 
     return retprop;
   };
 
-  loadTimers = () => {
+  loadTimers = async () => {
     console.log('LOADING TIMERLIST');
 
-    const newTimerList = [];
+    let newTimerList: TimerProps[] = [];
+    await FileManager.ReadJSONData(TIMER_STORAGE_KEY)
+      .then((reponse) => {
+        newTimerList = reponse;
 
-    // Generate some random timers
-    for (let i = 0; i < 5; i += 1) {
-      newTimerList.push(this.makeRandomTimer());
-    }
+        // Generate some timers if none are saved
+        if (newTimerList.length === 0) {
+          console.log('Generating some random timers');
+          // Generate some random timers
+          for (let i = 0; i < 5; i += 1) {
+            newTimerList.push(this.makeRandomTimer());
+          }
+        }
+
+        newTimerList.forEach((element: TimerProps, index: number) => {
+          newTimerList[index].handleChange = this.handleChange(
+            element.uuid,
+          ).bind(this);
+        });
+      })
+      .catch((response) => {
+        console.error('Error loading timers' + response);
+      });
 
     return newTimerList;
   };
 
   save = () => {
     console.log('SAVING TIMERLIST');
+    FileManager.ClearData([TIMER_STORAGE_KEY]);
+    FileManager.WriteJSONToDisk(TIMER_STORAGE_KEY, this.state.timerList, false);
+    console.log(this.state.timerList);
   };
 
   renderTimers = () => {
