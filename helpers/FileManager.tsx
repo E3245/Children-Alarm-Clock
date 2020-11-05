@@ -29,13 +29,11 @@ export class FileManager {
             {
                 // Merge the data together
                 await AsyncStorage.mergeItem(key, toStr); // Todo: Insert Error Callback function
-                Alert.alert('Data successfully saved!');
             }
             else // Object does not exist or Merge is not set
             {
                 // Store the data in storage
                 await AsyncStorage.setItem(key, toStr); // Todo: Insert Error Callback function  
-                Alert.alert('Data successfully saved!');
             }
 
         } catch (eror) {
@@ -60,10 +58,8 @@ export class FileManager {
             return token;
         })
         .catch(error => {   
-            return error;
+            console.warn(error);
         });
-
-        console.log("ReadJSONData" + thenProm);
 
         return JSON.parse(thenProm);
         //console.log(jsonValue);
@@ -79,9 +75,9 @@ export class FileManager {
     static ClearData = async (key: Array<string>) => {
         try {
             await AsyncStorage.multiRemove(key);  // Todo: Insert Error Callback function
-            Alert.alert('Data successfully saved!');
+            console.log('Data was cleared!');
         } catch (eror) {
-            Alert.alert('Failed with error: ', eror);
+            console.warn(eror);
         }  
     };
 }
