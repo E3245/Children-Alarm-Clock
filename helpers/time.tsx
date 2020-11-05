@@ -18,15 +18,29 @@ export const getTime = (): TimeObject => {
 
 export const addMilliseconds = (date: Date, millis: number): Date => {
   return new Date(date.getTime() + millis);
-}
+};
 
-export const getTimeRemaining = (endDate: Date): TimeObject => {
+export const isTimePast = (endDate: Date): boolean => {
   const date = new Date();
-  const diff = new Date(endDate.getTime() - date.getTime());
-  const hours = to12hClock(diff.getHours());
-  const minutes = diff.getMinutes();
-  const seconds = diff.getSeconds();
-  return {hours, minutes, seconds};
+  return date.getTime() >= endDate.getTime();
+};
+
+export const formatTime = (date: Date): String => {
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const seconds = date.getUTCSeconds();
+  return (
+    hours.toString().padStart(2, '0') +
+    ':' +
+    minutes.toString().padStart(2, '0') +
+    ':' +
+    seconds.toString().padStart(2, '0')
+  );
+};
+
+// Return number of millis to a certain date
+export const getTimeTo = (endDate: Date): number => {
+  return endDate.getTime() - Date.now();
 };
 
 export const getTimeInAngles = (): TimeObject => {

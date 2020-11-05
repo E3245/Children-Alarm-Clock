@@ -16,7 +16,6 @@
     "@react-navigation/bottom-tabs": "^5.9.2",
     "@react-navigation/native": "^5.7.6",
     "@types/react-native-calendars": "^1.20.10",
-    "@types/react-native-uuid": "^1.4.0",
     "@types/styled-components": "^5.1.4",
     "react": "^16.13.1",
     "react-native": "0.63.3",
@@ -26,7 +25,6 @@
     "react-native-reanimated": "^1.13.1",
     "react-native-safe-area-context": "^3.1.8",
     "react-native-screens": "^2.11.0",
-    "react-native-uuid": "^1.4.9",
     "react-native-vector-icons": "^7.1.0"
   },
   "devDependencies": {
@@ -64,5 +62,8 @@
       "json",
       "node"
     ]
-  }
+  },
+  "transformIgnorePatterns": [
+    "/node_modules/(?!native-base|@react-native-community/netinfo|@react-native-community/async-storage|@react-native-community/geolocation|react-native-permissions|uuid|react-native-get-random-values)/"
+  ]
 }

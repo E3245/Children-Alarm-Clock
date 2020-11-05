@@ -14,8 +14,8 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './screens/Clock';
 import SettingsScreen from './screens/Settings';
 import AlarmScreen from './screens/Alarm';
-import CalendarScreen from './screens/Calendar';
 import TimerScreen from './screens/Timer';
+import AgendaList from './screens/Agenda';
 
 /* Additional Components */
 import {Permission, PERMISSION_TYPE} from './helpers/permissions';
@@ -24,7 +24,6 @@ const Tab = createBottomTabNavigator();
 
 // Implicit since DefaultTheme is not found for some reason
 const AppTabs = (newTheme: any) => {
-
   return (
     <Tab.Navigator
       screenOptions={
@@ -68,9 +67,6 @@ const AppTabs = (newTheme: any) => {
   );
 };
 
-/* Theme Stuff */
-
-
 class AppLandingPage extends Component {
   state = {
     appState: AppState.currentState,
@@ -103,7 +99,6 @@ class AppLandingPage extends Component {
       </ThemeProvider>
     );
   }
-
 }
 
 const App = () =>
@@ -120,7 +115,7 @@ const App = () => {
 
   // Check and get permissions when the app is loaded here
   // For some reason, the app will only check one permission at a time
-//Permission.checkPermission(PERMISSION_TYPE.microphone); //TODO: Move this to a more appropriate place when the user can use audio
+  //Permission.checkPermission(PERMISSION_TYPE.microphone); //TODO: Move this to a more appropriate place when the user can use audio
   Permission.checkPermission(PERMISSION_TYPE.photo);
 
   return (
