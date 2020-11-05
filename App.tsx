@@ -60,7 +60,7 @@ const AppTabs = (newTheme: any) => {
       }}>
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Alarm" component={AlarmScreen} />
-      <Tab.Screen name="Calendar" component={CalendarScreen} />
+      <Tab.Screen name="Calendar" component={AgendaList} />
       <Tab.Screen name="Timer" component={TimerScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
