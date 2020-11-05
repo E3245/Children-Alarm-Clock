@@ -10,7 +10,7 @@ export type TimerProps = {
   amountTime: number;
   name: string;
   color: string;
-  key: string;
+  uuid: string;
   handleChange: CallableFunction;
   // State initial
   time: number;
@@ -32,6 +32,7 @@ export const TimerComponentSimple = ({
   name,
   color,
   handleChange,
+  uuid,
   // The time remaining on the timer in milliseconds (if it is currently stopped)
   // The time the timer will end at in ms since epoch (if it is currently running)
   // This var stores different values depending on the running boolean
@@ -46,7 +47,7 @@ export const TimerComponentSimple = ({
   // Set the end time based on either the remaining time
   let [timeState, setTime] = useState(time);
   let [isRunning, setIsRunning] = useState(running);
-  let [renderTime, setRenderTime] = useState(time);
+  let [renderTime, setRenderTime] = useState(running ? getTimeTo(time) : time);
 
   useEffect(() => {
     let interval: any = null;
@@ -69,6 +70,7 @@ export const TimerComponentSimple = ({
     if (!isRunning && renderTime === 0) {
       setTime(amountTime);
       setRenderTime(amountTime);
+      save();
       return;
     }
 
@@ -83,7 +85,7 @@ export const TimerComponentSimple = ({
       setTime(Date.now() + timeState);
       setIsRunning(true);
     }
-    // save();
+    save();
   };
 
   // Call the parent to save the data
@@ -91,7 +93,18 @@ export const TimerComponentSimple = ({
     // Values that may have changed
     // running
     // remainingtime
-    // let timer: TimerProps get
+    let timer: TimerProps = {
+      amountTime: amountTime,
+      name: name,
+      color: color,
+      handleChange: handleChange,
+      uuid: uuid,
+      // State changes
+      time: timeState,
+      running: isRunning,
+    };
+
+    handleChange(timer);
   };
 
   return (

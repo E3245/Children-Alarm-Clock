@@ -34,7 +34,7 @@ export class TimerList extends React.Component<Props, State> {
 
       // Find the correct timer in the list
       timerList.forEach((element, index) => {
-        if (element.key === key) {
+        if (element.uuid === key) {
           // Update the state to include to modified timer
           timerList[index] = newTimer;
           this.setState({timerList});
@@ -57,10 +57,10 @@ export class TimerList extends React.Component<Props, State> {
       amountTime: time,
       name: rand(verbs) + ' ' + rand(nouns),
       color: rand(colors),
-      key: ukey,
+      uuid: ukey,
       handleChange: func,
       time: time,
-      running: false,
+      running: Boolean(Math.round(Math.random())),
     };
 
     return retprop;
@@ -85,7 +85,7 @@ export class TimerList extends React.Component<Props, State> {
 
   renderTimers = () => {
     return this.state.timerList.map((timerInfo) => {
-      return <TimerComponentSimple {...timerInfo} />;
+      return <TimerComponentSimple key={timerInfo.uuid} {...timerInfo} />;
     });
   };
 
