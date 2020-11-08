@@ -65,22 +65,21 @@ export const TimerComponentSimple = ({
   }, [isRunning, timeState, renderTime]);
 
   const toggleTimer = () => {
-    // Check if needs to reset
+    // Check if needs to reset ()
     if (!isRunning && renderTime === 0) {
       setTime(amountTime);
       setRenderTime(amountTime);
     } else if (isRunning) {
-      // Stop timer
-      setIsRunning(false);
       // Set the time remaining based on how far the timer has progressed
       setTime(getTimeTo(timeState));
+      // Stop timer
+      setIsRunning(false);
     } else {
       // Start timer
       // Set the end time based on the time remaining
       setTime(Date.now() + timeState);
       setIsRunning(true);
     }
-    save();
   };
 
   // Call the parent to save the data
@@ -99,7 +98,7 @@ export const TimerComponentSimple = ({
       running: isRunning,
     };
 
-    console.log(timer);
+    console.log(timer.running);
 
     handleChange(timer);
   };

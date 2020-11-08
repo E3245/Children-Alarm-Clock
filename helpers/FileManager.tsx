@@ -38,6 +38,7 @@ export class FileManager {
       else {
         // Store the data in storage
         await AsyncStorage.setItem(key, toStr); // Todo: Insert Error Callback function
+        console.log('FileManager: WriteJSONData: ' + toStr);
         // Alert.alert('Data successfully saved!');
       }
     } catch (eror) {
@@ -64,7 +65,7 @@ export class FileManager {
         return error;
       });
 
-    console.log('FileManager: ReadJSONData: ' + thenProm);
+    console.log('FileManager: ReadJSONData:  ' + thenProm);
 
     return JSON.parse(thenProm);
     //console.log(jsonValue);
@@ -80,7 +81,7 @@ export class FileManager {
   static ClearData = async (key: Array<string>) => {
     try {
       await AsyncStorage.multiRemove(key); // Todo: Insert Error Callback function
-      //   Alert.alert('Data successfully saved!');
+      Alert.alert('Data successfully deleted!');
     } catch (eror) {
       Alert.alert('FileManager: Failed with error: ', eror);
     }

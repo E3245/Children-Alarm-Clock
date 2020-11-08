@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {Component} from 'react';
 import {useColorScheme, Text, View, Button, Alert} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
-import {darkTheme, lightTheme} from '../,,/themes';
+import {darkTheme, lightTheme} from '../../themes';
 import {TimerComponentSimple, TimerProps} from './Timer';
 import {ScrollView, styles} from '../stylesheet';
 import {uuid} from '../../helpers/uuid';
@@ -45,6 +46,7 @@ export class TimerList extends React.Component<Props, State> {
           console.log('UPDATED');
           // Update the state to include to modified timer
           timerList[index] = newTimer;
+          console.log(newTimer);
           this.setState({timerList});
         }
       });
@@ -77,6 +79,8 @@ export class TimerList extends React.Component<Props, State> {
 
   loadTimers = async () => {
     console.log('LOADING TIMERLIST');
+    // Delete all timer data for testing
+    // FileManager.ClearData([TIMER_STORAGE_KEY]);
 
     let newTimerList: TimerProps[] = [];
     await FileManager.ReadJSONData(TIMER_STORAGE_KEY)
@@ -84,7 +88,8 @@ export class TimerList extends React.Component<Props, State> {
         newTimerList = reponse;
 
         // Generate some timers if none are saved
-        if (newTimerList.length === 0) {
+        if (newTimerList == null || newTimerList.length === 0) {
+          newTimerList = [];
           console.log('Generating some random timers');
           // Generate some random timers
           for (let i = 0; i < 5; i += 1) {
@@ -92,6 +97,7 @@ export class TimerList extends React.Component<Props, State> {
           }
         }
 
+        // Bind the function to handle state changes for each
         newTimerList.forEach((element: TimerProps, index: number) => {
           newTimerList[index].handleChange = this.handleChange(
             element.uuid,
@@ -107,15 +113,16 @@ export class TimerList extends React.Component<Props, State> {
 
   save = () => {
     console.log('SAVING TIMERLIST');
-    FileManager.ClearData([TIMER_STORAGE_KEY]);
+    // FileManager.ClearData([TIMER_STORAGE_KEY]);
     FileManager.WriteJSONToDisk(TIMER_STORAGE_KEY, this.state.timerList, false);
-    console.log(this.state.timerList);
   };
 
   renderTimers = () => {
-    return this.state.timerList.map((timerInfo) => {
-      return <TimerComponentSimple key={timerInfo.uuid} {...timerInfo} />;
-    });
+    if (this.state.timerList !== null) {
+      return this.state.timerList.map((timerInfo) => {
+        return <TimerComponentSimple key={timerInfo.uuid} {...timerInfo} />;
+      });
+    }
   };
 
   render() {
