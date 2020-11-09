@@ -19,11 +19,12 @@ import AgendaList from './screens/Agenda';
 
 /* Additional Components */
 import {Permission, PERMISSION_TYPE} from './helpers/permissions';
+import { FileManager, SETTINGS_STORAGE_KEY } from './helpers/FileManager';
 
 const Tab = createBottomTabNavigator();
 
 // Implicit since DefaultTheme is not found for some reason
-const AppTabs = (newTheme: any) => {
+const AppTabs = (newTheme: any, analogClockFace: boolean) => {
   return (
     <Tab.Navigator
       screenOptions={
@@ -70,31 +71,55 @@ const AppTabs = (newTheme: any) => {
 class AppLandingPage extends Component {
   state = {
     appState: AppState.currentState,
-    theme: Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme
+    theme: Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme,
+    analogClockFace: false  // Default
   };
 
-  _updateTheme = newAppState =>
+  _updateTheme = (newAppState) =>
   {
     if (newAppState === "active") // Update the theme state when the app is loaded back in
       this.state.theme = Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme;
     this.setState({appState: newAppState})
   }
 
+  _updateSettings = () =>
+  {
+    FileManager.ReadJSONData(SETTINGS_STORAGE_KEY).then((token) => {
+      this.setState({analogClockFace: token.analogClockFace});
+    });
+  };
+
   componentDidMount()
   {
     AppState.addEventListener("change", this._updateTheme);
+    AppState.addEventListener("change", this._updateSettings);
+    
+    // Test if the settings file is already created. If not, create one
+    FileManager.ReadJSONData(SETTINGS_STORAGE_KEY).then((token) => {
+      
+      // Copy this JSON when using this object for settings
+      let SettingsPayload = {
+        analogClockFace: false
+      }
+
+      if (token == null)
+        FileManager.WriteJSONToDisk(SETTINGS_STORAGE_KEY, SettingsPayload, false);
+    });
+
+    this._updateSettings();
   }
 
   componentWillUnmount()
   {
     AppState.removeEventListener("change", this._updateTheme);
+    AppState.removeEventListener("change", this._updateSettings);
   }
 
   render() { // This works because ????
     return (
       <ThemeProvider theme={this.state.theme}>
         <NavigationContainer>
-          {AppTabs(this.state.theme)} 
+          {AppTabs(this.state.theme, this.state.analogClockFace)} 
         </NavigationContainer>
       </ThemeProvider>
     );
