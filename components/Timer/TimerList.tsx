@@ -59,7 +59,7 @@ export class TimerList extends React.Component<Props, State> {
     const verbs = ['eat', 'drink', 'wash', 'detonate'];
     const nouns = ['dinner', 'water', 'dishes', 'mount Hellens'];
 
-    let time = Math.floor(Math.random() * 10000);
+    let time = Math.floor(Math.random() * 10000 + 10000);
     let ukey = uuid();
     let func = this.handleChange(ukey).bind(this);
 
