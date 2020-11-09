@@ -68,6 +68,7 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
   };
 
   componentDidUpdate(prevProps: any, prevState: any) {
+    // Only save when the component updates the things we acutally save
     if (this.state.isRunning !== prevState.isRunning) {
       this.save();
     } else if (this.state.timeState !== prevState.timeState) {
