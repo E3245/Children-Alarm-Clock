@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Component} from 'react';
+import React from 'react';
 import {View, Button} from 'react-native';
 import {getTimeTo, isTimePast, formatTime} from '../../helpers/time';
 import {styles} from '../stylesheet';
