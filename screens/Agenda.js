@@ -2,9 +2,9 @@ import {Agenda} from 'react-native-calendars';
 import {View, TouchableOpacity, Alert, Text, StyleSheet} from 'react-native';
 import React from 'react';
 
-const mobius = {key: 'mobius', color: 'cyan'};
-const classTime = {key: 'classTime', color: 'blue'};
-const project = {key: 'project', color: 'teal'};
+// const mobius = {key: 'mobius', color: 'cyan'};
+// const classTime = {key: 'classTime', color: 'blue'};
+// const project = {key: 'project', color: 'teal'};
 
 const getEventData = () => {
   let events = {
@@ -148,10 +148,13 @@ export default function AgendaList({props, navigation, route}) {
 
   const renderItem = (item, firstItemInDay) => {
     return (
-      <TouchableOpacity onPress={() => Alert.alert(item.name, item.other)}>
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => Alert.alert(item.name, item.other)}>
         <>
           <Text>{item.start}</Text>
           <Text>{item.name}</Text>
+          <Text>{item.other}</Text> {/*Do we keep this?*/}
         </>
       </TouchableOpacity>
     );
@@ -175,58 +178,60 @@ export default function AgendaList({props, navigation, route}) {
         futureScrollRange={0}
         renderEmptyData={() => {
           return (
-            <Text style={styles.empty}>No events scheduled for this day.</Text>
+            <Text style={styles.emptyDate}>
+              No events scheduled for this day.
+            </Text>
           );
         }}
-        markedDates={{
-          '2020-11-02': {
-            dots: [mobius],
-          },
+        // markedDates={{
+        //   '2020-11-02': {
+        //     dots: [mobius],
+        //   },
 
-          '2020-11-03': {
-            dots: [classTime],
-          },
+        //   '2020-11-03': {
+        //     dots: [classTime],
+        //   },
 
-          '2020-11-05': {
-            dots: [classTime, project],
-          },
+        //   '2020-11-05': {
+        //     dots: [classTime, project],
+        //   },
 
-          '2020-11-09': {
-            dots: [mobius],
-          },
+        //   '2020-11-09': {
+        //     dots: [mobius],
+        //   },
 
-          '2020-11-10': {
-            dots: [classTime],
-          },
+        //   '2020-11-10': {
+        //     dots: [classTime],
+        //   },
 
-          '2020-11-12': {
-            dots: [classTime, project],
-          },
-          '2020-11-16': {
-            dots: [mobius],
-          },
+        //   '2020-11-12': {
+        //     dots: [classTime, project],
+        //   },
+        //   '2020-11-16': {
+        //     dots: [mobius],
+        //   },
 
-          '2020-11-17': {
-            dots: [classTime],
-          },
+        //   '2020-11-17': {
+        //     dots: [classTime],
+        //   },
 
-          '2020-11-19': {
-            dots: [classTime, project],
-          },
+        //   '2020-11-19': {
+        //     dots: [classTime, project],
+        //   },
 
-          '2020-11-23': {
-            dots: [mobius],
-          },
+        //   '2020-11-23': {
+        //     dots: [mobius],
+        //   },
 
-          '2020-11-24': {
-            dots: [classTime],
-          },
+        //   '2020-11-24': {
+        //     dots: [classTime],
+        //   },
 
-          '2020-11-26': {
-            dots: [classTime, project],
-          },
-        }}
-        markingType={'multi-dot'}
+        //   '2020-11-26': {
+        //     dots: [classTime, project],
+        //   },
+        // }}
+        // markingType={'multi-dot'}
         theme={{
           agendaKnobColor: '#059033',
         }}
@@ -239,6 +244,14 @@ export default function AgendaList({props, navigation, route}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  item: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17,
   },
   emptyDate: {
     height: 15,
