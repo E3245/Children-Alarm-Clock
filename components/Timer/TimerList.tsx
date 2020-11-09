@@ -46,7 +46,6 @@ export class TimerList extends React.Component<Props, State> {
           console.log('UPDATED');
           // Update the state to include to modified timer
           timerList[index] = newTimer;
-          console.log(newTimer);
           this.setState({timerList});
         }
       });

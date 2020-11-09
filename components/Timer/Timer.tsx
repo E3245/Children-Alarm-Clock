@@ -145,9 +145,6 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
     let timer = {...this.props};
     timer.running = this.state.isRunning;
     timer.time = this.state.timeState;
-
-    console.log(timer.running);
-
     this.props.handleChange(timer);
   };
 
