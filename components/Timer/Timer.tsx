@@ -1,11 +1,21 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Component} from 'react';
 import {View, Button} from 'react-native';
-import {getTimeRemaining, addMilliseconds} from '../../helpers/time';
+import {getTimeTo, isTimePast, formatTime} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
 
-type TimerProps = {
-  endTime: Date;
+export type TimerProps = {
+  // The amount of time the timer will run for when reset
+  amountTime: number;
+  name: string;
+  color: string;
+  uuid: string;
+  handleChange: CallableFunction;
+  // The time remaining on the timer in milliseconds (if it is currently stopped)
+  // The time the timer will end at in ms since epoch (if it is currently running)
+  // This var stores different values depending on the running boolean
+  time: number;
+  running: boolean;
 };
 
 // Misc Properties
@@ -17,95 +27,168 @@ type OtherProps = {
 // How to use this component
 // <Timer endTime={new Date(1602612000)} />
 
-const TimerComponentSimple = ({endTime}: TimerProps) => {
-  let [lendTime, setlEndtime] = useState(endTime);
-  let [time, setTimeLeft] = useState(getTimeRemaining(lendTime));
-  let [isRunning, setIsRunning] = useState(false);
+export class TimerComponentSimple extends React.Component<TimerProps> {
+  state = {
+    timeState: -1,
+    isRunning: false,
+    renderTime: -1,
+  };
 
-  useEffect(() => {
-    let interval: any = null;
-    if (isRunning) {
-      interval = setInterval(() => {
-        setTimeLeft(getTimeRemaining(lendTime));
-      }, 100);
+  // The id for the interval that ticks every second
+  private intervalID: any;
+
+  constructor(props: TimerProps) {
+    super(props);
+    this.state.timeState = props.time;
+    this.state.isRunning = props.running;
+
+    // Set the render time based on isRunning and if the time var is in the past
+    if (props.running && isTimePast(props.time)) {
+      this.state.renderTime = 0;
+    } else if (props.running) {
+      this.state.renderTime = getTimeTo(props.time);
     } else {
-      interval = setInterval(() => {
-        setlEndtime(addMilliseconds(lendTime, 100));
-      }, 100);
+      // In this case the timer is stopped and time is storing the remaining time
+      this.state.renderTime = props.time;
+    }
+  }
+
+  handleToggle = () => {
+    // Check if we should reset instead of toggle
+    if (this.state.timeState === 0) {
+      this.reset();
+      return;
     }
 
-    return () => clearInterval(interval);
-  });
-
-  const toggleTimer = () => {
-    if (isRunning) {
-      setIsRunning(false);
+    if (this.state.isRunning) {
+      this.stop();
     } else {
-      setIsRunning(true);
+      this.start();
     }
   };
 
-  return (
-    <View style={styles.TimerContainer}>
-      <Svg width="90%" height="70">
-        <Rect
-          x="0"
-          y="0"
-          rx="10"
-          ry="10"
-          width="100%"
-          height="100%"
-          stroke="blue"
-          fill="green"
-          transform="translate(0,0)"
-        />
-        <Text
-          fill="black"
-          stroke="black"
-          fontSize="300%"
-          fontWeight="bold"
-          x="50%"
-          y="50%"
-          textAnchor="middle">
-          {time.hours.toString().padStart(2, '0') +
-            ':' +
-            time.minutes.toString().padStart(2, '0') +
-            ':' +
-            time.seconds.toString().padStart(2, '0')}
-        </Text>
-        <Text
-          fill="black"
-          stroke="black"
-          fontSize="200%"
-          x="50%"
-          y="90%"
-          textAnchor="middle">
-          Title
-        </Text>
-      </Svg>
-      <Button title="Toggle" onPress={() => toggleTimer()} />
-    </View>
-  );
-};
+  componentDidUpdate(prevProps: any, prevState: any) {
+    // Only save when the component updates the things we acutally save
+    if (this.state.isRunning !== prevState.isRunning) {
+      this.save();
+    } else if (this.state.timeState !== prevState.timeState) {
+      this.save();
+    }
+  }
 
-// By default TimerComponentSimple gets exported, you must explicity call this function to get the real component
-export const TimerComponentFull = ({endTime}: TimerProps, {name}: OtherProps) =>
-  //   {imagePath}: OtherProps,
-  {
-    let [time, setTimeLeft] = useState(getTimeRemaining(endTime));
+  componentDidMount() {
+    if (this.state.isRunning) {
+      this.intervalID = setInterval(() => this.tick(), 1000);
+    }
+  }
 
-    useInterval(() => {
-      setTimeLeft(getTimeRemaining(endTime));
+  tick() {
+    if (!this.state.isRunning) {
+      console.log('Timer tried to tick while stopped');
+      return;
+    }
+
+    // Check if the clock should stop
+    if (isTimePast(this.state.timeState)) {
+      console.log('Timer Ended!');
+      // Force the render time to read 0
+      this.setState({renderTime: 0, isRunning: false, timeState: 0});
+      // Stop the ticking
+      clearInterval(this.intervalID);
+    } else {
+      this.setState({renderTime: getTimeTo(this.state.timeState)});
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
+  }
+
+  start() {
+    console.log('Start');
+    // Save the time that the timer will end at
+    this.setState({
+      isRunning: true,
+      timeState: Date.now() + this.state.timeState,
+    });
+
+    this.intervalID = setInterval(() => {
+      this.tick();
     }, 100);
+  }
 
+  stop() {
+    console.log('Stop');
+    // Save the time remaining on the timer
+    this.setState({
+      isRunning: false,
+      timeState: getTimeTo(this.state.timeState),
+    });
+
+    clearInterval(this.intervalID);
+  }
+
+  reset() {
+    console.log('Reset');
+    this.setState({
+      isRunning: false,
+      renderTime: this.props.amountTime,
+      timeState: this.props.amountTime,
+    });
+  }
+
+  // Call the parent to save the data
+  save = () => {
+    console.log('SAVE');
+    // Values that may have changed
+    // running
+    // remainingtime
+    let timer = {...this.props};
+    timer.running = this.state.isRunning;
+    timer.time = this.state.timeState;
+    this.props.handleChange(timer);
+  };
+
+  render = () => {
     return (
       <View style={styles.TimerContainer}>
-        <Text>{name}</Text>
-        <Text>
-          {time.hours}:{time.minutes}:{time.seconds}
-        </Text>
+        <Svg width="90%" height="70">
+          <Rect
+            x="0"
+            y="0"
+            rx="10"
+            ry="10"
+            width="100%"
+            height="100%"
+            stroke="black"
+            fill={this.props.color}
+            transform="translate(0,0)"
+          />
+          <Text
+            fill="black"
+            stroke="black"
+            fontSize="300%"
+            fontWeight="bold"
+            x="50%"
+            y="50%"
+            textAnchor="middle">
+            {formatTime(new Date(this.state.renderTime))}
+          </Text>
+          <Text
+            fill="black"
+            stroke="black"
+            fontSize="200%"
+            x="50%"
+            y="90%"
+            textAnchor="middle">
+            {this.props.name}
+          </Text>
+        </Svg>
+        <Button
+          title={this.state.renderTime === 0 ? 'Reset' : 'Toggle'}
+          onPress={this.handleToggle}
+        />
       </View>
     );
   };
-
-export default TimerComponentSimple;
+}

@@ -9,23 +9,21 @@ import {
 } from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from '../themes';
-import {styles} from '../components/stylesheet';
+import * as StylesModule from '../components/stylesheet';
+
 
 const HomeScreen = () => {
-  const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
-
+  const HomeSafeAreaView = StylesModule.SafeAreaView;
   return (
-    <View style={styles.centered}>
-      <ThemeProvider theme={theme}>
+    <View style={StylesModule.styles.centered}>
         <StatusBar barStyle="light-content" />
-        <SafeAreaView>
+        <HomeSafeAreaView>
           <ScrollView
             centerContent={true}
             contentInsetAdjustmentBehavior="automatic">
             <Clock />
           </ScrollView>
-        </SafeAreaView>
-      </ThemeProvider>
+        </HomeSafeAreaView>
     </View>
   );
 };

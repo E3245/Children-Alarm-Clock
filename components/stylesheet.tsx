@@ -49,6 +49,14 @@ export const SafeAreaView = styled.SafeAreaView`
   flex: 1;
 `;
 
+export const View = styled.View`
+  background-color: ${({theme}) => theme.bgColor};
+`;
+
+export const Text = styled.Text`
+  color: ${({theme}) => theme.primaryColor};
+`;
+
 export const StatusBar = styled.StatusBar.attrs(({theme}) => ({
   barStyle: theme.style === 'dark' ? 'light-content' : 'dark-content',
 }))``;

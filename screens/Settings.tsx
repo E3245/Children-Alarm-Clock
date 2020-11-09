@@ -2,17 +2,18 @@ import React from 'react';
 import {useColorScheme, Text, View} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from '../themes';
-import {styles} from '../components/stylesheet';
+import * as StylesModule from '../components/stylesheet';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 const SettingsScreen = () => {
-  const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
-
+  const SettingsSafeAreaView = StylesModule.SafeAreaView;
+  const SettingsText = StylesModule.Text;
   return (
-    <View style={styles.centered}>
-      <ThemeProvider theme={theme}>
-        <Text>Settings!</Text>
-      </ThemeProvider>
-    </View>
+    <SettingsSafeAreaView>
+      <View style={StylesModule.styles.centered}>
+        <SettingsText>Settings!</SettingsText>
+      </View>
+    </SettingsSafeAreaView>
   );
 };
 
