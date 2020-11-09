@@ -59,7 +59,14 @@ const AppTabs = (newTheme: any, analogClockFace: boolean) => {
         activeBackgroundColor: newTheme.secondaryColor,
         inactiveBackgroundColor: newTheme.bgColor,
       }}>
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen 
+        name="Home" 
+        component={HomeScreen} 
+        options={{
+            title: 'Home'
+          //tabBarBadge: 5      // TODO: Use the badge to indicate number of timers that went off, etc.
+        }}
+        />
       <Tab.Screen name="Alarm" component={AlarmScreen} />
       <Tab.Screen name="Calendar" component={AgendaList} />
       <Tab.Screen name="Timer" component={TimerScreen} />
