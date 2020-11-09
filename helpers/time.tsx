@@ -20,9 +20,9 @@ export const addMilliseconds = (date: Date, millis: number): Date => {
   return new Date(date.getTime() + millis);
 };
 
-export const isTimePast = (endDate: Date): boolean => {
+export const isTimePast = (endTime: number): boolean => {
   const date = new Date();
-  return date.getTime() >= endDate.getTime();
+  return date.getTime() >= endTime;
 };
 
 export const formatTime = (date: Date): String => {
@@ -39,8 +39,8 @@ export const formatTime = (date: Date): String => {
 };
 
 // Return number of millis to a certain date
-export const getTimeTo = (endDate: Date): number => {
-  return endDate.getTime() - Date.now();
+export const getTimeTo = (endTime: number): number => {
+  return endTime - Date.now();
 };
 
 export const getTimeInAngles = (): TimeObject => {
