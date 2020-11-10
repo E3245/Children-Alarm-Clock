@@ -26,8 +26,7 @@ const Tab = createBottomTabNavigator();
 const AppTabs = (newTheme: any) => {
   return (
     <Tab.Navigator
-      screenOptions={
-        ({route}) => ({
+      screenOptions={({route}) => ({
         // Function that controls the icons and their color when selected/deselected
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
@@ -70,42 +69,38 @@ const AppTabs = (newTheme: any) => {
 class AppLandingPage extends Component {
   state = {
     appState: AppState.currentState,
-    theme: Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme
+    theme: Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme,
   };
 
-  _updateTheme = newAppState =>
-  {
-    if (newAppState === "active") // Update the theme state when the app is loaded back in
-      this.state.theme = Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme;
-    this.setState({appState: newAppState})
+  _updateTheme = (newAppState) => {
+    if (newAppState === 'active') {
+      // Update the theme state when the app is loaded back in
+      this.state.theme =
+        Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme;
+    }
+    this.setState({appState: newAppState});
+  };
+
+  componentDidMount() {
+    AppState.addEventListener('change', this._updateTheme);
   }
 
-  componentDidMount()
-  {
-    AppState.addEventListener("change", this._updateTheme);
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._updateTheme);
   }
 
-  componentWillUnmount()
-  {
-    AppState.removeEventListener("change", this._updateTheme);
-  }
-
-  render() { // This works because ????
+  render() {
+    // This works because ????
     return (
       <ThemeProvider theme={this.state.theme}>
-        <NavigationContainer>
-          {AppTabs(this.state.theme)} 
-        </NavigationContainer>
+        <NavigationContainer>{AppTabs(this.state.theme)}</NavigationContainer>
       </ThemeProvider>
     );
   }
 }
 
-const App = () =>
-{
-  return (
-    <AppLandingPage/>
-  );
+const App = () => {
+  return <AppLandingPage />;
 };
 
 export default App;
