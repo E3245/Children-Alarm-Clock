@@ -195,7 +195,6 @@ const styles = StyleSheet.create({
     height: 15,
     flex: 1,
     paddingTop: 30,
-    alignText: 'center',
   },
   item: {
     backgroundColor: 'white',
