@@ -15,7 +15,6 @@ const TimerScreen = () => {
       </View>
       <ScrollView style={styles.TimerScroll}>
         <View style={styles.centered}>
-          {/* <TimerComponentSimple amountTime={10} name="Brush Teeth" color="blue"/> */}
           <TimerList name="garbage" />
         </View>
       </ScrollView>
