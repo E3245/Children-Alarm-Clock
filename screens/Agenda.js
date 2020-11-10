@@ -1,10 +1,6 @@
 import {Agenda} from 'react-native-calendars';
-import {View, TouchableOpacity, Alert, Text, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, Text, StyleSheet, Alert} from 'react-native';
 import React from 'react';
-
-// const mobius = {key: 'mobius', color: 'cyan'};
-// const classTime = {key: 'classTime', color: 'blue'};
-// const project = {key: 'project', color: 'teal'};
 
 const getEventData = () => {
   let events = {
@@ -154,7 +150,6 @@ export default function AgendaList({props, navigation, route}) {
         <>
           <Text>{item.start}</Text>
           <Text>{item.name}</Text>
-          <Text>{item.other}</Text> {/*Do we keep this?*/}
         </>
       </TouchableOpacity>
     );
@@ -183,55 +178,6 @@ export default function AgendaList({props, navigation, route}) {
             </Text>
           );
         }}
-        // markedDates={{
-        //   '2020-11-02': {
-        //     dots: [mobius],
-        //   },
-
-        //   '2020-11-03': {
-        //     dots: [classTime],
-        //   },
-
-        //   '2020-11-05': {
-        //     dots: [classTime, project],
-        //   },
-
-        //   '2020-11-09': {
-        //     dots: [mobius],
-        //   },
-
-        //   '2020-11-10': {
-        //     dots: [classTime],
-        //   },
-
-        //   '2020-11-12': {
-        //     dots: [classTime, project],
-        //   },
-        //   '2020-11-16': {
-        //     dots: [mobius],
-        //   },
-
-        //   '2020-11-17': {
-        //     dots: [classTime],
-        //   },
-
-        //   '2020-11-19': {
-        //     dots: [classTime, project],
-        //   },
-
-        //   '2020-11-23': {
-        //     dots: [mobius],
-        //   },
-
-        //   '2020-11-24': {
-        //     dots: [classTime],
-        //   },
-
-        //   '2020-11-26': {
-        //     dots: [classTime, project],
-        //   },
-        // }}
-        // markingType={'multi-dot'}
         theme={{
           agendaKnobColor: '#059033',
         }}
@@ -245,6 +191,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  emptyDate: {
+    height: 15,
+    flex: 1,
+    paddingTop: 30,
+    alignText: 'center',
+  },
   item: {
     backgroundColor: 'white',
     flex: 1,
@@ -252,10 +204,5 @@ const styles = StyleSheet.create({
     padding: 10,
     marginRight: 10,
     marginTop: 17,
-  },
-  emptyDate: {
-    height: 15,
-    flex: 1,
-    paddingTop: 30,
   },
 });
