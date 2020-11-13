@@ -24,7 +24,7 @@ import { FileManager, SETTINGS_STORAGE_KEY } from './helpers/FileManager';
 const Tab = createBottomTabNavigator();
 
 // Implicit since DefaultTheme is not found for some reason
-const AppTabs = (newTheme: any, analogClockFace: boolean) => {
+const AppTabs = (newTheme: any) => {
   return (
     <Tab.Navigator
       screenOptions={
@@ -122,22 +122,20 @@ class AppLandingPage extends Component {
     AppState.removeEventListener("change", this._updateSettings);
   }
 
-  render() { // This works because ????
+  render() {
+    // This works because ????
     return (
       <ThemeProvider theme={this.state.theme}>
         <NavigationContainer>
-          {AppTabs(this.state.theme, this.state.analogClockFace)} 
+          {AppTabs(this.state.theme)} 
         </NavigationContainer>
       </ThemeProvider>
     );
   }
 }
 
-const App = () =>
-{
-  return (
-    <AppLandingPage/>
-  );
+const App = () => {
+  return <AppLandingPage />;
 };
 
 export default App;
