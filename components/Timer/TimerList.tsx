@@ -8,6 +8,7 @@ import {ScrollView, styles} from '../stylesheet';
 import {uuid} from '../../helpers/uuid';
 import {FileManager, TIMER_STORAGE_KEY} from '../../helpers/FileManager';
 import {LearnMoreLinks} from 'react-native/Libraries/NewAppScreen';
+import EditModal from '../../components/Timer/EditTimerModal';
 
 type Props = {
   name: string;
@@ -15,6 +16,9 @@ type Props = {
 
 type State = {
   timerList: TimerProps[];
+  editing: boolean;
+  // uuid in timerlist of the selected timer
+  selectedTimer?: string;
 };
 
 function rand(items: Array<any>) {
@@ -26,7 +30,8 @@ export class TimerList extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.state = {timerList: []};
+    this.openEditModal = this.openEditModal.bind(this);
+    this.state = {timerList: [], editing: false};
   }
 
   componentDidMount = () => {
@@ -44,8 +49,12 @@ export class TimerList extends React.Component<Props, State> {
       timerList.forEach((element, index) => {
         if (element.uuid === key) {
           console.log('UPDATED');
+          let old_func = timerList[index].handleChange;
           // Update the state to include to modified timer
           timerList[index] = newTimer;
+          // Don't let the callback change
+          timerList[index].handleChange = old_func;
+          // timerList[index].amountTime = newTimer.amountTime.toI
           this.setState({timerList});
         }
       });
@@ -116,6 +125,33 @@ export class TimerList extends React.Component<Props, State> {
     FileManager.WriteJSONToDisk(TIMER_STORAGE_KEY, this.state.timerList, false);
   };
 
+  openEditModal = () => {
+    this.setState({editing: true});
+  };
+
+  closeEditModal = () => {
+    this.setState({editing: false});
+  };
+
+  componentDidUpdate = () => {
+    console.log('updated');
+    console.log(this.state.editing);
+  };
+
+  getTimer = (iuuid: string): TimerProps | undefined => {
+    for (let timer of this.state.timerList) {
+      if (timer.uuid === iuuid) {
+        return timer;
+      }
+    }
+  };
+
+  getSelectedTimer = (): TimerProps | undefined => {
+    if (this.state.selectedTimer) {
+      return this.getTimer(this.state.selectedTimer);
+    }
+  };
+
   renderTimers = () => {
     if (this.state.timerList !== null) {
       return this.state.timerList.map((timerInfo) => {
@@ -125,6 +161,16 @@ export class TimerList extends React.Component<Props, State> {
   };
 
   render() {
-    return <View>{this.renderTimers()}</View>;
+    return (
+      <View>
+        <View>{this.renderTimers()}</View>
+        <Button title={'EEEE'} onPress={this.openEditModal} />
+        <EditModal
+          isVisible={this.state.editing}
+          timer={this.state.timerList[0]}
+          onClose={this.closeEditModal}
+        />
+      </View>
+    );
   }
 }

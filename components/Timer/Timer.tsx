@@ -1,16 +1,18 @@
 import React from 'react';
-import {View, Button} from 'react-native';
+import {View, Button, StyleSheet} from 'react-native';
 import {getTimeTo, isTimePast, formatTime} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
 
 export type TimerProps = {
+  // Indexing for modification with arbitrary edit functions
+  [key: string]: any;
   // The amount of time the timer will run for when reset
   amountTime: number;
   name: string;
   color: string;
   uuid: string;
-  handleChange: CallableFunction;
+  handleChange?: (newTimer: TimerProps) => void;
   // The time remaining on the timer in milliseconds (if it is currently stopped)
   // The time the timer will end at in ms since epoch (if it is currently running)
   // This var stores different values depending on the running boolean
@@ -41,6 +43,7 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
     super(props);
     this.state.timeState = props.time;
     this.state.isRunning = props.running;
+    this.reset = this.reset.bind(this);
 
     // Set the render time based on isRunning and if the time var is in the past
     if (props.running && isTimePast(props.time)) {
@@ -135,6 +138,7 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
       renderTime: this.props.amountTime,
       timeState: this.props.amountTime,
     });
+    clearInterval(this.intervalID);
   }
 
   // Call the parent to save the data
@@ -146,13 +150,17 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
     let timer = {...this.props};
     timer.running = this.state.isRunning;
     timer.time = this.state.timeState;
-    this.props.handleChange(timer);
+    if (!this.props.handleChange) {
+      console.error('Tried to save a timer that had no callback function');
+    } else {
+      this.props.handleChange(timer);
+    }
   };
 
   render = () => {
     return (
       <View style={styles.TimerContainer}>
-        <Svg width="90%" height="70">
+        <Svg width="80%" height="70">
           <Rect
             x="0"
             y="0"
@@ -184,10 +192,13 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
             {this.props.name}
           </Text>
         </Svg>
-        <Button
-          title={this.state.renderTime === 0 ? 'Reset' : 'Toggle'}
-          onPress={this.handleToggle}
-        />
+        <View>
+          <Button
+            title={this.state.renderTime === 0 ? 'Reset' : 'Toggle'}
+            onPress={this.handleToggle}
+          />
+          {/* <Button title={'Reset'} onPress={this.reset} /> */}
+        </View>
       </View>
     );
   };
