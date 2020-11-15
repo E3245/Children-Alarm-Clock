@@ -208,7 +208,9 @@ export class TimerList extends React.Component<Props, State> {
           <View style={styles.buttonContainer}>
             <Button title={'Done'} onPress={this.toggleEditMode} />
           </View>
-          <View style={styles.centered_bound}>{this.renderTimersWithEdit()}</View>
+          <View style={styles.centered_bound}>
+            {this.renderTimersWithEdit()}
+          </View>
           <EditModal
             isVisible={this.state.editing}
             timer={this.state.timerList[this.state.selectedTimer]}
