@@ -8,6 +8,13 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  centered_bound: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingLeft: 25,
+    marginLeft: 20,
+  },
   centered: {
     flex: 1,
     justifyContent: 'center',

@@ -16,9 +16,12 @@ type Props = {
 
 type State = {
   timerList: TimerProps[];
+  // Edit modal open
   editing: boolean;
+  // Edit buttons shown
+  editing_mode: boolean;
   // uuid in timerlist of the selected timer
-  selectedTimer?: string;
+  selectedTimer: number;
 };
 
 function rand(items: Array<any>) {
@@ -31,7 +34,13 @@ export class TimerList extends React.Component<Props, State> {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.openEditModal = this.openEditModal.bind(this);
-    this.state = {timerList: [], editing: false};
+    this.selectTimer = this.selectTimer.bind(this);
+    this.state = {
+      timerList: [],
+      editing: false,
+      selectedTimer: 0,
+      editing_mode: false,
+    };
   }
 
   componentDidMount = () => {
@@ -146,31 +155,81 @@ export class TimerList extends React.Component<Props, State> {
     }
   };
 
-  getSelectedTimer = (): TimerProps | undefined => {
-    if (this.state.selectedTimer) {
-      return this.getTimer(this.state.selectedTimer);
+  toggleEditMode = () => {
+    this.setState({editing_mode: !this.state.editing_mode});
+  };
+
+  selectTimer = (iuuid: string) => {
+    for (var _i = 0; _i < this.state.timerList.length; _i++) {
+      if (this.state.timerList[_i].uuid === iuuid) {
+        this.setState({selectedTimer: _i});
+        return;
+      }
+    }
+    console.warn('DID NOT SELECT TIMER');
+    this.setState({selectedTimer: -1});
+  };
+
+  renderTimersWithEdit = () => {
+    if (this.state.timerList !== null) {
+      return this.state.timerList.map((timerInfo) => {
+        return (
+          <View style={styles.row} key={timerInfo.uuid}>
+            <Button
+              title={'edit'}
+              onPress={() => {
+                this.selectTimer(timerInfo.uuid);
+                this.openEditModal();
+              }}
+            />
+            <TimerComponentSimple key={timerInfo.uuid} {...timerInfo} />
+          </View>
+        );
+      });
     }
   };
 
-  renderTimers = () => {
+  renderTimersWithoutEdit = () => {
     if (this.state.timerList !== null) {
       return this.state.timerList.map((timerInfo) => {
-        return <TimerComponentSimple key={timerInfo.uuid} {...timerInfo} />;
+        return (
+          <View style={styles.row} key={timerInfo.uuid}>
+            <TimerComponentSimple key={timerInfo.uuid} {...timerInfo} />
+          </View>
+        );
       });
     }
   };
 
   render() {
-    return (
-      <View>
-        <View>{this.renderTimers()}</View>
-        <Button title={'EEEE'} onPress={this.openEditModal} />
-        <EditModal
-          isVisible={this.state.editing}
-          timer={this.state.timerList[0]}
-          onClose={this.closeEditModal}
-        />
-      </View>
-    );
+    if (this.state.editing_mode) {
+      return (
+        <View>
+          <View style={styles.buttonContainer}>
+            <Button title={'Done'} onPress={this.toggleEditMode} />
+          </View>
+          <View style={styles.centered_bound}>{this.renderTimersWithEdit()}</View>
+          <EditModal
+            isVisible={this.state.editing}
+            timer={this.state.timerList[this.state.selectedTimer]}
+            onClose={this.closeEditModal}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <View style={styles.buttonContainer}>
+            <Button title={'Edit'} onPress={this.toggleEditMode} />
+          </View>
+          <View>{this.renderTimersWithoutEdit()}</View>
+          <EditModal
+            isVisible={this.state.editing}
+            timer={this.state.timerList[this.state.selectedTimer]}
+            onClose={this.closeEditModal}
+          />
+        </View>
+      );
+    }
   }
 }
