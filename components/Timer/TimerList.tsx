@@ -8,6 +8,7 @@ import {ScrollView, styles} from '../stylesheet';
 import {uuid} from '../../helpers/uuid';
 import {FileManager, TIMER_STORAGE_KEY} from '../../helpers/FileManager';
 import {LearnMoreLinks} from 'react-native/Libraries/NewAppScreen';
+import EditModal from '../../components/Timer/EditTimerModal';
 
 type Props = {
   name: string;
@@ -15,6 +16,12 @@ type Props = {
 
 type State = {
   timerList: TimerProps[];
+  // Edit modal open
+  editing: boolean;
+  // Edit buttons shown
+  editing_mode: boolean;
+  // uuid in timerlist of the selected timer
+  selectedTimer: number;
 };
 
 function rand(items: Array<any>) {
@@ -26,7 +33,14 @@ export class TimerList extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.state = {timerList: []};
+    this.openEditModal = this.openEditModal.bind(this);
+    this.selectTimer = this.selectTimer.bind(this);
+    this.state = {
+      timerList: [],
+      editing: false,
+      selectedTimer: 0,
+      editing_mode: false,
+    };
   }
 
   componentDidMount = () => {
@@ -44,8 +58,12 @@ export class TimerList extends React.Component<Props, State> {
       timerList.forEach((element, index) => {
         if (element.uuid === key) {
           console.log('UPDATED');
+          let old_func = timerList[index].handleChange;
           // Update the state to include to modified timer
           timerList[index] = newTimer;
+          // Don't let the callback change
+          timerList[index].handleChange = old_func;
+          // timerList[index].amountTime = newTimer.amountTime.toI
           this.setState({timerList});
         }
       });
@@ -59,7 +77,7 @@ export class TimerList extends React.Component<Props, State> {
     const verbs = ['eat', 'drink', 'wash', 'detonate'];
     const nouns = ['dinner', 'water', 'dishes', 'mount Hellens'];
 
-    let time = Math.floor(Math.random() * 10000);
+    let time = Math.floor(Math.random() * 10000 + 10000);
     let ukey = uuid();
     let func = this.handleChange(ukey).bind(this);
 
@@ -116,15 +134,104 @@ export class TimerList extends React.Component<Props, State> {
     FileManager.WriteJSONToDisk(TIMER_STORAGE_KEY, this.state.timerList, false);
   };
 
-  renderTimers = () => {
+  openEditModal = () => {
+    this.setState({editing: true});
+  };
+
+  closeEditModal = () => {
+    this.setState({editing: false});
+  };
+
+  componentDidUpdate = () => {
+    console.log('updated');
+    console.log(this.state.editing);
+  };
+
+  getTimer = (iuuid: string): TimerProps | undefined => {
+    for (let timer of this.state.timerList) {
+      if (timer.uuid === iuuid) {
+        return timer;
+      }
+    }
+  };
+
+  toggleEditMode = () => {
+    this.setState({editing_mode: !this.state.editing_mode});
+  };
+
+  selectTimer = (iuuid: string) => {
+    for (var _i = 0; _i < this.state.timerList.length; _i++) {
+      if (this.state.timerList[_i].uuid === iuuid) {
+        this.setState({selectedTimer: _i});
+        return;
+      }
+    }
+    console.warn('DID NOT SELECT TIMER');
+    this.setState({selectedTimer: -1});
+  };
+
+  renderTimersWithEdit = () => {
     if (this.state.timerList !== null) {
       return this.state.timerList.map((timerInfo) => {
-        return <TimerComponentSimple key={timerInfo.uuid} {...timerInfo} />;
+        return (
+          <View style={styles.row} key={timerInfo.uuid}>
+            <Button
+              title={'edit'}
+              onPress={() => {
+                this.selectTimer(timerInfo.uuid);
+                this.openEditModal();
+              }}
+            />
+            <TimerComponentSimple key={timerInfo.uuid} {...timerInfo} />
+          </View>
+        );
+      });
+    }
+  };
+
+  renderTimersWithoutEdit = () => {
+    if (this.state.timerList !== null) {
+      return this.state.timerList.map((timerInfo) => {
+        return (
+          <View style={styles.row} key={timerInfo.uuid}>
+            <TimerComponentSimple key={timerInfo.uuid} {...timerInfo} />
+          </View>
+        );
       });
     }
   };
 
   render() {
-    return <View>{this.renderTimers()}</View>;
+    if (this.state.editing_mode) {
+      return (
+        <View>
+          <View style={styles.buttonContainer}>
+            <Button title={'Done'} onPress={this.toggleEditMode} />
+          </View>
+          <View style={styles.centered_bound}>
+            {this.renderTimersWithEdit()}
+          </View>
+          <EditModal
+            isVisible={this.state.editing}
+            timer={this.state.timerList[this.state.selectedTimer]}
+            onClose={this.closeEditModal}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <View style={styles.buttonContainer}>
+            <Button title={'Edit'} onPress={this.toggleEditMode} />
+          </View>
+          <View>{this.renderTimersWithoutEdit()}</View>
+          <EditModal
+            isVisible={this.state.editing}
+            timer={this.state.timerList[this.state.selectedTimer]}
+            onClose={this.closeEditModal}
+          />
+        </View>
+      );
+    }
   }
 }

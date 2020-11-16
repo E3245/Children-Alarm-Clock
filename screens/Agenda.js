@@ -190,6 +190,8 @@ export default function AgendaList({props, navigation, route}) {
             {/* {item.start} - {item.end} */}
           </Text>
           <Text>{item.name}</Text>
+          {/* TODO: Make V configurable */}
+          {/* <Text>{item.other}</Text> */}
         </>
       </TouchableOpacity>
     );

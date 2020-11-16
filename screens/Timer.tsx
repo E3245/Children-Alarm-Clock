@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {useColorScheme, Text, View, Button, Alert} from 'react-native';
+import {useColorScheme, Text, Button, Alert} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from '../themes';
 import {TimerList} from '../components/Timer/TimerList';
-import {ScrollView, styles} from '../components/stylesheet';
+import {View, ScrollView, styles} from '../components/stylesheet';
 
 const TimerScreen = () => {
   const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
@@ -15,12 +15,13 @@ const TimerScreen = () => {
       </View>
       <ScrollView style={styles.TimerScroll}>
         <View style={styles.centered}>
-          {/* <TimerComponentSimple amountTime={10} name="Brush Teeth" color="blue"/> */}
           <TimerList name="garbage" />
         </View>
       </ScrollView>
-      <View style={styles.AddButtonBottom}>
-        <AddTimerButton />
+      <View>
+        <View style={styles.AddButtonBottom}>
+          <AddTimerButton />
+        </View>
       </View>
     </ThemeProvider>
   );
