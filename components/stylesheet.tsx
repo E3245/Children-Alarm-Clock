@@ -1,7 +1,20 @@
+/* eslint-disable prettier/prettier */
+//Disabled prettier for this file due to some 
 import {StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 
 export const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  centered_bound: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingLeft: 25,
+    marginLeft: 20,
+  },
   centered: {
     flex: 1,
     justifyContent: 'center',
@@ -60,3 +73,18 @@ export const Text = styled.Text`
 export const StatusBar = styled.StatusBar.attrs(({theme}) => ({
   barStyle: theme.style === 'dark' ? 'light-content' : 'dark-content',
 }))``;
+
+export const TextInput = styled.TextInput`
+  marginTop: 20px;
+  width: 100px;
+  height: 40px;
+  marginLeft: 20px;
+  marginRight: 20px;
+  paddingHorizontal: 10px;
+  borderRadius: 50px;
+  backgroundColor: #DCDCDC;
+`;
+
+export const BackgroundText = styled.Text`
+  color: ${({theme}) => theme.primaryColor};
+`;
