@@ -19,7 +19,7 @@ import AgendaList from './screens/Agenda';
 
 /* Additional Components */
 import {Permission, PERMISSION_TYPE} from './helpers/permissions';
-import { FileManager, SETTINGS_STORAGE_KEY } from './helpers/FileManager';
+import {FileManager, SETTINGS_STORAGE_KEY} from './helpers/FileManager';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,8 +27,7 @@ const Tab = createBottomTabNavigator();
 const AppTabs = (newTheme: any) => {
   return (
     <Tab.Navigator
-      screenOptions={
-        ({route}) => ({
+      screenOptions={({route}) => ({
         // Function that controls the icons and their color when selected/deselected
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
@@ -59,14 +58,14 @@ const AppTabs = (newTheme: any) => {
         activeBackgroundColor: newTheme.secondaryColor,
         inactiveBackgroundColor: newTheme.bgColor,
       }}>
-      <Tab.Screen 
-        name="Home" 
-        component={HomeScreen} 
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
         options={{
-            title: 'Home'
+          title: 'Home',
           //tabBarBadge: 5      // TODO: Use the badge to indicate number of timers that went off, etc.
         }}
-        />
+      />
       <Tab.Screen name="Alarm" component={AlarmScreen} />
       <Tab.Screen name="Calendar" component={AgendaList} />
       <Tab.Screen name="Timer" component={TimerScreen} />
@@ -79,56 +78,57 @@ class AppLandingPage extends Component {
   state = {
     appState: AppState.currentState,
     theme: Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme,
-    analogClockFace: false  // Default
+    analogClockFace: false, // Default
   };
 
-  _updateTheme = (newAppState) =>
-  {
-    if (newAppState === "active") // Update the theme state when the app is loaded back in
-      this.state.theme = Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme;
-    this.setState({appState: newAppState})
-  }
+  _updateTheme = (newAppState) => {
+    if (newAppState === 'active') {
+      // Update the theme state when the app is loaded back in
+      this.state.theme =
+        Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme;
+    }
+    this.setState({appState: newAppState});
+  };
 
-  _updateSettings = () =>
-  {
+  _updateSettings = () => {
     FileManager.ReadJSONData(SETTINGS_STORAGE_KEY).then((token) => {
       this.setState({analogClockFace: token.analogClockFace});
     });
   };
 
-  componentDidMount()
-  {
-    AppState.addEventListener("change", this._updateTheme);
-    AppState.addEventListener("change", this._updateSettings);
-    
+  componentDidMount() {
+    AppState.addEventListener('change', this._updateTheme);
+    AppState.addEventListener('change', this._updateSettings);
+
     // Test if the settings file is already created. If not, create one
     FileManager.ReadJSONData(SETTINGS_STORAGE_KEY).then((token) => {
-      
       // Copy this JSON when using this object for settings
       let SettingsPayload = {
-        analogClockFace: false
-      }
+        analogClockFace: false,
+      };
 
-      if (token == null)
-        FileManager.WriteJSONToDisk(SETTINGS_STORAGE_KEY, SettingsPayload, false);
+      if (token == null) {
+        FileManager.WriteJSONToDisk(
+          SETTINGS_STORAGE_KEY,
+          SettingsPayload,
+          false,
+        );
+      }
     });
 
     this._updateSettings();
   }
 
-  componentWillUnmount()
-  {
-    AppState.removeEventListener("change", this._updateTheme);
-    AppState.removeEventListener("change", this._updateSettings);
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._updateTheme);
+    AppState.removeEventListener('change', this._updateSettings);
   }
 
   render() {
     // This works because ????
     return (
       <ThemeProvider theme={this.state.theme}>
-        <NavigationContainer>
-          {AppTabs(this.state.theme)} 
-        </NavigationContainer>
+        <NavigationContainer>{AppTabs(this.state.theme)}</NavigationContainer>
       </ThemeProvider>
     );
   }
