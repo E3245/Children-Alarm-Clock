@@ -35,6 +35,7 @@ export class TimerList extends React.Component<Props, State> {
     this.handleChange = this.handleChange.bind(this);
     this.openEditModal = this.openEditModal.bind(this);
     this.selectTimer = this.selectTimer.bind(this);
+    this.deleteTimer = this.deleteTimer.bind(this);
     this.state = {
       timerList: [],
       editing: false,
@@ -94,6 +95,32 @@ export class TimerList extends React.Component<Props, State> {
     return retprop;
   };
 
+  deleteTimer = (iuuid: string) => {
+    let newTimerList = this.state.timerList;
+    newTimerList = newTimerList.filter((timer) => {
+      return timer.uuid !== iuuid;
+    });
+
+    // Set state and save after the state has been updated.
+    this.setState({timerList: newTimerList}, this.save);
+  };
+
+  addTimer = (timer: TimerProps) => {
+    let newTimerList = this.state.timerList;
+    newTimerList.push(timer);
+    this.setState({timerList: newTimerList});
+  };
+
+  createTimer = () => {
+    // Generate a new timer
+    let timer = this.makeRandomTimer();
+    // Add this new timer to the timer list
+    this.addTimer(timer);
+    // Open the edit modal for this timer
+    this.selectTimer(timer.uuid);
+    this.openEditModal();
+  };
+
   loadTimers = async () => {
     console.log('LOADING TIMERLIST');
     // Delete all timer data for testing
@@ -144,7 +171,6 @@ export class TimerList extends React.Component<Props, State> {
 
   componentDidUpdate = () => {
     console.log('updated');
-    console.log(this.state.editing);
   };
 
   getTimer = (iuuid: string): TimerProps | undefined => {
@@ -175,13 +201,21 @@ export class TimerList extends React.Component<Props, State> {
       return this.state.timerList.map((timerInfo) => {
         return (
           <View style={styles.row} key={timerInfo.uuid}>
-            <Button
-              title={'edit'}
-              onPress={() => {
-                this.selectTimer(timerInfo.uuid);
-                this.openEditModal();
-              }}
-            />
+            <View>
+              <Button
+                title={'edit'}
+                onPress={() => {
+                  this.selectTimer(timerInfo.uuid);
+                  this.openEditModal();
+                }}
+              />
+              <Button
+                title={'Delete'}
+                onPress={() => {
+                  this.deleteTimer(timerInfo.uuid);
+                }}
+              />
+            </View>
             <TimerComponentSimple key={timerInfo.uuid} {...timerInfo} />
           </View>
         );
@@ -202,36 +236,25 @@ export class TimerList extends React.Component<Props, State> {
   };
 
   render() {
-    if (this.state.editing_mode) {
-      return (
-        <View>
-          <View style={styles.buttonContainer}>
-            <Button title={'Done'} onPress={this.toggleEditMode} />
-          </View>
-          <View style={styles.centered_bound}>
-            {this.renderTimersWithEdit()}
-          </View>
-          <EditModal
-            isVisible={this.state.editing}
-            timer={this.state.timerList[this.state.selectedTimer]}
-            onClose={this.closeEditModal}
-          />
+    return (
+      <View>
+        <View style={styles.buttonContainer}>
+          <Button title={'Edit'} onPress={this.toggleEditMode} />
         </View>
-      );
-    } else {
-      return (
         <View>
-          <View style={styles.buttonContainer}>
-            <Button title={'Edit'} onPress={this.toggleEditMode} />
-          </View>
-          <View>{this.renderTimersWithoutEdit()}</View>
-          <EditModal
-            isVisible={this.state.editing}
-            timer={this.state.timerList[this.state.selectedTimer]}
-            onClose={this.closeEditModal}
-          />
+          {this.state.editing_mode
+            ? this.renderTimersWithEdit()
+            : this.renderTimersWithoutEdit()}
         </View>
-      );
-    }
+        <EditModal
+          isVisible={this.state.editing}
+          timer={this.state.timerList[this.state.selectedTimer]}
+          onClose={this.closeEditModal}
+        />
+        <View style={styles.buttonContainer}>
+          <Button onPress={this.createTimer} title="Add Timer" />
+        </View>
+      </View>
+    );
   }
 }
