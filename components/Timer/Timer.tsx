@@ -196,7 +196,10 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
           <View>
             <Button title={'Reset'} onPress={this.reset} />
             {this.state.renderTime !== 0 ? (
-              <Button title={'Toggle'} onPress={this.handleToggle} />
+              <Button
+                title={this.state.isRunning ? 'Stop' : 'Start'}
+                onPress={this.handleToggle}
+              />
             ) : (
               <></>
             )}
