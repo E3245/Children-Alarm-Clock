@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Button, StyleSheet} from 'react-native';
+import {View, Button} from 'react-native';
 import {getTimeTo, isTimePast, formatTime} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
