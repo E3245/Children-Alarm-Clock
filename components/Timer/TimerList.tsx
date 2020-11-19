@@ -201,22 +201,28 @@ export class TimerList extends React.Component<Props, State> {
       return this.state.timerList.map((timerInfo) => {
         return (
           <View style={styles.row} key={timerInfo.uuid}>
-            <View>
-              <Button
-                title={'edit'}
-                onPress={() => {
-                  this.selectTimer(timerInfo.uuid);
-                  this.openEditModal();
-                }}
-              />
-              <Button
-                title={'Delete'}
-                onPress={() => {
-                  this.deleteTimer(timerInfo.uuid);
-                }}
-              />
+            <View style={styles.centered}>
+              <View>
+                <Button
+                  title={'edit'}
+                  onPress={() => {
+                    this.selectTimer(timerInfo.uuid);
+                    this.openEditModal();
+                  }}
+                />
+                <Button
+                  title={'Delete'}
+                  onPress={() => {
+                    this.deleteTimer(timerInfo.uuid);
+                  }}
+                />
+              </View>
             </View>
-            <TimerComponentSimple key={timerInfo.uuid} {...timerInfo} />
+            <TimerComponentSimple
+              key={timerInfo.uuid}
+              {...timerInfo}
+              hideButtons={this.state.editing_mode}
+            />
           </View>
         );
       });
@@ -228,7 +234,11 @@ export class TimerList extends React.Component<Props, State> {
       return this.state.timerList.map((timerInfo) => {
         return (
           <View style={styles.row} key={timerInfo.uuid}>
-            <TimerComponentSimple key={timerInfo.uuid} {...timerInfo} />
+            <TimerComponentSimple
+              key={timerInfo.uuid}
+              {...timerInfo}
+              hideButtons={this.state.editing_mode}
+            />
           </View>
         );
       });
