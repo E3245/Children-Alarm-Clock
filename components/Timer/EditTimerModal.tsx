@@ -52,11 +52,7 @@ const EditModal = (props: EditModalProps) => {
       </ScrollView>
     );
   } else {
-    return (
-      <View>
-        <Text> You aren't supposed to see this </Text>
-      </View>
-    );
+    return <View />;
   }
 };
 
