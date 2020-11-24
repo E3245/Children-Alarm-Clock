@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Button, StyleSheet} from 'react-native';
+import {View, Button} from 'react-native';
 import {getTimeTo, isTimePast, formatTime} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
@@ -18,6 +18,7 @@ export type TimerProps = {
   // This var stores different values depending on the running boolean
   time: number;
   running: boolean;
+  hideButtons?: boolean;
 };
 
 // Misc Properties
@@ -160,45 +161,57 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
   render = () => {
     return (
       <View style={styles.TimerContainer}>
-        <Svg width="80%" height="70">
-          <Rect
-            x="0"
-            y="0"
-            rx="10"
-            ry="10"
-            width="100%"
-            height="100%"
-            stroke="black"
-            fill={this.props.color}
-            transform="translate(0,0)"
-          />
-          <Text
-            fill="black"
-            stroke="black"
-            fontSize="300%"
-            fontWeight="bold"
-            x="50%"
-            y="50%"
-            textAnchor="middle">
-            {formatTime(new Date(this.state.renderTime))}
-          </Text>
-          <Text
-            fill="black"
-            stroke="black"
-            fontSize="200%"
-            x="50%"
-            y="90%"
-            textAnchor="middle">
-            {this.props.name}
-          </Text>
-        </Svg>
-        <View>
-          <Button
-            title={this.state.renderTime === 0 ? 'Reset' : 'Toggle'}
-            onPress={this.handleToggle}
-          />
-          {/* <Button title={'Reset'} onPress={this.reset} /> */}
+        <View style={styles.TimerSVG}>
+          <Svg width="100%" height="100%" viewBox="0 0 250 80">
+            <Rect
+              x="0"
+              y="0"
+              rx="10"
+              ry="10"
+              width="100%"
+              height="100%"
+              stroke="black"
+              fill={this.props.color}
+              transform="translate(0,0)"
+            />
+            <Text
+              fill="black"
+              stroke="black"
+              fontSize="300%"
+              fontWeight="bold"
+              x="50%"
+              y="50%"
+              textAnchor="middle">
+              {formatTime(new Date(this.state.renderTime))}
+            </Text>
+            <Text
+              fill="black"
+              stroke="black"
+              fontSize="200%"
+              x="50%"
+              y="90%"
+              textAnchor="middle">
+              {this.props.name}
+            </Text>
+          </Svg>
         </View>
+        {this.props.hideButtons ? (
+          <></>
+        ) : (
+          <View style={styles.centered}>
+            <View>
+              <Button title={'Reset'} onPress={this.reset} />
+              {this.state.renderTime !== 0 ? (
+                <Button
+                  title={this.state.isRunning ? 'Stop' : 'Start'}
+                  onPress={this.handleToggle}
+                />
+              ) : (
+                <></>
+              )}
+            </View>
+          </View>
+        )}
       </View>
     );
   };

@@ -1,16 +1,9 @@
-import React, {useCallback, useState} from 'react';
-import {Button, StyleSheet, Text} from 'react-native';
+import React, {useCallback} from 'react';
 import {TimerProps} from '../Timer/Timer';
 
 import LabeledTextInput from '../Inputs/LabeledTextInput';
 
-import {
-  BackgroundText,
-  ScrollView,
-  styles,
-  View,
-  TextInput,
-} from '../stylesheet';
+import {BackgroundText, styles, View} from '../stylesheet';
 
 type EditTimerProps = {
   timer: TimerProps;

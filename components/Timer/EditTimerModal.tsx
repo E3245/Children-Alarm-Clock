@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Button, ScrollView, StyleSheet} from 'react-native';
-import {Text, View, styles} from '../stylesheet';
+import {View} from '../stylesheet';
 import Modal from 'react-native-modal';
 import EditTimer from './EditTimer';
 import {TimerProps} from '../Timer/Timer';
@@ -52,11 +52,7 @@ const EditModal = (props: EditModalProps) => {
       </ScrollView>
     );
   } else {
-    return (
-      <View>
-        <Text> You aren't supposed to see this </Text>
-      </View>
-    );
+    return <View />;
   }
 };
 

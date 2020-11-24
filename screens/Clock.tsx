@@ -15,7 +15,7 @@ import * as StylesModule from '../components/stylesheet';
 const HomeScreen = () => {
   const HomeSafeAreaView = StylesModule.SafeAreaView;
   return (
-    <View style={StylesModule.styles.centered}>
+    <View style={StylesModule.styles.flex_centered}>
       <StatusBar barStyle="light-content" />
       <HomeSafeAreaView>
         <ScrollView
