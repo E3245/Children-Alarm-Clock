@@ -1,18 +1,10 @@
 import React from 'react';
 import Clock from '../components/Clock/Clock';
 import DigitalClock from '../components/Clock/DigitalClock';
-import {
-  useColorScheme,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  View,
-} from 'react-native';
-import {ThemeProvider} from 'styled-components/native';
-import {darkTheme, lightTheme} from '../themes';
+import {ScrollView, StatusBar, View} from 'react-native';
 import * as StylesModule from '../components/stylesheet';
 
-const HomeScreen = () => {
+const ClockFace = () => {
   const HomeSafeAreaView = StylesModule.SafeAreaView;
   return (
     <View style={StylesModule.styles.flex_centered}>
@@ -29,4 +21,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default ClockFace;
