@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {useColorScheme, AppState, Appearance} from 'react-native';
+import {AppState, Appearance} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from './themes';
 
@@ -11,14 +11,15 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 
 /*Screen Calls*/
-import HomeScreen from './screens/Clock';
+import ClockScreen from './screens/Clock';
 import SettingsScreen from './screens/Settings';
+
 import AlarmScreen from './screens/Alarm';
 import TimerScreen from './screens/Timer';
 import AgendaList from './screens/Agenda';
 
 /* Additional Components */
-import {Permission, PERMISSION_TYPE} from './helpers/permissions';
+//import {Permission, PERMISSION_TYPE} from './helpers/permissions';
 import {FileManager, SETTINGS_STORAGE_KEY} from './helpers/FileManager';
 
 const Tab = createBottomTabNavigator();
@@ -60,7 +61,7 @@ const AppTabs = (newTheme: any) => {
       }}>
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={ClockScreen}
         options={{
           title: 'Home',
           //tabBarBadge: 5      // TODO: Use the badge to indicate number of timers that went off, etc.
@@ -81,7 +82,7 @@ class AppLandingPage extends Component {
     analogClockFace: false, // Default
   };
 
-  _updateTheme = (newAppState) => {
+  _updateTheme = (newAppState: string) => {
     if (newAppState === 'active') {
       // Update the theme state when the app is loaded back in
       this.state.theme =
