@@ -258,7 +258,7 @@ export class TimerList extends React.Component<Props, State> {
         </View>
         <EditModal
           isVisible={this.state.editing}
-          timer={this.state.timerList[this.state.selectedTimer]}
+          alarm={this.state.timerList[this.state.selectedTimer]}
           onClose={this.closeEditModal}
         />
         <View style={styles.buttonContainer}>
