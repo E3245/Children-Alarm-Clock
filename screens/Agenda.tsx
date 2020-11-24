@@ -14,8 +14,6 @@ const getEventData = () => {
         start: '2:00 pm',
         end: '4:00 pm',
         other: 'Mobius Description',
-        key: 'mobius',
-        color: 'cyan',
       },
     ],
 
@@ -25,8 +23,6 @@ const getEventData = () => {
         start: '4:00 pm',
         end: '5:20 pm',
         other: 'Lecture Description',
-        key: 'lecture',
-        color: 'blue',
       },
     ],
 
@@ -36,16 +32,12 @@ const getEventData = () => {
         start: '11:30 am',
         end: '12:50 pm',
         other: 'Team Description',
-        key: 'team',
-        color: 'teal',
       },
       {
         name: 'CSCE 3550 - Lecture',
         start: '4:00 pm',
         end: '5:20 pm',
         other: 'Lecture Description',
-        key: 'lecture',
-        color: 'blue',
       },
     ],
 
@@ -55,8 +47,6 @@ const getEventData = () => {
         start: '2:00 pm',
         end: '4:00 pm',
         other: 'Mobius Description',
-        key: 'mobius',
-        color: 'cyan',
       },
     ],
 
@@ -66,8 +56,6 @@ const getEventData = () => {
         start: '4:00 pm',
         end: '5:20 pm',
         other: 'Lecture Description',
-        key: 'lecture',
-        color: 'blue',
       },
     ],
 
@@ -77,16 +65,12 @@ const getEventData = () => {
         start: '11:30 am',
         end: '12:50 pm',
         other: 'Team Description',
-        key: 'team',
-        color: 'teal',
       },
       {
         name: 'CSCE 3550 - Lecture',
         start: '4:00 pm',
         end: '5:20 pm',
         other: 'Lecture Description',
-        key: 'lecture',
-        color: 'blue',
       },
     ],
 
@@ -96,8 +80,6 @@ const getEventData = () => {
         start: '2:00 pm',
         end: '4:00 pm',
         other: 'Mobius Description',
-        key: 'mobius',
-        color: 'cyan',
       },
     ],
 
@@ -107,8 +89,6 @@ const getEventData = () => {
         start: '4:00 pm',
         end: '5:20 pm',
         other: 'Lecture Description',
-        key: 'lecture',
-        color: 'blue',
       },
     ],
 
@@ -118,16 +98,12 @@ const getEventData = () => {
         start: '11:30 am',
         end: '12:50 pm',
         other: 'Team Description',
-        key: 'team',
-        color: 'teal',
       },
       {
         name: 'CSCE 3550 - Lecture',
         start: '4:00 pm',
         end: '5:20 pm',
         other: 'Lecture Description',
-        key: 'lecture',
-        color: 'blue',
       },
     ],
 
@@ -137,8 +113,6 @@ const getEventData = () => {
         start: '2:00 pm',
         end: '4:00 pm',
         other: 'Mobius Description',
-        key: 'mobius',
-        color: 'cyan',
       },
     ],
 
@@ -148,8 +122,6 @@ const getEventData = () => {
         start: '4:00 pm',
         end: '5:20 pm',
         other: 'Lecture Description',
-        key: 'lecture',
-        color: 'blue',
       },
     ],
 
@@ -159,16 +131,12 @@ const getEventData = () => {
         start: '11:30 am',
         end: '12:50 pm',
         other: 'Team Description',
-        key: 'team',
-        color: 'teal',
       },
       {
         name: 'CSCE 3550 - Lecture',
         start: '4:00 pm',
         end: '5:20 pm',
         other: 'Lecture Description',
-        key: 'lecture',
-        color: 'blue',
       },
     ],
   };
