@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Switch, StyleSheet} from 'react-native';
 import * as StylesModule from '../components/stylesheet';
 import {FileManager, SETTINGS_STORAGE_KEY} from '../helpers/FileManager';
+import { ClockFaceAppContext } from '../helpers/AppContextProvider';
 
 export class SettingsScreen extends React.Component {
   state = {
@@ -18,12 +19,14 @@ export class SettingsScreen extends React.Component {
       SETTINGS_STORAGE_KEY,
       NewSettingsPayload,
       false,
-    );
+    ).catch((error) => {console.log(error)});
   };
 
   // Start here so we can send our JSON object to the Settings screen after retrieval
   _SettingsInit = async () => {
     // Let our file manager resolve the promise
+    const Context = React.useContext(ClockFaceAppContext);
+    this.setState({analogClockFace: Context.AnalogClockValue}, () => {});
 
     await FileManager.ReadJSONData(SETTINGS_STORAGE_KEY)
       .then((token) => {
@@ -52,20 +55,27 @@ export class SettingsScreen extends React.Component {
       <StylesModule.SafeAreaView>
         <View style={styles.rowStyle}>
           <StylesModule.ScrollView>
-            {SettingSwitchItem(
-              'Use Analog Clock',
-              this.state.analogClockFace,
-              (value) => {
-                // If it was set to true, then set it back to false
-                this.setState({analogClockFace: value}, () => {
-                  console.log(
-                    'New State: analogClockFace ' + this.state.analogClockFace,
-                  );
-                  // Write settings to file
-                  this._WriteSettingsToFile();
-                });
-              },
-            )}
+            <ClockFaceAppContext.Consumer>
+              {({AnalogClockValue, setClockFaceValue}) => (
+                SettingSwitchItem(
+                  'Use Analog Clock',
+                  AnalogClockValue,
+                  (value) => {
+                    // If it was set to true, then set it back to false
+                    this.setState({analogClockFace: value}, () => {
+                      console.log(
+                        'New State: analogClockFace ' + this.state.analogClockFace,
+                      );
+
+                      // Write settings to file
+                      this._WriteSettingsToFile();
+                      
+                      // Force the context to update the state
+                      setClockFaceValue();
+                    });
+                  },
+                ))}
+            </ClockFaceAppContext.Consumer>
           </StylesModule.ScrollView>
         </View>
       </StylesModule.SafeAreaView>
