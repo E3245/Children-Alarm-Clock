@@ -118,6 +118,8 @@ class AppLandingPage extends Component {
           false,
         );
       }
+    }).catch((error) => {
+      console.error('Error Requesting Settings in AppLandingPage: ' + error); 
     });
 
     this._updateSettings();
