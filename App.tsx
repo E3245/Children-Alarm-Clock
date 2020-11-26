@@ -77,10 +77,18 @@ const AppTabs = (newTheme: any) => {
 };
 
 class AppLandingPage extends Component {
+  _updateSettings = () => {
+    FileManager.ReadJSONData(SETTINGS_STORAGE_KEY).then((token) => {
+      this.setState({analogClockFace: token.analogClockFace});
+    }).catch((error) => {
+      console.error('Error Updating Setting State in AppLandingPage: ' + error); });
+  };
+
   state = {
     appState: AppState.currentState,
     theme: Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme,
-    analogClockFace: false, // Default
+    analogClockFace: false, // For initializing and Context
+    setAnalogClockFaceFn: this._updateSettings, // For initializing and Context
   };
 
   _updateTheme = (newAppState: string) => {
@@ -90,12 +98,6 @@ class AppLandingPage extends Component {
         Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme;
     }
     this.setState({appState: newAppState});
-  };
-
-  _updateSettings = () => {
-    FileManager.ReadJSONData(SETTINGS_STORAGE_KEY).then((token) => {
-      this.setState({analogClockFace: token.analogClockFace});
-    });
   };
 
   componentDidMount() {
@@ -129,7 +131,12 @@ class AppLandingPage extends Component {
   render() {
     return (
       <ThemeProvider theme={this.state.theme}>
-        <ClockFaceAppContext.Provider value={this.state.analogClockFace}>
+        <ClockFaceAppContext.Provider value={
+          {
+            AnalogClockValue: this.state.analogClockFace, 
+            setClockFaceValue: this.state.setAnalogClockFaceFn
+          }
+          }>
           <NavigationContainer>{AppTabs(this.state.theme)}</NavigationContainer>
         </ClockFaceAppContext.Provider>
       </ThemeProvider>
