@@ -18,8 +18,9 @@ const ClockFace = () => {
           centerContent={true}
           contentInsetAdjustmentBehavior="automatic">
           <ClockFaceAppContext.Consumer>
-            {value => (
-              ChooseClockFace(value)
+            {({AnalogClockValue, setClockFaceValue}) => (
+              // Only use the value to test which clock face to render
+              ChooseClockFace(AnalogClockValue)
             )}
           </ClockFaceAppContext.Consumer>
         </ScrollView>
@@ -28,6 +29,7 @@ const ClockFace = () => {
   );
 };
 
+// Separate function to pick a clock face to render based on settings
 const ChooseClockFace = (type: boolean) => {
   if (type === true) //Analog
     return ( <Clock/> );
@@ -35,5 +37,4 @@ const ChooseClockFace = (type: boolean) => {
     return ( <DigitalClock />)
 }
 
-//             <DigitalClock />
 export default ClockFace;
