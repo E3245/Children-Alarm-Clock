@@ -21,6 +21,7 @@ import AgendaList from './screens/Agenda';
 /* Additional Components */
 //import {Permission, PERMISSION_TYPE} from './helpers/permissions';
 import {FileManager, SETTINGS_STORAGE_KEY} from './helpers/FileManager';
+import { ClockFaceAppContext } from './helpers/AppContextProvider';
 
 const Tab = createBottomTabNavigator();
 
@@ -126,10 +127,11 @@ class AppLandingPage extends Component {
   }
 
   render() {
-    // This works because ????
     return (
       <ThemeProvider theme={this.state.theme}>
-        <NavigationContainer>{AppTabs(this.state.theme)}</NavigationContainer>
+        <ClockFaceAppContext.Provider value={this.state.analogClockFace}>
+          <NavigationContainer>{AppTabs(this.state.theme)}</NavigationContainer>
+        </ClockFaceAppContext.Provider>
       </ThemeProvider>
     );
   }
