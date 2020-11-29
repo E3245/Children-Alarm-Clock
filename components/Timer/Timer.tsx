@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, Button} from 'react-native';
+import {View, Button, Alert} from 'react-native';
 import {getTimeTo, isTimePast, formatTime} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
+import NotifService, {NOTIFICATION_CHANNEL_TIMER} from '../../helpers/NotificationService';
 
 export type TimerProps = {
   // Indexing for modification with arbitrary edit functions
@@ -35,10 +36,21 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
     timeState: -1,
     isRunning: false,
     renderTime: -1,
+    NotifID: -1,  // Notifications
   };
 
   // The id for the interval that ticks every second
   private intervalID: any;
+  notif: NotifService;
+
+  /* Notifications */
+  onRegister(token) {
+    this.setState({registerToken: token.token})
+  }
+
+  onNotification(token) {
+    //Do nothing
+  }
 
   constructor(props: TimerProps) {
     super(props);
@@ -55,6 +67,12 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
       // In this case the timer is stopped and time is storing the remaining time
       this.state.renderTime = props.time;
     }
+
+    /* Notifications */
+    this.notif = new NotifService(
+      this.onRegister.bind(this),
+      this.onNotification.bind(this)
+    );
   }
 
   handleToggle = () => {
@@ -119,6 +137,9 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
     this.intervalID = setInterval(() => {
       this.tick();
     }, 100);
+
+    //Check permission and create notification, if applicable
+    this.notif.checkPermission(this._HandleNotificationsFn.bind(this));
   }
 
   stop() {
@@ -130,6 +151,9 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
     });
 
     clearInterval(this.intervalID);
+
+    // Clear notification
+    this.notif.cancelSpecificNotif(this.state.NotifID);
   }
 
   reset() {
@@ -157,6 +181,23 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
       this.props.handleChange(timer);
     }
   };
+
+  /* NOTIFICATIONS BEGIN */
+
+  // Check permission, and if the app has permission, go forward with the notification
+  // Else silently fail
+  _HandleNotificationsFn = (perms: any) => {
+    if (perms.alert === true)
+    {
+      let ID: number; //Create temporary variable
+      
+      // Create the notification and store the return value to the temp variable
+      ID = this.notif.scheduleNotificationTimer(NOTIFICATION_CHANNEL_TIMER, this.props.name, "", "", "", new Date(this.state.timeState), "sample.mp3");
+      console.log('Got ID ' + ID);
+      this.setState({NotifID: ID});
+    }
+  }
+  /* NOTIFICATIONS END */
 
   render = () => {
     return (
