@@ -102,7 +102,6 @@ class AppLandingPage extends Component {
 
   componentDidMount() {
     AppState.addEventListener('change', this._updateTheme);
-    AppState.addEventListener('change', this._updateSettings);
 
     // Test if the settings file is already created. If not, create one
     FileManager.ReadJSONData(SETTINGS_STORAGE_KEY).then((token) => {
@@ -127,7 +126,6 @@ class AppLandingPage extends Component {
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this._updateTheme);
-    AppState.removeEventListener('change', this._updateSettings);
   }
 
   render() {
