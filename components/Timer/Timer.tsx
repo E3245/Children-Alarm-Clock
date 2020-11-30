@@ -3,7 +3,9 @@ import {View, Button, Alert} from 'react-native';
 import {getTimeTo, isTimePast, formatTime} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
-import NotifService, {NOTIFICATION_CHANNEL_TIMER} from '../../helpers/NotificationService';
+import NotifService, {
+  NOTIFICATION_CHANNEL_TIMER,
+} from '../../helpers/NotificationService';
 
 export type TimerProps = {
   // Indexing for modification with arbitrary edit functions
@@ -36,7 +38,7 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
     timeState: -1,
     isRunning: false,
     renderTime: -1,
-    NotifID: -1,  // Notifications
+    NotifID: -1, // Notifications
   };
 
   // The id for the interval that ticks every second
@@ -45,7 +47,7 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
 
   /* Notifications */
   onRegister(token) {
-    this.setState({registerToken: token.token})
+    this.setState({registerToken: token.token});
   }
 
   onNotification(token) {
@@ -71,7 +73,7 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
     /* Notifications */
     this.notif = new NotifService(
       this.onRegister.bind(this),
-      this.onNotification.bind(this)
+      this.onNotification.bind(this),
     );
   }
 
@@ -187,16 +189,23 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
   // Check permission, and if the app has permission, go forward with the notification
   // Else silently fail
   _HandleNotificationsFn = (perms: any) => {
-    if (perms.alert === true)
-    {
+    if (perms.alert === true) {
       let ID: number; //Create temporary variable
-      
+
       // Create the notification and store the return value to the temp variable
-      ID = this.notif.scheduleNotificationTimer(NOTIFICATION_CHANNEL_TIMER, this.props.name, "", "", "", new Date(this.state.timeState), "sample.mp3");
+      ID = this.notif.scheduleNotificationTimer(
+        NOTIFICATION_CHANNEL_TIMER,
+        this.props.name,
+        '',
+        '',
+        '',
+        new Date(this.state.timeState),
+        'sample.mp3',
+      );
       console.log('Got ID ' + ID);
       this.setState({NotifID: ID});
     }
-  }
+  };
   /* NOTIFICATIONS END */
 
   render = () => {
@@ -211,7 +220,7 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
               ry="10"
               width="100%"
               height="100%"
-              stroke="black"
+              // stroke="black"
               fill={this.props.color}
               transform="translate(0,0)"
             />
