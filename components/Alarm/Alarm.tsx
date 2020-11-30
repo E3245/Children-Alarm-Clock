@@ -1,23 +1,25 @@
 import React from 'react';
 import {View, Button} from 'react-native';
-import {getTimeTo, isTimePast, formatTime} from '../../helpers/time';
+import {
+  isTimePast,
+  formatLocalTime,
+  getNextOccurence,
+} from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
 
 export type AlarmProps = {
   // Indexing for modification with arbitrary edit functions
   [key: string]: any;
-  // The amount of time the timer will run for when reset
-  amountTime: number;
+  // The end date of the alarm
+  endHour: number;
+  endMinute: number;
+  nextEndTime: number;
   name: string;
   color: string;
   uuid: string;
   handleChange?: (newAlarm: AlarmProps) => void;
-  // The time remaining on the timer in milliseconds (if it is currently stopped)
-  // The time the timer will end at in ms since epoch (if it is currently running)
-  // This var stores different values depending on the running boolean
-  time: number;
-  running: boolean;
+  enabled: boolean;
   hideButtons?: boolean;
 };
 
@@ -29,9 +31,8 @@ type OtherProps = {
 
 export class AlarmComponentSimple extends React.Component<AlarmProps> {
   state = {
-    timeState: -1,
-    isRunning: false,
-    renderTime: -1,
+    isEnabled: false,
+    nextEndTime: 0,
   };
 
   // The id for the interval that ticks every second
@@ -39,29 +40,20 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
 
   constructor(props: AlarmProps) {
     super(props);
-    this.state.timeState = props.time;
-    this.state.isRunning = props.running;
-    this.reset = this.reset.bind(this);
-
-    // Set the render time based on isRunning and if the time var is in the past
-    if (props.running && isTimePast(props.time)) {
-      this.state.renderTime = 0;
-    } else if (props.running) {
-      this.state.renderTime = getTimeTo(props.time);
+    this.state.isEnabled = props.enabled;
+    if (!this.props.nextEndTime || this.props.nextEndTime === 0) {
+      this.state.nextEndTime = getNextOccurence(
+        new Date(Date.now()),
+        this.props.endHour,
+        this.props.endMinute,
+      ).getTime();
     } else {
-      // In this case the timer is stopped and time is storing the remaining time
-      this.state.renderTime = props.time;
+      this.state.nextEndTime = props.nextEndTime;
     }
   }
 
   handleToggle = () => {
-    // Check if we should reset instead of toggle
-    if (this.state.timeState === 0) {
-      this.reset();
-      return;
-    }
-
-    if (this.state.isRunning) {
+    if (this.state.isEnabled) {
       this.stop();
     } else {
       this.start();
@@ -69,35 +61,31 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
   };
 
   componentDidUpdate(prevProps: any, prevState: any) {
-    // Only save when the component updates the things we acutally save
-    if (this.state.isRunning !== prevState.isRunning) {
-      this.save();
-    } else if (this.state.timeState !== prevState.timeState) {
+    if (prevState !== this.state) {
+      // Only save when the component updates the things we acutally save
       this.save();
     }
   }
 
   componentDidMount() {
-    if (this.state.isRunning) {
+    if (this.state.isEnabled) {
       this.intervalID = setInterval(() => this.tick(), 1000);
     }
   }
 
   tick() {
-    if (!this.state.isRunning) {
+    if (!this.state.isEnabled) {
       console.log('Alarm tried to tick while stopped');
       return;
     }
 
     // Check if the clock should stop
-    if (isTimePast(this.state.timeState)) {
+    if (isTimePast(this.props.nextEndTime)) {
       console.log('Alarm Ended!');
       // Force the render time to read 0
-      this.setState({renderTime: 0, isRunning: false, timeState: 0});
+      this.setState({isEnabled: false});
       // Stop the ticking
       clearInterval(this.intervalID);
-    } else {
-      this.setState({renderTime: getTimeTo(this.state.timeState)});
     }
   }
 
@@ -107,34 +95,28 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
 
   start() {
     console.log('Start');
-    // Save the time that the timer will end at
-    this.setState({
-      isRunning: true,
-      timeState: Date.now() + this.state.timeState,
-    });
-
-    this.intervalID = setInterval(() => {
-      this.tick();
-    }, 100);
+    this.setState(
+      {
+        isEnabled: true,
+        nextEndTime: getNextOccurence(
+          new Date(Date.now()),
+          this.props.endHour,
+          this.props.endMinute,
+        ).getTime(),
+      },
+      () => {
+        this.intervalID = setInterval(() => {
+          this.tick();
+        }, 100);
+      },
+    );
   }
 
   stop() {
     console.log('Stop');
     // Save the time remaining on the timer
     this.setState({
-      isRunning: false,
-      timeState: getTimeTo(this.state.timeState),
-    });
-
-    clearInterval(this.intervalID);
-  }
-
-  reset() {
-    console.log('Reset');
-    this.setState({
-      isRunning: false,
-      renderTime: this.props.amountTime,
-      timeState: this.props.amountTime,
+      isEnabled: false,
     });
     clearInterval(this.intervalID);
   }
@@ -146,8 +128,8 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
     // running
     // remainingtime
     let alarm = {...this.props};
-    alarm.running = this.state.isRunning;
-    alarm.time = this.state.timeState;
+    alarm.enabled = this.state.isEnabled;
+    alarm.nextEndTime = this.state.nextEndTime;
     if (!this.props.handleChange) {
       console.error('Tried to save a alarm that had no callback function');
     } else {
@@ -179,7 +161,7 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
               x="50%"
               y="50%"
               textAnchor="middle">
-              {formatTime(new Date(this.state.renderTime))}
+              {formatLocalTime(new Date(this.state.nextEndTime))}
             </Text>
             <Text
               fill="black"
@@ -197,15 +179,10 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
         ) : (
           <View style={styles.centered}>
             <View>
-              <Button title={'Reset'} onPress={this.reset} />
-              {this.state.renderTime !== 0 ? (
-                <Button
-                  title={this.state.isRunning ? 'Stop' : 'Start'}
-                  onPress={this.handleToggle}
-                />
-              ) : (
-                <></>
-              )}
+              <Button
+                title={this.state.isEnabled ? 'Disable' : 'Enable'}
+                onPress={this.handleToggle}
+              />
             </View>
           </View>
         )}

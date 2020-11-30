@@ -42,9 +42,14 @@ const EditAlarm = (props: EditAlarmProps) => {
           defaultValue={props.alarm.color}
         />
         <LabeledTextInput
-          label={'Duration'}
-          handleChange={handleChange('amountTime')}
-          defaultValue={props.alarm.amountTime}
+          label={'endHour'}
+          handleChange={handleChange('endHour')}
+          defaultValue={props.alarm.endHour}
+        />
+        <LabeledTextInput
+          label={'endMinute'}
+          handleChange={handleChange('endMinute')}
+          defaultValue={props.alarm.endMinute}
         />
       </View>
     </View>

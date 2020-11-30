@@ -25,6 +25,49 @@ export const isTimePast = (endTime: number): boolean => {
   return date.getTime() >= endTime;
 };
 
+export const getNextOccurence = (
+  date: Date,
+  hour: number,
+  minute: number,
+): Date => {
+  if (
+    date.getHours() < hour ||
+    (date.getHours() === hour && date.getMinutes() < minute)
+  ) {
+    // If the next occurence is on date
+    return new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      hour,
+      minute,
+    );
+  } else {
+    // Otherwise the next occurence is on the next day
+    let ndate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      hour,
+      minute,
+    );
+    ndate.setDate(date.getDate() + 1);
+    console.log('DATE');
+    console.log(ndate.getTime());
+    return ndate;
+  }
+};
+
+export const formatLocalTime = (date: Date): String => {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  return (
+    hours.toString().padStart(2, '0') +
+    ':' +
+    minutes.toString().padStart(2, '0')
+  );
+};
+
 export const formatTime = (date: Date): String => {
   const hours = date.getUTCHours();
   const minutes = date.getUTCMinutes();
