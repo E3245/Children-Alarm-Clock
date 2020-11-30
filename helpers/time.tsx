@@ -52,8 +52,6 @@ export const getNextOccurence = (
       minute,
     );
     ndate.setDate(date.getDate() + 1);
-    console.log('DATE');
-    console.log(ndate.getTime());
     return ndate;
   }
 };
