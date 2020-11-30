@@ -21,6 +21,7 @@ import AgendaList from './screens/Agenda';
 /* Additional Components */
 //import {Permission, PERMISSION_TYPE} from './helpers/permissions';
 import {FileManager, SETTINGS_STORAGE_KEY} from './helpers/FileManager';
+import { ClockFaceAppContext } from './helpers/AppContextProvider';
 
 const Tab = createBottomTabNavigator();
 
@@ -76,10 +77,18 @@ const AppTabs = (newTheme: any) => {
 };
 
 class AppLandingPage extends Component {
+  _updateSettings = () => {
+    FileManager.ReadJSONData(SETTINGS_STORAGE_KEY).then((token) => {
+      this.setState({analogClockFace: token.analogClockFace});
+    }).catch((error) => {
+      console.error('Error Updating Setting State in AppLandingPage: ' + error); });
+  };
+
   state = {
     appState: AppState.currentState,
     theme: Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme,
-    analogClockFace: false, // Default
+    analogClockFace: false, // For initializing and Context
+    setAnalogClockFaceFn: this._updateSettings, // For initializing and Context
   };
 
   _updateTheme = (newAppState: string) => {
@@ -91,15 +100,8 @@ class AppLandingPage extends Component {
     this.setState({appState: newAppState});
   };
 
-  _updateSettings = () => {
-    FileManager.ReadJSONData(SETTINGS_STORAGE_KEY).then((token) => {
-      this.setState({analogClockFace: token.analogClockFace});
-    });
-  };
-
   componentDidMount() {
     AppState.addEventListener('change', this._updateTheme);
-    AppState.addEventListener('change', this._updateSettings);
 
     // Test if the settings file is already created. If not, create one
     FileManager.ReadJSONData(SETTINGS_STORAGE_KEY).then((token) => {
@@ -115,6 +117,8 @@ class AppLandingPage extends Component {
           false,
         );
       }
+    }).catch((error) => {
+      console.error('Error Requesting Settings in AppLandingPage: ' + error); 
     });
 
     this._updateSettings();
@@ -122,14 +126,19 @@ class AppLandingPage extends Component {
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this._updateTheme);
-    AppState.removeEventListener('change', this._updateSettings);
   }
 
   render() {
-    // This works because ????
     return (
       <ThemeProvider theme={this.state.theme}>
-        <NavigationContainer>{AppTabs(this.state.theme)}</NavigationContainer>
+        <ClockFaceAppContext.Provider value={
+          {
+            AnalogClockValue: this.state.analogClockFace, 
+            setClockFaceValue: this.state.setAnalogClockFaceFn
+          }
+          }>
+          <NavigationContainer>{AppTabs(this.state.theme)}</NavigationContainer>
+        </ClockFaceAppContext.Provider>
       </ThemeProvider>
     );
   }

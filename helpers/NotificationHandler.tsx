@@ -1,6 +1,7 @@
 // From https://github.com/zo0r/react-native-push-notification/blob/master/example/NotificationHandler.js
 // Implementation of Push Notifications that auto-configures notifications.
 
+import { Platform } from 'react-native';
 import PushNotification from 'react-native-push-notification';
 
 class NotificationHandler {
@@ -20,13 +21,13 @@ class NotificationHandler {
     }
   }
 
-  _onAction(notification) {
-    console.log ('Notification action received:');
-    console.log(notification.action);
-    console.log(notification);
+  _onAction(token) {
+    if (token.action === 'Dismiss')
+    {
+      console.log('Clearing notification ' + token.id);
+      PushNotification.clearLocalNotification(token.id);
 
-    if(notification.action === 'Yes') {
-      PushNotification.invokeApp(notification);
+      //PushNotification.cancelAllLocalNotifications();
     }
   }
 
@@ -41,6 +42,10 @@ class NotificationHandler {
 
   attachNotification(handler) {
     this._onNotification = handler;
+  }
+
+  attachAction(handler) {
+    this._onAction = handler;
   }
 }
 
@@ -75,7 +80,7 @@ PushNotification.configure({
    * - Specified if permissions (ios) and token (android and ios) will requested or not,
    * - if not, you must call PushNotificationsHandler.requestPermissions() later
    */
-  requestPermissions: true,
+  requestPermissions: Platform.OS === 'ios',
 });
 
 export default handler;
