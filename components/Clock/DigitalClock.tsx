@@ -56,7 +56,7 @@ export default class DigitalClock extends Component {
 
     this.setState({
       currentTime: hour + ':' + minutes + ':' + seconds + ' ' + am_pm,
-      currentMonth: month + '/' + day + '/' + year,
+      currentMonth: month + 1 + '/' + day + '/' + year,
     });
 
     this.daysArray.map((item, key) => {
