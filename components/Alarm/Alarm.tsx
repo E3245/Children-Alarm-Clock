@@ -149,7 +149,7 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
               ry="10"
               width="100%"
               height="100%"
-              stroke="black"
+              // stroke="black"
               fill={this.props.color}
               transform="translate(0,0)"
             />
