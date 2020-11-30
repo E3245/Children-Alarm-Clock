@@ -55,7 +55,7 @@ const AppTabs = (newTheme: any) => {
       })}
       tabBarOptions={{
         // Colors that the tabs will take. Will need to be adjusted for dark mode, if possible
-        activeTintColor: newTheme.primaryColor,
+        activeTintColor: newTheme.bgColor,
         inactiveTintColor: 'gray',
         activeBackgroundColor: newTheme.secondaryColor,
         inactiveBackgroundColor: newTheme.bgColor,
