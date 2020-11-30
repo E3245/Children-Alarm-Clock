@@ -83,13 +83,14 @@ export class AlarmList extends React.Component<Props, State> {
     let func = this.handleChange(ukey).bind(this);
 
     let retprop: AlarmProps = {
-      amountTime: time,
+      endHour: 6,
+      endMinute: 30,
+      nextEndTime: 0,
       name: rand(verbs) + ' ' + rand(nouns),
       color: rand(colors),
       uuid: ukey,
       handleChange: func,
-      time: time,
-      running: false,
+      enabled: false,
     };
 
     return retprop;
@@ -124,7 +125,7 @@ export class AlarmList extends React.Component<Props, State> {
   loadAlarms = async () => {
     console.log('LOADING ALARMLIST');
     // Delete all timer data for testing
-    // FileManager.ClearData([TIMER_STORAGE_KEY]);
+    // FileManager.ClearData([ALARM_STORAGE_KEY]);
 
     let newAlarmList: AlarmProps[] = [];
     await FileManager.ReadJSONData(ALARM_STORAGE_KEY)

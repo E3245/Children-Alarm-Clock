@@ -18,7 +18,7 @@ const EditModal = (props: EditModalProps) => {
     console.log(prop);
     console.log(alarm_cp);
     if (!(prop in alarm_cp)) {
-      console.error('Tried to modifiy non-existant prop on timer');
+      console.error('Tried to modifiy non-existant prop on alarm');
     } else {
       if (!isNaN(+new_val)) {
         alarm_cp[prop] = Number(new_val);
@@ -29,7 +29,7 @@ const EditModal = (props: EditModalProps) => {
 
     // Invoke callback
     if (!props.alarm.handleChange) {
-      console.warn('Tried to call undefined callback in EditTimer');
+      console.warn('Tried to call undefined callback in EditAlarm');
     } else {
       props.alarm.handleChange(alarm_cp);
     }
