@@ -2,28 +2,28 @@ import React from 'react';
 import {Button, ScrollView, StyleSheet} from 'react-native';
 import {View} from '../stylesheet';
 import Modal from 'react-native-modal';
-import EditTimer from './EditTimer';
-import {TimerProps} from '../Timer/Timer';
+import EditAlarm from './EditAlarm';
+import {AlarmProps} from './Alarm';
 
 type EditModalProps = {
-  alarm: TimerProps;
+  alarm: AlarmProps;
   isVisible: boolean;
   onClose: () => void;
 };
 
 const EditModal = (props: EditModalProps) => {
   // Make a new timer based on the changed value, and call the callback to notify parent
-  const saveTimer = (prop: string, new_val: any) => {
-    let timer_cp = props.alarm;
+  const saveAlarm = (prop: string, new_val: any) => {
+    let alarm_cp = props.alarm;
     console.log(prop);
-    console.log(timer_cp);
-    if (!(prop in timer_cp)) {
+    console.log(alarm_cp);
+    if (!(prop in alarm_cp)) {
       console.error('Tried to modifiy non-existant prop on timer');
     } else {
       if (!isNaN(+new_val)) {
-        timer_cp[prop] = Number(new_val);
+        alarm_cp[prop] = Number(new_val);
       } else {
-        timer_cp[prop] = new_val;
+        alarm_cp[prop] = new_val;
       }
     }
 
@@ -31,7 +31,7 @@ const EditModal = (props: EditModalProps) => {
     if (!props.alarm.handleChange) {
       console.warn('Tried to call undefined callback in EditTimer');
     } else {
-      props.alarm.handleChange(timer_cp);
+      props.alarm.handleChange(alarm_cp);
     }
   };
 
@@ -43,7 +43,7 @@ const EditModal = (props: EditModalProps) => {
           animationIn={'slideInDown'}
           animationOut={'slideOutUp'}>
           <View>
-            <EditTimer timer={props.alarm} onChange={saveTimer} />
+            <EditAlarm alarm={props.alarm} onChange={saveAlarm} />
           </View>
           <View style={modalStyle.padded}>
             <Button title="Done" onPress={props.onClose} />

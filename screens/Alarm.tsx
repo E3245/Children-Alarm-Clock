@@ -1,10 +1,9 @@
 import React from 'react';
-import {useColorScheme, Text, View} from 'react-native';
+import {useColorScheme, Text} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from '../themes';
-import {ScrollView, styles} from '../components/stylesheet';
 import {AlarmList} from '../components/Alarm/AlarmList';
-import {TimerList} from '../components/Timer/TimerList';
+import {View, ScrollView, styles} from '../components/stylesheet';
 
 const AlarmScreen = () => {
   const theme = useColorScheme() === 'dark' ? darkTheme : lightTheme;
@@ -12,11 +11,11 @@ const AlarmScreen = () => {
   return (
     <ThemeProvider theme={theme}>
       <View style={styles.container}>
-        <Text style={styles.titleText}>Timer Page</Text>
+        <Text style={styles.titleText}>Alarm Page</Text>
       </View>
       <ScrollView style={styles.TimerScroll}>
         <View style={styles.centered}>
-          <TimerList name="alarmlist" />
+          <AlarmList name="alarmlist" />
         </View>
       </ScrollView>
     </ThemeProvider>
