@@ -195,8 +195,8 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
       // Create the notification and store the return value to the temp variable
       ID = this.notif.scheduleNotificationTimer(
         NOTIFICATION_CHANNEL_TIMER,
-        this.props.name,
         this.props.color,
+        this.props.name,
         '',
         '',
         '',
