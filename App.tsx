@@ -168,7 +168,7 @@ class SplashScreen extends Component {
     return new Promise((resolve) =>
       setTimeout(() => {
         resolve('result');
-      }, 10000),
+      }, 3000),
     );
   };
 
