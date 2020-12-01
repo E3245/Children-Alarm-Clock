@@ -36,6 +36,7 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
   state = {
     isEnabled: false,
     nextEndTime: 0,
+    NotifID: -1, // Notifications
   };
 
   // The id for the interval that ticks every second
