@@ -198,6 +198,13 @@ export const splashStyle = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Montserrat',
   },
+  projectName: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontFamily: 'Montserrat',
+  },
   teamMembers: {
     color: 'white',
     fontSize: 20,

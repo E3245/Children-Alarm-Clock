@@ -168,7 +168,7 @@ class SplashScreen extends Component {
     return new Promise((resolve) =>
       setTimeout(() => {
         resolve('result');
-      }, 3000),
+      }, 10000),
     );
   };
 
@@ -190,6 +190,7 @@ class SplashScreen extends Component {
             style={splashStyle.UNTLogo}
             source={require('./images/lettermark_wordmark_diving_eagle_combo_white.png')}
           />
+          <Text style={splashStyle.projectName}>Children's Alarm Clock</Text>
           <Text style={splashStyle.teamName}>Möbius</Text>
           <Text />
           <Text style={splashStyle.teamMembers}>
