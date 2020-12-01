@@ -142,6 +142,9 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
       isEnabled: false,
     });
     clearInterval(this.intervalID);
+
+    // Clear the notification from the Service
+    this.notif.cancelSpecificNotif(this.state.NotifID); 
   }
 
   // Call the parent to save the data
