@@ -1,6 +1,7 @@
 import {Agenda} from 'react-native-calendars';
-import {View, TouchableOpacity, Text, StyleSheet, Alert} from 'react-native';
+import {View, TouchableOpacity, Text, Alert} from 'react-native';
 import React from 'react';
+import {agenda} from '../components/stylesheet';
 
 const mobius = {key: 'mobius', color: 'cyan'};
 const lecture = {key: 'lecture', color: 'blue'};
@@ -150,7 +151,7 @@ export default function AgendaList({props, navigation, route}) {
   const renderItem = (item, firstItemInDay) => {
     return (
       <TouchableOpacity
-        style={styles.item}
+        style={agenda.item}
         onPress={() => Alert.alert(item.name, item.other)}>
         <>
           <Text>
@@ -173,7 +174,7 @@ export default function AgendaList({props, navigation, route}) {
     );
   }
   return (
-    <View style={styles.container}>
+    <View style={agenda.container}>
       <Agenda
         items={monthData}
         renderItem={(item, firstItemInDay) => {
@@ -181,7 +182,7 @@ export default function AgendaList({props, navigation, route}) {
         }}
         renderEmptyData={() => {
           return (
-            <Text style={styles.emptyDate}>
+            <Text style={agenda.emptyDate}>
               No events scheduled for this day.
             </Text>
           );
@@ -243,24 +244,3 @@ export default function AgendaList({props, navigation, route}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 0,
-  },
-  emptyDate: {
-    height: 15,
-    flex: 1,
-    paddingTop: 30,
-    textAlign: 'center',
-  },
-  item: {
-    backgroundColor: 'white',
-    flex: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17,
-  },
-});

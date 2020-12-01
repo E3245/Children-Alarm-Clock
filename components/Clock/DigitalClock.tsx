@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {ScrollView, View, Text, StyleSheet} from 'react-native';
+import {ScrollView, View, Text} from 'react-native';
+import {digitalStyle} from '../stylesheet';
 
-const Separator = () => <View style={styles.separator} />;
+const Separator = () => <View style={digitalStyle.separator} />;
 
 export default class DigitalClock extends Component {
   constructor() {
@@ -79,61 +80,22 @@ export default class DigitalClock extends Component {
   render() {
     return (
       <>
-        <ScrollView style={styles.container}>
+        <ScrollView style={digitalStyle.container}>
+        <Text /><Text /><Text /><Text /><Text /><Text /><Text /><Text /><Text /><Text /><Text /><Text />
           <Separator />
-          <View style={styles.dClock}>
+          <View style={digitalStyle.dClock}>
             <View>
-              <Text style={styles.timeText}>{this.state.currentTime}</Text>
-              <Text style={styles.daysText}>
+              <Text style={digitalStyle.timeText}>
+                {this.state.currentTime}
+              </Text>
+              <Text style={digitalStyle.daysText}>
                 {this.state.currentDay} - {this.state.currentMonth}
               </Text>
             </View>
           </View>
-          <Separator />
+          <Text />
         </ScrollView>
       </>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    // justifyContent: 'center',
-    flex: 1,
-    paddingTop: 10,
-    marginTop: 20,
-    // alignItems: 'center',
-    borderBottomColor: '#000000',
-    borderBottomWidth: 1,
-  },
-  dClock: {
-    marginTop: 5,
-    paddingVertical: 4,
-    padding: 40,
-    borderWidth: 4,
-    borderColor: '#20232a',
-    borderRadius: 6,
-    backgroundColor: '#059033' /*{color} */,
-    color: '#20232a',
-    textAlign: 'center',
-    // alignItems: 'center',
-    fontSize: 30,
-    fontWeight: 'bold',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    // justifyContent: 'space-between',
-  },
-  timeText: {
-    fontSize: 30,
-    color: '#000000',
-  },
-  daysText: {
-    color: '#000000',
-    fontSize: 25,
-  },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: '#000000',
-    borderBottomWidth: 1,
-  },
-});

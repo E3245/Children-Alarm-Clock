@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppState, Appearance} from 'react-native';
+import {AppState, Appearance, View, Text, Image} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {darkTheme, lightTheme} from './themes';
 
@@ -9,6 +9,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 /*Icon Imports*/
 import IonIcons from 'react-native-vector-icons/Ionicons';
+
+/*Stylesheet Calls*/
+import {splashStyle} from './components/stylesheet';
 
 /*Screen Calls*/
 import ClockScreen from './screens/Clock';
@@ -21,7 +24,7 @@ import AgendaList from './screens/Agenda';
 /* Additional Components */
 //import {Permission, PERMISSION_TYPE} from './helpers/permissions';
 import {FileManager, SETTINGS_STORAGE_KEY} from './helpers/FileManager';
-import { ClockFaceAppContext } from './helpers/AppContextProvider';
+import {ClockFaceAppContext} from './helpers/AppContextProvider';
 
 const Tab = createBottomTabNavigator();
 
@@ -78,10 +81,15 @@ const AppTabs = (newTheme: any) => {
 
 class AppLandingPage extends Component {
   _updateSettings = () => {
-    FileManager.ReadJSONData(SETTINGS_STORAGE_KEY).then((token) => {
-      this.setState({analogClockFace: token.analogClockFace});
-    }).catch((error) => {
-      console.error('Error Updating Setting State in AppLandingPage: ' + error); });
+    FileManager.ReadJSONData(SETTINGS_STORAGE_KEY)
+      .then((token) => {
+        this.setState({analogClockFace: token.analogClockFace});
+      })
+      .catch((error) => {
+        console.error(
+          'Error Updating Setting State in AppLandingPage: ' + error,
+        );
+      });
   };
 
   state = {
@@ -104,22 +112,24 @@ class AppLandingPage extends Component {
     AppState.addEventListener('change', this._updateTheme);
 
     // Test if the settings file is already created. If not, create one
-    FileManager.ReadJSONData(SETTINGS_STORAGE_KEY).then((token) => {
-      // Copy this JSON when using this object for settings
-      let SettingsPayload = {
-        analogClockFace: false,
-      };
+    FileManager.ReadJSONData(SETTINGS_STORAGE_KEY)
+      .then((token) => {
+        // Copy this JSON when using this object for settings
+        let SettingsPayload = {
+          analogClockFace: false,
+        };
 
-      if (token == null) {
-        FileManager.WriteJSONToDisk(
-          SETTINGS_STORAGE_KEY,
-          SettingsPayload,
-          false,
-        );
-      }
-    }).catch((error) => {
-      console.error('Error Requesting Settings in AppLandingPage: ' + error); 
-    });
+        if (token == null) {
+          FileManager.WriteJSONToDisk(
+            SETTINGS_STORAGE_KEY,
+            SettingsPayload,
+            false,
+          );
+        }
+      })
+      .catch((error) => {
+        console.error('Error Requesting Settings in AppLandingPage: ' + error);
+      });
 
     this._updateSettings();
   }
@@ -131,12 +141,11 @@ class AppLandingPage extends Component {
   render() {
     return (
       <ThemeProvider theme={this.state.theme}>
-        <ClockFaceAppContext.Provider value={
-          {
-            AnalogClockValue: this.state.analogClockFace, 
-            setClockFaceValue: this.state.setAnalogClockFaceFn
-          }
-          }>
+        <ClockFaceAppContext.Provider
+          value={{
+            AnalogClockValue: this.state.analogClockFace,
+            setClockFaceValue: this.state.setAnalogClockFaceFn,
+          }}>
           <NavigationContainer>{AppTabs(this.state.theme)}</NavigationContainer>
         </ClockFaceAppContext.Provider>
       </ThemeProvider>
@@ -145,10 +154,57 @@ class AppLandingPage extends Component {
 }
 
 const App = () => {
-  return <AppLandingPage />;
+  return <SplashScreen />;
 };
 
+class SplashScreen extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {isLoading: true};
+  }
+
+  performTimeConsumingTask = async () => {
+    return new Promise((resolve) =>
+      setTimeout(() => {
+        resolve('result');
+      }, 3000),
+    );
+  };
+
+  async componentDidMount() {
+    // Preload data from an external API
+    // Preload data using AsyncStorage
+    const data = await this.performTimeConsumingTask();
+
+    if (data !== null) {
+      this.setState({isLoading: false});
+    }
+  }
+
+  render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={splashStyle.viewStyles}>
+          <Image
+            style={splashStyle.UNTLogo}
+            source={require('./images/lettermark_wordmark_diving_eagle_combo_white.png')}
+          />
+          <Text style={splashStyle.teamName}>Möbius</Text>
+          <Text />
+          <Text style={splashStyle.teamMembers}>
+            John Long | Ayman Alqaq | Aaron Hurley
+          </Text>
+        </View>
+      );
+    }
+
+    return <AppLandingPage />;
+  }
+}
+
 export default App;
+
 /*
 const App = () => {
   const theme = Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme;

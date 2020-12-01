@@ -12,7 +12,7 @@ const diameter = width - 40;
 const center = width / 2;
 const radius = diameter / 2;
 const hourTickCount = 12;
-const minuteTickCount = 12 * 6;
+const minuteTickCount = 12 * 6.0;
 
 const ClockFace = () => {
   let [time, setTime] = useState(getTimeInAngles);
