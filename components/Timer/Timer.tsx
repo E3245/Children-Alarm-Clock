@@ -196,6 +196,9 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
       ID = this.notif.scheduleNotificationTimer(
         NOTIFICATION_CHANNEL_TIMER,
         this.props.name,
+        this.props.color,
+        '',
+        '',
         '',
         '',
         '',
