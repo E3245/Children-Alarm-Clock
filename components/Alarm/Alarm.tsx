@@ -7,6 +7,9 @@ import {
 } from '../../helpers/time';
 import {styles} from '../stylesheet';
 import Svg, {Text, Rect} from 'react-native-svg';
+import NotifService, {
+  NOTIFICATION_CHANNEL_ALARM,
+} from '../../helpers/NotificationService';
 
 export type AlarmProps = {
   // Indexing for modification with arbitrary edit functions
@@ -37,6 +40,16 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
 
   // The id for the interval that ticks every second
   private intervalID: any;
+  notif: NotifService;
+
+  /* Notifications */
+  onRegister(token) {
+    this.setState({registerToken: token.token});
+  }
+
+  onNotification(token) {
+    //Do nothing
+  }
 
   constructor(props: AlarmProps) {
     super(props);
@@ -50,6 +63,12 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
     } else {
       this.state.nextEndTime = props.nextEndTime;
     }
+    
+    /* Notifications */
+    this.notif = new NotifService(
+      this.onRegister.bind(this),
+      this.onNotification.bind(this),
+    );
   }
 
   handleToggle = () => {
@@ -110,6 +129,9 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
         }, 100);
       },
     );
+    
+    //Check permission and create notification, if applicable
+    this.notif.checkPermission(this._HandleNotificationsFn.bind(this));
   }
 
   stop() {
@@ -136,6 +158,33 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
       this.props.handleChange(alarm);
     }
   };
+
+  /* NOTIFICATIONS BEGIN */
+
+  // Check permission, and if the app has permission, go forward with the notification
+  // Else silently fail
+  _HandleNotificationsFn = (perms: any) => {
+    if (perms.alert === true) {
+      let ID: number; //Create temporary variable
+
+      // Create the notification and store the return value to the temp variable
+      ID = this.notif.scheduleNotificationTimer(
+        NOTIFICATION_CHANNEL_ALARM,
+        this.props.color,
+        this.props.name,
+        '',
+        formatLocalTime(new Date(this.state.nextEndTime)),
+        '',
+        '',
+        '',
+        new Date(this.state.nextEndTime),
+        'sample.mp3',
+      );
+      console.log('Got ID ' + ID);
+      this.setState({NotifID: ID});
+    }
+  };
+  /* NOTIFICATIONS END */
 
   render = () => {
     return (
