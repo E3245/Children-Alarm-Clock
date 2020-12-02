@@ -186,7 +186,7 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
       // Create the notification and store the return value to the temp variable
       ID = this.notif.scheduleNotificationTimer(
         NOTIFICATION_CHANNEL_ALARM,
-        this.props.color,
+        'green',
         this.props.name,
         '',
         formatLocalTime(new Date(this.state.nextEndTime)),
