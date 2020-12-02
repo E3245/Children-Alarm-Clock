@@ -44,11 +44,11 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
   notif: NotifService;
 
   /* Notifications */
-  onRegister(token) {
+  onRegister(token: any) {
     this.setState({registerToken: token.token});
   }
 
-  onNotification(token) {
+  onNotification(_token: any) {
     //Do nothing
   }
 
@@ -64,7 +64,7 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
     } else {
       this.state.nextEndTime = props.nextEndTime;
     }
-    
+
     /* Notifications */
     this.notif = new NotifService(
       this.onRegister.bind(this),
@@ -137,7 +137,7 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
         }, 100);
       },
     );
-    
+
     //Check permission and create notification, if applicable
     this.notif.checkPermission(this._HandleNotificationsFn.bind(this));
   }
@@ -156,7 +156,7 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
     clearInterval(this.intervalID);
 
     // Clear the notification from the Service
-    this.notif.cancelSpecificNotif(this.state.NotifID); 
+    this.notif.cancelSpecificNotif(this.state.NotifID);
   }
 
   // Call the parent to save the data

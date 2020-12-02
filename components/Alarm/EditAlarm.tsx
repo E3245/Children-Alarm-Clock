@@ -4,7 +4,8 @@ import {AlarmProps} from './Alarm';
 import LabeledTextInput from '../Inputs/LabeledTextInput';
 
 import {BackgroundText, styles, View} from '../stylesheet';
-import { ColorPicker, fromHsv } from 'react-native-color-picker';
+import {ColorPicker, fromHsv} from 'react-native-color-picker';
+import { HsvColor } from 'react-native-color-picker/dist/typeHelpers';
 
 type EditAlarmProps = {
   alarm: AlarmProps;
