@@ -10,13 +10,16 @@ type LabeledTextInputProps = {
 };
 
 const LabeledTextInput = (props: LabeledTextInputProps) => {
+  const [value, onChangeText] = React.useState(props.defaultValue?.toString());
+
   return (
     <View style={styles.row}>
       <BackgroundText> {props.label} </BackgroundText>
       <TextInput
         placeholder={props.placeholder}
-        onChangeText={props.handleChange}
-        defaultValue={props.defaultValue?.toString()}
+        onChangeText={(text) => onChangeText(text)}
+        value={value}
+        onEndEditing={() => props.handleChange(value)}
       />
     </View>
   );
