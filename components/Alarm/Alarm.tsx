@@ -81,6 +81,13 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
   };
 
   componentDidUpdate(prevProps: any, prevState: any) {
+    if (
+      prevProps.endHour !== this.props.endHour ||
+      prevProps.endMinute !== this.props.endMinute
+    ) {
+      this.stop();
+      this.save();
+    }
     if (prevState !== this.state) {
       // Only save when the component updates the things we acutally save
       this.save();
@@ -140,6 +147,11 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
     // Save the time remaining on the timer
     this.setState({
       isEnabled: false,
+      nextEndTime: getNextOccurence(
+        new Date(Date.now()),
+        this.props.endHour,
+        this.props.endMinute,
+      ).getTime(),
     });
     clearInterval(this.intervalID);
 
@@ -203,7 +215,7 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
               width="100%"
               height="100%"
               // stroke="black"
-              fill={this.props.color }
+              fill={this.props.color}
               transform="translate(0,0)"
             />
             <Text
