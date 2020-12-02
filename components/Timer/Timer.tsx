@@ -171,6 +171,9 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
       timeState: this.props.amountTime,
     });
     clearInterval(this.intervalID);
+    
+    // Clear notification
+    this.notif.cancelSpecificNotif(this.state.NotifID);
   }
 
   // Call the parent to save the data
