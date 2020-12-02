@@ -1,9 +1,12 @@
 import React, {useCallback} from 'react';
 import {TimerProps} from '../Timer/Timer';
 
+import tinycolor from 'tinycolor2';
+
 import LabeledTextInput from '../Inputs/LabeledTextInput';
 
 import {BackgroundText, styles, View} from '../stylesheet';
+import {ColorPicker, fromHsv, toHsv} from 'react-native-color-picker';
 
 type EditTimerProps = {
   timer: TimerProps;
@@ -36,15 +39,15 @@ const EditTimer = (props: EditTimerProps) => {
           defaultValue={props.timer.name}
         />
         <LabeledTextInput
-          label={'Color'}
-          placeholder={'white'}
-          handleChange={handleChange('color')}
-          defaultValue={props.timer.color}
-        />
-        <LabeledTextInput
           label={'Duration'}
           handleChange={handleChange('amountTime')}
           defaultValue={props.timer.amountTime}
+        />
+
+        <ColorPicker
+          defaultColor={props.timer.color}
+          onColorSelected={(color) => handleChange('color')(fromHsv(color))}
+          style={{flex: 0, height: 200}}
         />
       </View>
     </View>
