@@ -91,6 +91,7 @@ export class AlarmList extends React.Component<Props, State> {
       uuid: ukey,
       handleChange: func,
       enabled: false,
+      daysOfTheWeek: [true, true, true, true, true, true, true],
     };
 
     return retprop;

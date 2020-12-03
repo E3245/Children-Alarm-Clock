@@ -17,10 +17,15 @@ type EditAlarmProps = {
 
 const to_day_dict = (arr: boolean[]) => {
   let out: {[characterName: number]: number} = {};
-  arr.forEach((element, index) => {
-    out[index] = element ? 1 : 0;
-  });
-  return out;
+  if (arr) {
+    arr.forEach((element, index) => {
+      out[index] = element ? 1 : 0;
+    });
+
+    return out;
+  }
+
+  return [true, true, true, true, true, true, true];
 };
 
 const to_day_arr = (dict: {[characterName: number]: number}) => {
