@@ -6,6 +6,7 @@ import LabeledTextInput from '../Inputs/LabeledTextInput';
 import {BackgroundText, styles, View} from '../stylesheet';
 import {ColorPicker, fromHsv} from 'react-native-color-picker';
 import { HsvColor } from 'react-native-color-picker/dist/typeHelpers';
+import EndTimeInput from '../Inputs/EndTimeInput';
 
 type EditAlarmProps = {
   alarm: AlarmProps;
@@ -37,7 +38,7 @@ const EditAlarm = (props: EditAlarmProps) => {
           handleChange={handleChange('name')}
           defaultValue={props.alarm.name}
         />
-        <LabeledTextInput
+        {/* <LabeledTextInput
           label={'endHour'}
           handleChange={handleChange('endHour')}
           defaultValue={props.alarm.endHour}
@@ -46,6 +47,13 @@ const EditAlarm = (props: EditAlarmProps) => {
           label={'endMinute'}
           handleChange={handleChange('endMinute')}
           defaultValue={props.alarm.endMinute}
+        /> */}
+        <EndTimeInput 
+          label={"End at"}
+          handleHourChange={handleChange('endHour')}
+          handleMinuteChange={handleChange('endMinute')}
+          defaultHourValue={props.alarm.endHour}
+          defaultMinuteValue={props.alarm.endMinute}
         />
         <ColorPicker
           defaultColor={props.alarm.color}

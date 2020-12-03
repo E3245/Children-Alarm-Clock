@@ -7,6 +7,7 @@ import LabeledTextInput from '../Inputs/LabeledTextInput';
 
 import {BackgroundText, styles, View} from '../stylesheet';
 import {ColorPicker, fromHsv, toHsv} from 'react-native-color-picker';
+import DurationInput from '../Inputs/DurationInput';
 
 type EditTimerProps = {
   timer: TimerProps;
@@ -38,7 +39,8 @@ const EditTimer = (props: EditTimerProps) => {
           handleChange={handleChange('name')}
           defaultValue={props.timer.name}
         />
-        <LabeledTextInput
+
+        <DurationInput
           label={'Duration'}
           handleChange={handleChange('amountTime')}
           defaultValue={props.timer.amountTime}
