@@ -6,7 +6,7 @@ const openImagePicker = (onSelectImage) => {
   // More info on all the options is below in the API Reference... just some common use cases shown here
   const options = {
     title: 'Select Avatar',
-    customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
+    customButtons: [],
     storageOptions: {
       skipBackup: true,
       path: 'images',
