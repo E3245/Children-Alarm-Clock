@@ -9,6 +9,7 @@ import {BackgroundText, styles, View} from '../stylesheet';
 import {ColorPicker, fromHsv, toHsv} from 'react-native-color-picker';
 import DurationInput from '../Inputs/DurationInput';
 import ImageInputButton from '../Inputs/imageInput';
+import Slider from '@react-native-community/slider';
 
 type EditTimerProps = {
   timer: TimerProps;
@@ -51,6 +52,8 @@ const EditTimer = (props: EditTimerProps) => {
           defaultColor={props.timer.color}
           onColorSelected={(color) => handleChange('color')(fromHsv(color))}
           style={{flex: 0, height: 200}}
+          // @ts-ignore
+          sliderComponent={Slider}
         />
 
         <ImageInputButton

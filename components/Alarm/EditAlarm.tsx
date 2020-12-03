@@ -9,6 +9,7 @@ import {HsvColor} from 'react-native-color-picker/dist/typeHelpers';
 import EndTimeInput from '../Inputs/EndTimeInput';
 import WeekdayPicker from '../Inputs/weekdayInput/WeekdayPicker';
 import ImageInputButton from '../Inputs/imageInput';
+import Slider from '@react-native-community/slider';
 
 type EditAlarmProps = {
   alarm: AlarmProps;
@@ -87,6 +88,8 @@ const EditAlarm = (props: EditAlarmProps) => {
           defaultColor={props.alarm.color}
           onColorSelected={(color) => handleChange('color')(fromHsv(color))}
           style={{flex: 0, height: 200}}
+          // @ts-ignore
+          sliderComponent={Slider}
         />
 
         <ImageInputButton
