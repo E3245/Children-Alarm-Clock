@@ -8,6 +8,7 @@ import LabeledTextInput from '../Inputs/LabeledTextInput';
 import {BackgroundText, styles, View} from '../stylesheet';
 import {ColorPicker, fromHsv, toHsv} from 'react-native-color-picker';
 import DurationInput from '../Inputs/DurationInput';
+import ImageInputButton from '../Inputs/imageInput';
 
 type EditTimerProps = {
   timer: TimerProps;
@@ -50,6 +51,11 @@ const EditTimer = (props: EditTimerProps) => {
           defaultColor={props.timer.color}
           onColorSelected={(color) => handleChange('color')(fromHsv(color))}
           style={{flex: 0, height: 200}}
+        />
+
+        <ImageInputButton
+          previousValue={props.timer.imageURI}
+          onImageSelected={handleChange('imageURI')}
         />
       </View>
     </View>

@@ -26,6 +26,7 @@ export type AlarmProps = {
   hideButtons?: boolean;
   //Boolean array representing days of the week [0] is sunday, [6] is saturday
   daysOfTheWeek?: boolean[];
+  imageURI?: string;
 };
 
 // Misc Properties

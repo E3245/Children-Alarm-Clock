@@ -18,7 +18,8 @@ const EditModal = (props: EditModalProps) => {
     console.log(prop);
     console.log(timer_cp);
     if (!(prop in timer_cp)) {
-      console.error('Tried to modifiy non-existant prop on timer');
+      console.log('Tried to modifiy non-existant prop on timer');
+      timer_cp[prop] = new_val;
     } else {
       if (!isNaN(+new_val)) {
         timer_cp[prop] = Number(new_val);

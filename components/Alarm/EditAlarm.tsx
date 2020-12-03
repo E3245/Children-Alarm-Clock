@@ -8,6 +8,7 @@ import {ColorPicker, fromHsv} from 'react-native-color-picker';
 import {HsvColor} from 'react-native-color-picker/dist/typeHelpers';
 import EndTimeInput from '../Inputs/EndTimeInput';
 import WeekdayPicker from '../Inputs/weekdayInput/WeekdayPicker';
+import ImageInputButton from '../Inputs/imageInput';
 
 type EditAlarmProps = {
   alarm: AlarmProps;
@@ -86,6 +87,11 @@ const EditAlarm = (props: EditAlarmProps) => {
           defaultColor={props.alarm.color}
           onColorSelected={(color) => handleChange('color')(fromHsv(color))}
           style={{flex: 0, height: 200}}
+        />
+
+        <ImageInputButton
+          previousValue={props.alarm.imageURI}
+          onImageSelected={handleChange('imageURI')}
         />
       </View>
     </View>
