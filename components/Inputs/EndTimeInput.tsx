@@ -1,9 +1,8 @@
 import React, {Component, useEffect} from 'react';
 
 import {BackgroundText, styles, View, TextInput} from '../stylesheet';
+import styled from 'styled-components/native';
 import ScrollPicker from 'react-native-wheel-scroll-picker';
-
-import getTime from '../../helpers/time';
 
 type EndTimeInputProps = {
   label: string;
