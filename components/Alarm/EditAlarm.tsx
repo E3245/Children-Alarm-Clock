@@ -5,13 +5,33 @@ import LabeledTextInput from '../Inputs/LabeledTextInput';
 
 import {BackgroundText, styles, View} from '../stylesheet';
 import {ColorPicker, fromHsv} from 'react-native-color-picker';
-import { HsvColor } from 'react-native-color-picker/dist/typeHelpers';
+import {HsvColor} from 'react-native-color-picker/dist/typeHelpers';
 import EndTimeInput from '../Inputs/EndTimeInput';
+import WeekdayPicker from '../Inputs/weekdayInput/WeekdayPicker';
 
 type EditAlarmProps = {
   alarm: AlarmProps;
   // Function to be called
   onChange: (prop: string, new_val: any) => void;
+};
+
+const to_day_dict = (arr: boolean[]) => {
+  let out: {[characterName: number]: number} = {};
+  arr.forEach((element, index) => {
+    out[index] = element ? 1 : 0;
+  });
+  return out;
+};
+
+const to_day_arr = (dict: {[characterName: number]: number}) => {
+  let arr: boolean[] = [false, false, false, false, false, false, false];
+  for (const key in dict) {
+    if (Object.prototype.hasOwnProperty.call(dict, key)) {
+      const element = dict[key];
+      arr[key] = element ? true : false;
+    }
+  }
+  return arr;
 };
 
 const EditAlarm = (props: EditAlarmProps) => {
@@ -28,6 +48,7 @@ const EditAlarm = (props: EditAlarmProps) => {
     },
     [props],
   );
+  // let days = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 0, 0: 0};
 
   return (
     <View style={styles.container}>
@@ -38,22 +59,23 @@ const EditAlarm = (props: EditAlarmProps) => {
           handleChange={handleChange('name')}
           defaultValue={props.alarm.name}
         />
-        {/* <LabeledTextInput
-          label={'endHour'}
-          handleChange={handleChange('endHour')}
-          defaultValue={props.alarm.endHour}
-        />
-        <LabeledTextInput
-          label={'endMinute'}
-          handleChange={handleChange('endMinute')}
-          defaultValue={props.alarm.endMinute}
-        /> */}
-        <EndTimeInput 
-          label={"End at"}
+        <EndTimeInput
+          label={'End at'}
           handleHourChange={handleChange('endHour')}
           handleMinuteChange={handleChange('endMinute')}
           defaultHourValue={props.alarm.endHour}
           defaultMinuteValue={props.alarm.endMinute}
+        />
+        <WeekdayPicker
+          // @ts-ignore
+          days={to_day_dict(props.alarm.daysOfTheWeek)}
+          onChange={(dict: any) => {
+            let arr = to_day_arr(dict);
+            // @ts-ignore
+            handleChange('daysOfTheWeek')(arr);
+          }}
+          // style={styles.picker}
+          // dayStyle={styles.day}
         />
         <ColorPicker
           defaultColor={props.alarm.color}

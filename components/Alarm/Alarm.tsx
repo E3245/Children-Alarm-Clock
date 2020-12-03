@@ -24,6 +24,8 @@ export type AlarmProps = {
   handleChange?: (newAlarm: AlarmProps) => void;
   enabled: boolean;
   hideButtons?: boolean;
+  //Boolean array representing days of the week [0] is sunday, [6] is saturday
+  daysOfTheWeek?: boolean[];
 };
 
 // Misc Properties
