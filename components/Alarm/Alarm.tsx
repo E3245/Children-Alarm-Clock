@@ -6,7 +6,7 @@ import {
   getNextOccurence,
 } from '../../helpers/time';
 import {styles} from '../stylesheet';
-import Svg, {Text, Rect} from 'react-native-svg';
+import Svg, {Text, Rect, Image} from 'react-native-svg';
 import NotifService, {
   NOTIFICATION_CHANNEL_ALARM,
 } from '../../helpers/NotificationService';
@@ -239,6 +239,21 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
               textAnchor="middle">
               {this.props.name}
             </Text>
+            {this.props.imageURI ? (
+              <Image
+                x="2%"
+                y="5%"
+                width="18%"
+                height="90%"
+                preserveAspectRatio="xMidYMid slice"
+                opacity="1"
+                href={{
+                  uri: this.props.imageURI,
+                }}
+              />
+            ) : (
+              <></>
+            )}
           </Svg>
         </View>
         {this.props.hideButtons ? (
