@@ -73,7 +73,8 @@
     ],
     "setupFiles": [
       "./__mocks__/push-notifications-ios/push-notifications-ios.js"
-    ]
+    ],
+    "moduleNameMapper": { "styled-components": "<rootDir>/node_modules/styled-components/native/dist/styled-components.native.cjs.js" }
   },
   "transformIgnorePatterns": [
     "/node_modules/(?!native-base|@react-native-community/netinfo|@react-native-community/async-storage|@react-native-community/geolocation|react-native-permissions|uuid|react-native-get-random-values)/"
