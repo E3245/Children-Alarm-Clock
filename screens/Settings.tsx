@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, Switch, StyleSheet} from 'react-native';
+import {View, Switch} from 'react-native';
 import * as StylesModule from '../components/stylesheet';
 import {FileManager, SETTINGS_STORAGE_KEY} from '../helpers/FileManager';
-import { ClockFaceAppContext } from '../helpers/AppContextProvider';
+import {ClockFaceAppContext} from '../helpers/AppContextProvider';
+import {settingsPage} from '../components/stylesheet';
 
 export class SettingsScreen extends React.Component {
   state = {
@@ -19,7 +20,9 @@ export class SettingsScreen extends React.Component {
       SETTINGS_STORAGE_KEY,
       NewSettingsPayload,
       false,
-    ).catch((error) => {console.log(error)});
+    ).catch((error) => {
+      console.log(error);
+    });
   };
 
   // Start here so we can send our JSON object to the Settings screen after retrieval
@@ -53,10 +56,10 @@ export class SettingsScreen extends React.Component {
   render() {
     return (
       <StylesModule.SafeAreaView>
-        <View style={styles.rowStyle}>
+        <View style={settingsPage.rowStyle}>
           <StylesModule.ScrollView>
             <ClockFaceAppContext.Consumer>
-              {({AnalogClockValue, setClockFaceValue}) => (
+              {({AnalogClockValue, setClockFaceValue}) =>
                 SettingSwitchItem(
                   'Use Analog Clock',
                   AnalogClockValue,
@@ -64,17 +67,19 @@ export class SettingsScreen extends React.Component {
                     // If it was set to true, then set it back to false
                     this.setState({analogClockFace: value}, () => {
                       console.log(
-                        'New State: analogClockFace ' + this.state.analogClockFace,
+                        'New State: analogClockFace ' +
+                          this.state.analogClockFace,
                       );
 
                       // Write settings to file
                       this._WriteSettingsToFile();
-                      
+
                       // Force the context to update the state
                       setClockFaceValue();
                     });
                   },
-                ))}
+                )
+              }
             </ClockFaceAppContext.Consumer>
           </StylesModule.ScrollView>
         </View>
@@ -90,7 +95,7 @@ export const SettingSwitchItem = (
   onValueChange: (value: boolean) => void,
 ) => {
   return (
-    <View style={styles.styleModule}>
+    <View style={settingsPage.styleModule}>
       <StylesModule.Text style={{transform: [{scale: 1.1}]}}>
         {label}
       </StylesModule.Text>
@@ -104,14 +109,3 @@ export const SettingSwitchItem = (
 };
 
 export default SettingsScreen;
-
-const styles = StyleSheet.create({
-  rowStyle: {flexDirection: 'row'},
-  styleModule: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-});
