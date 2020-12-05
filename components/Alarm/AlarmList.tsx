@@ -91,6 +91,7 @@ export class AlarmList extends React.Component<Props, State> {
       uuid: ukey,
       handleChange: func,
       enabled: false,
+      daysOfTheWeek: [true, true, true, true, true, true, true],
     };
 
     return retprop;
@@ -147,6 +148,21 @@ export class AlarmList extends React.Component<Props, State> {
           newAlarmList[index].handleChange = this.handleChange(
             element.uuid,
           ).bind(this);
+
+          if (
+            !newAlarmList[index].daysOfTheWeek ||
+            newAlarmList[index].daysOfTheWeek?.length !== 7
+          ) {
+            newAlarmList[index].daysOfTheWeek = [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+            ];
+          }
         });
       })
       .catch((response) => {

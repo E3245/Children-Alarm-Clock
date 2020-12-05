@@ -10,7 +10,7 @@ type TimeObject = {
 
 export const getTime = (): TimeObject => {
   const date = new Date();
-  const hours = to12hClock(date.getHours());
+  const hours = date.getHours();
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
   return {hours, minutes, seconds};

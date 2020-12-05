@@ -6,7 +6,7 @@ import {
   getNextOccurence,
 } from '../../helpers/time';
 import {styles} from '../stylesheet';
-import Svg, {Text, Rect} from 'react-native-svg';
+import Svg, {Text, Rect, Image} from 'react-native-svg';
 import NotifService, {
   NOTIFICATION_CHANNEL_ALARM,
 } from '../../helpers/NotificationService';
@@ -24,6 +24,9 @@ export type AlarmProps = {
   handleChange?: (newAlarm: AlarmProps) => void;
   enabled: boolean;
   hideButtons?: boolean;
+  //Boolean array representing days of the week [0] is sunday, [6] is saturday
+  daysOfTheWeek?: boolean[];
+  imageURI?: string;
 };
 
 // Misc Properties
@@ -44,11 +47,11 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
   notif: NotifService;
 
   /* Notifications */
-  onRegister(token) {
+  onRegister(token: any) {
     this.setState({registerToken: token.token});
   }
 
-  onNotification(token) {
+  onNotification(_token: any) {
     //Do nothing
   }
 
@@ -64,7 +67,7 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
     } else {
       this.state.nextEndTime = props.nextEndTime;
     }
-    
+
     /* Notifications */
     this.notif = new NotifService(
       this.onRegister.bind(this),
@@ -137,7 +140,7 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
         }, 100);
       },
     );
-    
+
     //Check permission and create notification, if applicable
     this.notif.checkPermission(this._HandleNotificationsFn.bind(this));
   }
@@ -156,7 +159,7 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
     clearInterval(this.intervalID);
 
     // Clear the notification from the Service
-    this.notif.cancelSpecificNotif(this.state.NotifID); 
+    this.notif.cancelSpecificNotif(this.state.NotifID);
   }
 
   // Call the parent to save the data
@@ -237,6 +240,21 @@ export class AlarmComponentSimple extends React.Component<AlarmProps> {
               textAnchor="middle">
               {this.props.name}
             </Text>
+            {this.props.imageURI ? (
+              <Image
+                x="2%"
+                y="5%"
+                width="18%"
+                height="90%"
+                preserveAspectRatio="xMidYMid slice"
+                opacity="1"
+                href={{
+                  uri: this.props.imageURI,
+                }}
+              />
+            ) : (
+              <></>
+            )}
           </Svg>
         </View>
         {this.props.hideButtons ? (

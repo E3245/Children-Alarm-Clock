@@ -23,6 +23,10 @@ import AgendaList from './screens/Agenda';
 import {FileManager, SETTINGS_STORAGE_KEY} from './helpers/FileManager';
 import { ClockFaceAppContext } from './helpers/AppContextProvider';
 
+// Ignore all non-fatal errors and warnings
+// import { LogBox } from 'react-native';
+// LogBox.ignoreAllLogs();
+
 const Tab = createBottomTabNavigator();
 
 // Implicit since DefaultTheme is not found for some reason
