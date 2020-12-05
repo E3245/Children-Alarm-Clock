@@ -1,9 +1,15 @@
 import React, {useCallback} from 'react';
 import {TimerProps} from '../Timer/Timer';
 
+import tinycolor from 'tinycolor2';
+
 import LabeledTextInput from '../Inputs/LabeledTextInput';
 
 import {BackgroundText, styles, View} from '../stylesheet';
+import {ColorPicker, fromHsv, toHsv} from 'react-native-color-picker';
+import DurationInput from '../Inputs/DurationInput';
+import ImageInputButton from '../Inputs/imageInput';
+import Slider from '@react-native-community/slider';
 
 type EditTimerProps = {
   timer: TimerProps;
@@ -35,16 +41,24 @@ const EditTimer = (props: EditTimerProps) => {
           handleChange={handleChange('name')}
           defaultValue={props.timer.name}
         />
-        <LabeledTextInput
-          label={'Color'}
-          placeholder={'white'}
-          handleChange={handleChange('color')}
-          defaultValue={props.timer.color}
-        />
-        <LabeledTextInput
+
+        <DurationInput
           label={'Duration'}
           handleChange={handleChange('amountTime')}
           defaultValue={props.timer.amountTime}
+        />
+
+        <ColorPicker
+          defaultColor={props.timer.color}
+          onColorSelected={(color) => handleChange('color')(fromHsv(color))}
+          style={{flex: 0, height: 200}}
+          // @ts-ignore
+          sliderComponent={Slider}
+        />
+
+        <ImageInputButton
+          previousValue={props.timer.imageURI}
+          onImageSelected={handleChange('imageURI')}
         />
       </View>
     </View>

@@ -38,7 +38,7 @@ export class FileManager {
       else {
         // Store the data in storage
         await AsyncStorage.setItem(key, toStr); // Todo: Insert Error Callback function
-        console.log('FileManager: WriteJSONData: ' + toStr);
+        // console.log('FileManager: WriteJSONData: ' + toStr);
         // Alert.alert('Data successfully saved!');
       }
     } catch (eror) {
@@ -65,7 +65,7 @@ export class FileManager {
         return error;
       });
 
-    console.log('FileManager: ReadJSONData:  ' + thenProm);
+    // console.log('FileManager: ReadJSONData:  ' + thenProm);
 
     return JSON.parse(thenProm);
     //console.log(jsonValue);

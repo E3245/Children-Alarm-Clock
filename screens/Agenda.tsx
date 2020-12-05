@@ -1,152 +1,121 @@
 import {Agenda} from 'react-native-calendars';
-import {View, TouchableOpacity, Text, Alert} from 'react-native';
-import React from 'react';
+import {View, TouchableOpacity, Text, StyleSheet, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ALARM_STORAGE_KEY, FileManager} from '../helpers/FileManager';
+import {AlarmProps} from '../components/Alarm/Alarm';
 import {agenda} from '../components/stylesheet';
 
 const mobius = {key: 'mobius', color: 'cyan'};
 const lecture = {key: 'lecture', color: 'blue'};
 const team = {key: 'team', color: 'teal'};
 
-const getEventData = () => {
-  let events = {
-    '2020-11-02': [
-      {
-        name: 'Group Project - Mobius ',
-        start: '2:00 pm',
-        end: '4:00 pm',
-        other: 'Mobius Description',
-      },
-    ],
+const loadAlarms = async () => {
+  console.log('LOADING ALARMLIST');
 
-    '2020-11-03': [
-      {
-        name: 'CSCE 3550 - Lecture',
-        start: '4:00 pm',
-        end: '5:20 pm',
-        other: 'Lecture Description',
-      },
-    ],
+  let newAlarmList: AlarmProps[] = [];
+  await FileManager.ReadJSONData(ALARM_STORAGE_KEY)
+    .then((reponse) => {
+      newAlarmList = reponse;
+    })
+    .catch((response) => {
+      console.error('Error loading alarms' + response);
+    });
 
-    '2020-11-05': [
-      {
-        name: 'CSCE 4901 - Team Presentation',
-        start: '11:30 am',
-        end: '12:50 pm',
-        other: 'Team Description',
-      },
-      {
-        name: 'CSCE 3550 - Lecture',
-        start: '4:00 pm',
-        end: '5:20 pm',
-        other: 'Lecture Description',
-      },
-    ],
-
-    '2020-11-09': [
-      {
-        name: 'Group Project - Mobius ',
-        start: '2:00 pm',
-        end: '4:00 pm',
-        other: 'Mobius Description',
-      },
-    ],
-
-    '2020-11-10': [
-      {
-        name: 'CSCE 3550 - Lecture',
-        start: '4:00 pm',
-        end: '5:20 pm',
-        other: 'Lecture Description',
-      },
-    ],
-
-    '2020-11-12': [
-      {
-        name: 'CSCE 4901 - Team Presentation',
-        start: '11:30 am',
-        end: '12:50 pm',
-        other: 'Team Description',
-      },
-      {
-        name: 'CSCE 3550 - Lecture',
-        start: '4:00 pm',
-        end: '5:20 pm',
-        other: 'Lecture Description',
-      },
-    ],
-
-    '2020-11-16': [
-      {
-        name: 'Group Project - Mobius ',
-        start: '2:00 pm',
-        end: '4:00 pm',
-        other: 'Mobius Description',
-      },
-    ],
-
-    '2020-11-17': [
-      {
-        name: 'CSCE 3550 - Lecture',
-        start: '4:00 pm',
-        end: '5:20 pm',
-        other: 'Lecture Description',
-      },
-    ],
-
-    '2020-11-19': [
-      {
-        name: 'CSCE 4901 - Team Presentation',
-        start: '11:30 am',
-        end: '12:50 pm',
-        other: 'Team Description',
-      },
-      {
-        name: 'CSCE 3550 - Lecture',
-        start: '4:00 pm',
-        end: '5:20 pm',
-        other: 'Lecture Description',
-      },
-    ],
-
-    '2020-11-23': [
-      {
-        name: 'Group Project - Mobius ',
-        start: '2:00 pm',
-        end: '4:00 pm',
-        other: 'Mobius Description',
-      },
-    ],
-
-    '2020-11-24': [
-      {
-        name: 'CSCE 3550 - Lecture',
-        start: '4:00 pm',
-        end: '5:20 pm',
-        other: 'Lecture Description',
-      },
-    ],
-
-    '2020-11-26': [
-      {
-        name: 'CSCE 4901 - Team Presentation',
-        start: '11:30 am',
-        end: '12:50 pm',
-        other: 'Team Description',
-      },
-      {
-        name: 'CSCE 3550 - Lecture',
-        start: '4:00 pm',
-        end: '5:20 pm',
-        other: 'Lecture Description',
-      },
-    ],
-  };
-
-  return [events, false];
+  return newAlarmList;
 };
 
+function formatDate(date: Date) {
+  var d = new Date(date);
+  var month = '' + (d.getMonth() + 1);
+  var day = '' + d.getDate();
+  var year = d.getFullYear();
+
+  if (month.length < 2) {
+    month = '0' + month;
+  }
+  if (day.length < 2) {
+    day = '0' + day;
+  }
+
+  return [year, month, day].join('-');
+}
+
+// Returns a list of dates in the next 30 dates that this alarm will go off on
+const getAlarmDates = (alarm: AlarmProps) => {
+  let result: Date[] = [];
+  let test_date = new Date();
+  if (alarm.daysOfTheWeek) {
+    for (let i = 0; i <= 30; i += 1) {
+      if (alarm.enabled && alarm.daysOfTheWeek[test_date.getDay()]) {
+        result.push(new Date(test_date));
+      }
+      test_date.setDate(test_date.getDate() + 1);
+    }
+  }
+  return result;
+};
+
+const getAlarmEvents = (alarms: AlarmProps[]) => {
+  let events: {[date: string]: {}[]} = {};
+  alarms.forEach((alarm) => {
+    let dates = getAlarmDates(alarm);
+    dates.forEach((date) => {
+      let fdate = formatDate(date);
+      if (!events[fdate]) {
+        events[fdate] = [];
+      }
+      events[fdate].push({
+        name: alarm.name,
+        start: alarm.endHour + ':' + alarm.endMinute,
+      });
+    });
+  });
+  return events;
+};
+
+// '2020-11-02': {
+//   dots: [{key:'key', color:'color'}],
+// },
+
+const getAlarmDots = (alarms: AlarmProps[]) => {
+  let dots: {[date: string]: {}} = {};
+  alarms.forEach((alarm) => {
+    let dates = getAlarmDates(alarm);
+    dates.forEach((date) => {
+      let fdate = formatDate(date);
+      if (!dots[fdate]) {
+        dots[fdate] = {dots: []};
+      }
+      dots[fdate].dots.push({
+        key: alarm.name,
+        color: alarm.color,
+      });
+    });
+  });
+  return dots;
+}
+
 export default function AgendaList({props, navigation, route}) {
-  const [monthData, loadingData] = getEventData();
+  const [loadingData, onChangeLoading] = useState(false);
+  const [monthData, setMonthData] = useState({});
+  const [markedDates, setMarkedDates] = useState({});
+  const [intVal, setIntVal] = useState(0);
+
+  useEffect(() => {
+    // Hacky garbage
+    clearInterval(intVal);
+    let int = setInterval(() => {
+      loadAlarms()
+        .then((value) => {
+          setMonthData(getAlarmEvents(value));
+          setMarkedDates(getAlarmDots(value));
+          onChangeLoading(false);
+        })
+        .catch();
+    }, 5000);
+
+    setIntVal(int);
+  }, [loadingData, props]);
 
   const renderItem = (item, firstItemInDay) => {
     return (
@@ -166,14 +135,12 @@ export default function AgendaList({props, navigation, route}) {
     );
   };
 
-  if (loadingData || !monthData) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-  return (
+
+  return loadingData ? (
+    <View>
+      <Text>Loading...</Text>
+    </View>
+  ) : (
     <View style={agenda.container}>
       <Agenda
         items={monthData}
@@ -187,54 +154,7 @@ export default function AgendaList({props, navigation, route}) {
             </Text>
           );
         }}
-        markedDates={{
-          '2020-11-02': {
-            dots: [mobius],
-          },
-
-          '2020-11-03': {
-            dots: [lecture],
-          },
-
-          '2020-11-05': {
-            dots: [lecture, team],
-          },
-
-          '2020-11-09': {
-            dots: [mobius],
-          },
-
-          '2020-11-10': {
-            dots: [lecture],
-          },
-
-          '2020-11-12': {
-            dots: [lecture, team],
-          },
-          '2020-11-16': {
-            dots: [mobius],
-          },
-
-          '2020-11-17': {
-            dots: [lecture],
-          },
-
-          '2020-11-19': {
-            dots: [lecture, team],
-          },
-
-          '2020-11-23': {
-            dots: [mobius],
-          },
-
-          '2020-11-24': {
-            dots: [lecture],
-          },
-
-          '2020-11-26': {
-            dots: [lecture, team],
-          },
-        }}
+        markedDates={markedDates}
         markingType={'multi-dot'}
         theme={{
           agendaKnobColor: '#059033',

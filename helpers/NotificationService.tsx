@@ -123,7 +123,7 @@ export default class NotifService {
     });
   }
 
-  scheduleNotificationTimer(A_channelID: string, U_title: string, U_msg: string, A_bigText: string, A_smallTxt: string, trigger_date: Date, soundName: string) {
+  scheduleNotificationTimer(A_channelID: string, A_color: string, U_title: string, U_msg: string, A_bigText: string, A_smallTxt: string, A_largeIcon: string, A_smallIcon: string, trigger_date: Date, soundName: string) {
     this.lastId++;
     PushNotification.localNotificationSchedule({
       date: trigger_date,
@@ -132,12 +132,12 @@ export default class NotifService {
       channelId: A_channelID,
       ticker: 'My Notification Ticker', // (optional)
       autoCancel: false, // (optional) default: true
-      largeIcon: 'ic_launcher', // (optional) default: "ic_launcher"
-      smallIcon: 'ic_notification', // (optional) default: "ic_notification" with fallback for "ic_launcher"
+      largeIcon: A_largeIcon ? A_largeIcon : 'ic_launcher', // (optional) default: "ic_launcher"
+      smallIcon: A_smallIcon ? A_smallIcon : 'ic_notification', // (optional) default: "ic_notification" with fallback for "ic_launcher"
 
       bigText: A_bigText, // (optional) default: "message" prop
       subText: A_smallTxt, // (optional) default: none
-      color: 'blue', // (optional) default: system default
+      color: A_color ? A_color : 'blue', // (optional) default: system default
       vibrate: true, // (optional) default: true
       vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
       tag: 'some_tag', // (optional) add tag to message

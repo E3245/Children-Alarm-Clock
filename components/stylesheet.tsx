@@ -65,6 +65,10 @@ export const styles = StyleSheet.create({
     marginBottom: 36,
     marginTop: 20,
   },
+  tinyLogo: {
+    width: 50,
+    height: 50,
+  },
 });
 
 export const digitalStyle = StyleSheet.create({

@@ -18,7 +18,8 @@ const EditModal = (props: EditModalProps) => {
     console.log(prop);
     console.log(alarm_cp);
     if (!(prop in alarm_cp)) {
-      console.error('Tried to modifiy non-existant prop on alarm');
+      console.log('Tried to modifiy non-existant prop on alarm');
+      alarm_cp[prop] = new_val;
     } else {
       if (!isNaN(+new_val)) {
         alarm_cp[prop] = Number(new_val);

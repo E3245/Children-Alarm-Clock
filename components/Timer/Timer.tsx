@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Button, Alert} from 'react-native';
 import {getTimeTo, isTimePast, formatTime} from '../../helpers/time';
 import {styles} from '../stylesheet';
-import Svg, {Text, Rect} from 'react-native-svg';
+import Svg, {Text, Rect, Image} from 'react-native-svg';
 import NotifService, {
   NOTIFICATION_CHANNEL_TIMER,
 } from '../../helpers/NotificationService';
@@ -22,6 +22,7 @@ export type TimerProps = {
   time: number;
   running: boolean;
   hideButtons?: boolean;
+  imageURI?: string;
 };
 
 // Misc Properties
@@ -93,9 +94,14 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
 
   componentDidUpdate(prevProps: any, prevState: any) {
     // Only save when the component updates the things we acutally save
-    if (this.state.isRunning !== prevState.isRunning) {
-      this.save();
-    } else if (this.state.timeState !== prevState.timeState) {
+    if (prevProps.amountTime !== this.props.amountTime) {
+      this.reset();
+    }
+
+    if (
+      this.state.isRunning !== prevState.isRunning ||
+      this.state.timeState !== prevState.timeState
+    ) {
       this.save();
     }
   }
@@ -166,6 +172,9 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
       timeState: this.props.amountTime,
     });
     clearInterval(this.intervalID);
+
+    // Clear notification
+    this.notif.cancelSpecificNotif(this.state.NotifID);
   }
 
   // Call the parent to save the data
@@ -195,7 +204,10 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
       // Create the notification and store the return value to the temp variable
       ID = this.notif.scheduleNotificationTimer(
         NOTIFICATION_CHANNEL_TIMER,
+        'green',
         this.props.name,
+        '',
+        '',
         '',
         '',
         '',
@@ -243,6 +255,21 @@ export class TimerComponentSimple extends React.Component<TimerProps> {
               textAnchor="middle">
               {this.props.name}
             </Text>
+            {this.props.imageURI ? (
+              <Image
+                x="2%"
+                y="5%"
+                width="18%"
+                height="90%"
+                preserveAspectRatio="xMidYMid slice"
+                opacity="1"
+                href={{
+                  uri: this.props.imageURI,
+                }}
+              />
+            ) : (
+              <></>
+            )}
           </Svg>
         </View>
         {this.props.hideButtons ? (
